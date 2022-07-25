@@ -1,24 +1,14 @@
 ﻿using MattEland.AutomatingMyDog;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-string key;
-string endpoint;
+ConfigurationManager configManager = new();
+ConfigData data = configManager.LoadConfigData();
 
-using (StreamReader file = File.OpenText("credentials.json"))
-using (JsonTextReader reader = new(file))
-{
-    JObject jObj = (JObject)JToken.ReadFrom(reader);
-    key = jObj["key"].Value<string>();
-    endpoint = jObj["endpoint"].Value<string>();
-}
-
-ApiKeyServiceClientCredentials credentials = new(key);
+ApiKeyServiceClientCredentials credentials = new(data.Key);
 
 ComputerVisionClient computerVision = new(credentials);
-computerVision.Endpoint = endpoint;
+computerVision.Endpoint = data.Endpoint;
 
 string[] files = Directory.GetFiles("images");
 
