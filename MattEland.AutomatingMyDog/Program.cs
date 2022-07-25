@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using MattEland.AutomatingMyDog;
+﻿using MattEland.AutomatingMyDog;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Newtonsoft.Json;
@@ -17,35 +15,16 @@ using (JsonTextReader reader = new(file))
     endpoint = jObj["endpoint"].Value<string>();
 }
 
-ComputerVisionClient computerVision = new(new ApiKeyServiceClientCredentials(key));
+ApiKeyServiceClientCredentials credentials = new(key);
+
+ComputerVisionClient computerVision = new(credentials);
 computerVision.Endpoint = endpoint;
 
-string imagePath = "images/DogCouchNap.jpg";
+string[] files = Directory.GetFiles("images");
 
-if (!File.Exists(imagePath))
+foreach (string imagePath in files)
 {
-    Console.WriteLine("\nUnable to open or read local image path:\n{0} \n", imagePath);
-    return;
-}
-Console.WriteLine($"Analyzing {imagePath}...");
-
-IList<VisualFeatureTypes?> features = new List<VisualFeatureTypes?>
-{
-    VisualFeatureTypes.Categories,
-    VisualFeatureTypes.Description,
-    VisualFeatureTypes.ImageType,
-    VisualFeatureTypes.Tags,
-    VisualFeatureTypes.Objects
-};
-
-ImageAnalysis analysis;
-using (Stream imageStream = File.OpenRead(imagePath))
-{
-    analysis = await computerVision.AnalyzeImageInStreamAsync(imageStream, features);
+    DemoImageAnalyzer analyzer = new();
+    ImageAnalysis analysis = await analyzer.AnalyzeImageAsync(imagePath, computerVision);
 }
 
-VisionConsoleHelper visionHelper = new();
-
-visionHelper.DisplayVisionCaptions(analysis);
-visionHelper.DisplayVisionObjects(analysis);
-visionHelper.DisplayVisionTags(analysis);
