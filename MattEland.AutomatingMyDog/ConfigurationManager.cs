@@ -14,6 +14,8 @@ public class ConfigurationManager
 
         return new ConfigData(jObj["key"].Value<string>(), 
             jObj["endpoint"].Value<string>(), 
-            jObj["region"].Value<string>());
+            jObj["region"].Value<string>(),
+            jObj["appId"].Value<string>(),
+            jObj["slotId"].Value<string>());
     }
 }
