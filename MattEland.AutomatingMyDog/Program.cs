@@ -5,43 +5,103 @@ using Microsoft.CognitiveServices.Speech;
 ConfigurationManager configManager = new();
 ConfigData configData = configManager.LoadConfigData();
 
-ApiKeyServiceClientCredentials credentials = new(configData.Key);
+await ShowMainMenuAsync();
 
-ComputerVisionClient computerVision = new(credentials);
-computerVision.Endpoint = configData.Endpoint;
-
-SpeechConfig config = SpeechConfig.FromSubscription(configData.Key, configData.Region);
-config.SpeechSynthesisVoiceName = "en-US-GuyNeural";
-
-string[] files = Directory.GetFiles("images");
-
-DemoImageAnalyzer analyzer = new();
-foreach (string imagePath in files.Skip(3).Take(1))
+async Task ShowMainMenuAsync()
 {
-    List<string> detectedItems = await analyzer.AnalyzeImageAsync(imagePath, computerVision);
-
-    // Potentially bark at the thing we saw
-    bool ShouldBarkAt(string thing)
+    Console.WriteLine("Welcome to 'Automating my Dog' by Matt Eland (@IntegerMan).");
+    
+    bool stillGoing = true;
+    do
     {
-        thing = thing.ToLowerInvariant();
+        Console.WriteLine();
+        Console.WriteLine("What would you like to do?");
+        Console.WriteLine();
+        Console.WriteLine("1) Look at pictures (and bark if anything is interesting)");
+        Console.WriteLine("2) Listen to commands (and probably ignore them)");
+        Console.WriteLine("Q) Quit");
+        Console.WriteLine();
+        string option = Console.ReadLine()!;
+        Console.WriteLine();
 
-        return thing.Contains("squirrel") || 
-               thing.Contains("rabbit") || 
-               thing.Contains("rodent") ||
-               thing.Contains("dog");
-    }
+        switch (option.ToUpperInvariant())
+        {
+            case "1": // Computer Vision / Speech Synthesis
+                await LookAtPicturesAsync();
+                break;
 
-    string? barkTarget = detectedItems.FirstOrDefault(ShouldBarkAt);
-    if (barkTarget != null)
+            case "2": // Speech Recognition / LUIS
+                await ListenToSpeechAsync();
+                break;
+            
+            case "Q": // Quit
+                stillGoing = false;
+                await SayMessageAsync("Goodbye, friend!");
+                break;
+
+            default:
+                await SayMessageAsync("I don't understand.");
+                break;
+        }
+    } while (stillGoing);
+}
+
+async Task LookAtPicturesAsync()
+{
+    ApiKeyServiceClientCredentials credentials = new(configData.Key);
+
+    ComputerVisionClient computerVision = new(credentials);
+    computerVision.Endpoint = configData.Endpoint;
+
+    string[] files = Directory.GetFiles("images");
+
+    DemoImageAnalyzer analyzer = new();
+    foreach (string imagePath in files.Skip(3).Take(1))
     {
-        using SpeechSynthesizer synthesizer = new(config);
-        using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync($"I saw a {barkTarget}; Bark, bark, bark!");
+        List<string> detectedItems = await analyzer.AnalyzeImageAsync(imagePath, computerVision);
+
+        // Potentially bark at the thing we saw
+        bool ShouldBarkAt(string thing)
+        {
+            thing = thing.ToLowerInvariant();
+
+            return thing.Contains("squirrel") ||
+                   thing.Contains("rabbit") ||
+                   thing.Contains("rodent") ||
+                   thing.Contains("dog");
+        }
+
+        string? barkTarget = detectedItems.FirstOrDefault(ShouldBarkAt);
+        if (barkTarget != null)
+        {
+            string message = $"I saw a {barkTarget}; Bark, bark, bark!";
+
+            await SayMessageAsync(message);
+        }
     }
 }
 
+async Task ListenToSpeechAsync()
+{
+    // TODO: Listen to a speech stream and transcribe it to words
 
-// TODO: Listen to a speech stream and transcribe it to words
+    // TODO: Display the words for validation
+    
+    // TODO: Call out to text analytics and try to understand the parts of speech
 
-// TODO: Parse the speech file into an intent
+    // TODO: Parse the text into an intent
 
-// TODO: Speech synthesize an "Arf" if the intent matches "speak"
+    // Speech synthesize an "Arf" if the intent matches "speak"
+    await SayMessageAsync("Arf, arf!");
+}
+
+async Task SayMessageAsync(string message)
+{
+    SpeechConfig speechConfig = SpeechConfig.FromSubscription(configData.Key, configData.Region);
+    speechConfig.SpeechSynthesisVoiceName = "en-US-GuyNeural";
+    
+    using SpeechSynthesizer synthesizer = new(speechConfig);
+    using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
+}
+
+
