@@ -5,8 +5,10 @@ namespace MattEland.AutomatingMyDog;
 
 public class DemoImageAnalyzer
 {
-    public async Task<ImageAnalysis> AnalyzeImageAsync(string filePath, IComputerVisionClient computerVisionClient)
+    public async Task<List<string>> AnalyzeImageAsync(string filePath, IComputerVisionClient computerVisionClient)
     {
+        List<string> items = new();
+        
         Console.WriteLine($"Analyzing {filePath}...");
 
         List<VisualFeatureTypes?> features = new()
@@ -24,10 +26,10 @@ public class DemoImageAnalyzer
 
         VisionConsoleHelper visionHelper = new();
         visionHelper.DisplayVisionCaptions(analysis);
-        visionHelper.DisplayVisionObjects(analysis);
-        visionHelper.DisplayVisionTags(analysis);
-        visionHelper.DisplayVisionCategories(analysis);
+        visionHelper.AddAndDisplayVisionTags(analysis, items);
+        visionHelper.AddAndDisplayVisionObjects(analysis, items);
+        visionHelper.AddAndDisplayVisionCategories(analysis, items);
 
-        return analysis;
+        return items;
     }
 }

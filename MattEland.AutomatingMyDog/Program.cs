@@ -1,24 +1,44 @@
 ﻿using MattEland.AutomatingMyDog;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
-using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.CognitiveServices.Speech;
 
 ConfigurationManager configManager = new();
-ConfigData data = configManager.LoadConfigData();
+ConfigData configData = configManager.LoadConfigData();
 
-ApiKeyServiceClientCredentials credentials = new(data.Key);
+ApiKeyServiceClientCredentials credentials = new(configData.Key);
 
 ComputerVisionClient computerVision = new(credentials);
-computerVision.Endpoint = data.Endpoint;
+computerVision.Endpoint = configData.Endpoint;
+
+SpeechConfig config = SpeechConfig.FromSubscription(configData.Key, configData.Region);
+config.SpeechSynthesisVoiceName = "en-US-GuyNeural";
 
 string[] files = Directory.GetFiles("images");
 
 DemoImageAnalyzer analyzer = new();
-foreach (string imagePath in files)
+foreach (string imagePath in files.Skip(3).Take(1))
 {
-    ImageAnalysis analysis = await analyzer.AnalyzeImageAsync(imagePath, computerVision);
+    List<string> detectedItems = await analyzer.AnalyzeImageAsync(imagePath, computerVision);
+
+    // Potentially bark at the thing we saw
+    bool ShouldBarkAt(string thing)
+    {
+        thing = thing.ToLowerInvariant();
+
+        return thing.Contains("squirrel") || 
+               thing.Contains("rabbit") || 
+               thing.Contains("rodent") ||
+               thing.Contains("dog");
+    }
+
+    string? barkTarget = detectedItems.FirstOrDefault(ShouldBarkAt);
+    if (barkTarget != null)
+    {
+        using SpeechSynthesizer synthesizer = new(config);
+        using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync($"I saw a {barkTarget}; Bark, bark, bark!");
+    }
 }
 
-// TODO: Speech synthesize a "Bark" if an animal is seen outdoors
 
 // TODO: Listen to a speech stream and transcribe it to words
 

@@ -16,7 +16,7 @@ public class VisionConsoleHelper
         }
     }
     
-    public void DisplayVisionCategories(ImageAnalysis imageAnalysis)
+    public void AddAndDisplayVisionCategories(ImageAnalysis imageAnalysis, List<string>? items = null)
     {
         if (!imageAnalysis.Categories.Any()) return;
 
@@ -25,11 +25,13 @@ public class VisionConsoleHelper
         {
             if (category == null) continue;
 
+            items?.Add(category.Name);
+
             Console.WriteLine($"{category.Name} (Confidence: {category.Score:p})");
         }
     }
 
-    public void DisplayVisionObjects(ImageAnalysis imageAnalysis)
+    public void AddAndDisplayVisionObjects(ImageAnalysis imageAnalysis, List<string>? items = null)
     {
         if (!imageAnalysis.Objects.Any()) return;
 
@@ -38,17 +40,21 @@ public class VisionConsoleHelper
         {
             if (obj == null) continue;
 
+            items?.Add(obj.ObjectProperty);
+
             Console.WriteLine($"{obj.ObjectProperty} (Confidence: {obj.Confidence:p}) at ({obj.Rectangle.X},{obj.Rectangle.Y}):({obj.Rectangle.X + obj.Rectangle.W},{obj.Rectangle.Y + obj.Rectangle.H})");
             ObjectHierarchy? parent = obj.Parent;
             while (parent != null)
             {
                 Console.WriteLine($"Parent: {parent.ObjectProperty} (Confidence: {parent.Confidence:p})");
+                
+                items?.Add(parent.ObjectProperty);
                 parent = parent.Parent;
             }
         }
     }
 
-    public void DisplayVisionTags(ImageAnalysis imageAnalysis)
+    public void AddAndDisplayVisionTags(ImageAnalysis imageAnalysis, List<string>? items = null)
     {
         if (!imageAnalysis.Tags.Any()) return;
         
@@ -57,6 +63,8 @@ public class VisionConsoleHelper
         {
             if (tag == null) continue;
 
+            items?.Add(tag.Name);
+            
             Console.WriteLine($"{tag.Name} (Confidence: {tag.Confidence:p})");
         }
     }
