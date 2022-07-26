@@ -1,4 +1,6 @@
 ﻿using MattEland.AutomatingMyDog;
+using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
+using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.CognitiveServices.Speech;
 
@@ -130,15 +132,70 @@ async Task ProcessCommandAsync(string command)
         return;
     }
 
-    // TODO: Display the words for validation
-    Console.WriteLine($"You said: '{command}'");
+    // Display the words for validation
+    Console.WriteLine($"You said: \"{command}\"");
+    Console.WriteLine();
 
     // TODO: Call out to text analytics and try to understand the parts of speech
+    await AnalyzeTextAsync(command);
 
     // TODO: Parse the text into an intent
 
     // Speech synthesize an "Arf" if the intent matches "speak"
     await SayMessageAsync("Arf, arf!");
+}
+
+async Task AnalyzeTextAsync(string text)
+{
+    TextAnalyticsClient client = new(new ApiKeyServiceClientCredentials(configData.Key));
+    client.Endpoint = configData.Endpoint;
+
+    // Detect Language
+    LanguageResult? langResult = await client.DetectLanguageAsync(text, countryHint: "US");
+    string languageCode = "en";
+    if (langResult != null && langResult.DetectedLanguages.Any())
+    {
+        Console.WriteLine();
+        Console.WriteLine("Detected Language");
+        foreach (DetectedLanguage lang in langResult.DetectedLanguages)
+        {
+            Console.WriteLine($"{lang.Name}: {lang.Score:P}");
+        }
+
+        languageCode = langResult.DetectedLanguages.First().Iso6391Name;
+    }
+
+    // Detect Key Phrases
+    KeyPhraseResult result = await client.KeyPhrasesAsync(text, language: languageCode);
+    if (result.KeyPhrases.Any())
+    {
+        Console.WriteLine();
+        Console.WriteLine("Key Phrases:");
+        foreach (string phrase in result.KeyPhrases)
+        {
+            Console.WriteLine($"\t{phrase}");
+        }
+    }
+
+    // Detect Entities
+    EntitiesResult entities = await client.EntitiesAsync(text, language: languageCode);
+    if (entities.Entities.Any())
+    {
+        Console.WriteLine();
+        Console.WriteLine("Entities:");
+        foreach (EntityRecord entity in entities.Entities)
+        {
+            Console.WriteLine($"\t{entity.Name}");
+        }
+    }
+
+    // Detect Sentiment
+    SentimentResult sentimentResult = await client.SentimentAsync(text, language: languageCode);
+    if (sentimentResult.Score.HasValue)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"Sentiment: {sentimentResult.Score}");
+    }
 }
 
 async Task SayMessageAsync(string message)
