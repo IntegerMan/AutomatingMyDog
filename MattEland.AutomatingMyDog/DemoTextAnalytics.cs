@@ -65,9 +65,7 @@ public class DemoTextAnalytics
             Console.WriteLine($"Sentiment: {sentimentResult.Score}");
         }
 
-        Console.WriteLine();
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        InputHelper.PressAnyKey();
     }
 
 

@@ -1,4 +1,4 @@
-﻿namespace MattEland.AutomatingMyDog.Images;
+﻿namespace MattEland.AutomatingMyDog;
 
 public static class ImageSelectionHelper
 {

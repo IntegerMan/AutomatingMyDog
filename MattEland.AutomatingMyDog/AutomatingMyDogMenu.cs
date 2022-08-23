@@ -1,6 +1,4 @@
-﻿using MattEland.AutomatingMyDog.Images;
-
-namespace MattEland.AutomatingMyDog;
+﻿namespace MattEland.AutomatingMyDog;
 
 public class AutomatingMyDogMenu
 {
@@ -59,7 +57,7 @@ public class AutomatingMyDogMenu
 
                 case "Q": // Quit
                     stillGoing = false;
-                    _speechDemos.SayMessage("Goodbye, friend!");
+                    _speechDemos.SayMessageAsync("Goodbye, friend!").Wait();
                     break;
 
                 default:
@@ -78,20 +76,27 @@ public class AutomatingMyDogMenu
         if (string.IsNullOrWhiteSpace(imagePath)) return;
 
         // Have Computer Vision analyze the image            
-        List<string> detectedItems = _visionDemos.AnalyzeImageAsync(imagePath).Result;
+        List<string> detectedItems = _visionDemos.DetectItemsAsync(imagePath).Result;
 
         // Potentially bark at the thing we saw
-
-        string? barkTarget = detectedItems.FirstOrDefault(item => IsSomethingToBarkAt(item));
+        string? barkTarget = detectedItems.FirstOrDefault(IsSomethingToBarkAt);
+        string message;
         if (barkTarget != null)
         {
-            string message = $"I saw a {barkTarget}; Bark, bark, bark!";
+            // Add the word "a" in front of it if needed, but only if it doesn't start with an article already
+            barkTarget = StringHelper.AddArticleIfNotPresent(barkTarget);
 
-            _speechDemos.SayMessage(message);
+            message = $"I saw {barkTarget}; Bark, bark, bark!";
         }
+        else
+        {
+            message = $"Nothing to bark at, but here's some things I saw: {string.Join(", ", detectedItems.Take(5))}";
+        }
+
+        _speechDemos.SayMessage(message);
     }
 
-    private bool IsSomethingToBarkAt(string thing)
+    private static bool IsSomethingToBarkAt(string thing)
     {
         thing = thing.ToLowerInvariant();
 
