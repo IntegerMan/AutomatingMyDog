@@ -1,49 +1,26 @@
-﻿using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
-using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
-using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
-using Microsoft.CognitiveServices.Speech;
-using Microsoft.Rest;
-using ApiKeyServiceClientCredentials = Microsoft.Azure.CognitiveServices.Vision.ComputerVision.ApiKeyServiceClientCredentials;
+﻿using MattEland.AutomatingMyDog.Images;
 
 namespace MattEland.AutomatingMyDog;
 
 public class AutomatingMyDogMenu
 {
-    private readonly SpeechConfig _speechConfig;
-    private readonly ComputerVisionClient _computerVision;
-    private readonly Guid _luisAppId;
-    private readonly LUISRuntimeClient _luisClient;
-    private readonly TextAnalyticsClient _textClient;
-    private readonly string _luisSlotId;
+    private readonly DemoImageAnalyzer _visionDemos;
+    private readonly DemoSpeechHelper _speechDemos;
+    private readonly DemoTextAnalytics _textDemos;
+    private readonly DemoLanguageUnderstanding _luisDemos;
 
     public AutomatingMyDogMenu(AutomatingMyDogConfig configData)
     {
-        // Set up speech synthesis
-        _speechConfig = SpeechConfig.FromSubscription(configData.Key, configData.Region);
-        _speechConfig.SpeechSynthesisVoiceName = "en-US-GuyNeural";
-
-        // Set up computer vision
-        ApiKeyServiceClientCredentials visionCredentials = new(configData.Key);
-        _computerVision = new ComputerVisionClient(visionCredentials);
-        _computerVision.Endpoint = configData.Endpoint;
-
-        // Set up text analytics client
-        _textClient = new TextAnalyticsClient(new ApiKeyServiceClientCredentials(configData.Key));
-        _textClient.Endpoint = configData.Endpoint;
-
-        // Set up Language Understanding (LUIS)
-        _luisClient = new LUISRuntimeClient(new ApiKeyServiceClientCredentials(configData.Key));
-        _luisClient.Endpoint = configData.Endpoint;
-        _luisSlotId = configData.SlotId; // Determine if we're looking at the production or staging slot
-        _luisAppId = new Guid(configData.AppId);
-        
+        // Set up Helpers for demo tasks
+        _speechDemos = new DemoSpeechHelper(configData.Key, configData.Region);
+        _visionDemos = new DemoImageAnalyzer(configData.Key, configData.Endpoint);
+        _textDemos = new DemoTextAnalytics(configData.Key, configData.Endpoint);
+        _luisDemos = new DemoLanguageUnderstanding(configData.Key, configData.Endpoint, configData.AppId, configData.SlotId);
     }
 
     public void ShowMainMenu()
     {
-        SayMessageFireAndForget("Hello there!");
+        _speechDemos.SayMessage("Hello there!");
 
         Console.WriteLine("Welcome to 'Automating my Dog' by Matt Eland (@IntegerMan).");
 
@@ -68,107 +45,65 @@ public class AutomatingMyDogMenu
                     break;
 
                 case "2": // Speech Recognition / LUIS
-                    ListenToSpeech();
+                    string? spokenText = _speechDemos.ListenToSpokenText();
+
+                    RespondToTextCommand(spokenText);
                     break;
 
-                case "3": // LUIS
-                    PromptForCommand();
+                case "3": // LUIS - type in a command
+                    Console.WriteLine("What would you like to tell me?");
+                    string input = Console.ReadLine()!;
+
+                    RespondToTextCommand(input);
                     break;
 
                 case "Q": // Quit
                     stillGoing = false;
-                    SayMessageFireAndForget("Goodbye, friend!");
+                    _speechDemos.SayMessage("Goodbye, friend!");
                     break;
 
                 default:
-                    SayMessageFireAndForget("I don't understand.");
+                    _speechDemos.SayMessage("I don't understand.");
                     break;
             }
         } while (stillGoing);
     }
 
-    private void SayMessageFireAndForget(string message) => SayMessageAsync(message);
-
-    private async Task SayMessageAsync(string message)
-    {
-        Console.WriteLine();
-        Console.WriteLine($"\"{message}\"");
-        Console.WriteLine();
-
-        using SpeechSynthesizer synthesizer = new(_speechConfig);
-        using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
-    }
-
     private void LookAtPictures()
     {
-        string[] files = Directory.GetFiles("images");
+        // Let the user pick which file to analyze
+        string? imagePath = ImageSelectionHelper.SelectImage(Directory.GetFiles("images"));
 
-        // TODO: Ask the user which file they want to look at
+        // The user is allowed to not pick an image, in which case we just exit
+        if (string.IsNullOrWhiteSpace(imagePath)) return;
 
-        DemoImageAnalyzer analyzer = new();
-        foreach (string imagePath in files.Skip(3).Take(1))
+        // Have Computer Vision analyze the image            
+        List<string> detectedItems = _visionDemos.AnalyzeImageAsync(imagePath).Result;
+
+        // Potentially bark at the thing we saw
+
+        string? barkTarget = detectedItems.FirstOrDefault(item => IsSomethingToBarkAt(item));
+        if (barkTarget != null)
         {
-            // Have Azure analyze the image            
-            List<string> detectedItems = analyzer.AnalyzeImageAsync(imagePath, _computerVision).Result;
-            // Note: Normally you wouldn't use .Result and would instead await this call
+            string message = $"I saw a {barkTarget}; Bark, bark, bark!";
 
-            // Potentially bark at the thing we saw
-            bool ShouldBarkAt(string thing)
-            {
-                thing = thing.ToLowerInvariant();
-
-                return thing.Contains("squirrel") ||
-                       thing.Contains("rabbit") ||
-                       thing.Contains("rodent") ||
-                       thing.Contains("dog");
-            }
-
-            string? barkTarget = detectedItems.FirstOrDefault(ShouldBarkAt);
-            if (barkTarget != null)
-            {
-                string message = $"I saw a {barkTarget}; Bark, bark, bark!";
-
-                SayMessageFireAndForget(message);
-            }
+            _speechDemos.SayMessage(message);
         }
     }
 
-    private void ListenToSpeech()
+    private bool IsSomethingToBarkAt(string thing)
     {
-        // Listen to a speech stream and transcribe it to words
-        using (SpeechRecognizer recognizer = new(_speechConfig))
-        {
-            SpeechRecognitionResult? result = recognizer.RecognizeOnceAsync().Result;
+        thing = thing.ToLowerInvariant();
 
-            switch (result.Reason)
-            {
-                case ResultReason.Canceled:
-                    Console.WriteLine("Speech Recognition canceled.");
-                    break;
-
-                case ResultReason.NoMatch:
-                    Console.WriteLine("Speech Recognition could not understand audio.");
-                    break;
-
-                case ResultReason.RecognizedSpeech:
-                    ProcessCommand(result.Text);
-                    break;
-            }
-        }
+        return thing.Contains("squirrel") ||
+               thing.Contains("rabbit") ||
+               thing.Contains("rodent") ||
+               thing.Contains("dog");
     }
 
-    private void PromptForCommand()
+    private void RespondToTextCommand(string? command)
     {
-        // TODO: Listen to a speech stream and transcribe it to words
-        Console.WriteLine("What would you like to tell me?");
-        string input = Console.ReadLine()!;
-
-        ProcessCommand(input);
-    }
-
-    private void ProcessCommand(string command)
-    {
-        // Protect against empty inputs; don't display any errors to the user, though
+        // This can be called with empty / null if the user typed nothing or the mic couldn't get spoken text
         if (string.IsNullOrWhiteSpace(command))
         {
             return;
@@ -178,105 +113,26 @@ public class AutomatingMyDogMenu
         Console.WriteLine($"You said: \"{command}\"");
         Console.WriteLine();
 
-        // Call out to text analytics and try to understand the parts of speech
-        AnalyzeText(command);
+        // Call out to Azure Cognitive Services text analytics and try to understand the parts of speech
+        _textDemos.AnalyzeText(command);
 
-        // Parse the text into an intent
-        string intent = DetectIntent(command);
+        // Use Language Understanding Parse the text into an intent
+        string intent = _luisDemos.DetectIntent(command);
         switch (intent.ToUpperInvariant())
 
         {
             case "GOOD BOY":
-                SayMessageFireAndForget("Jester is a good doggo!");
+                _speechDemos.SayMessage("Jester is a good doggo!");
                 break;
 
             case "WALK":
-                SayMessageFireAndForget("Why yes, Jester DOES want to go on a walk!");
+                _speechDemos.SayMessage("Why yes, Jester DOES want to go on a walk!");
                 break;
 
             default:
-                SayMessageFireAndForget("I don't understand.");
+                _speechDemos.SayMessage("I don't understand.");
                 break;
         }
-    }
-
-    private void AnalyzeText(string text)
-    {
-        // Detect Language
-        LanguageResult? langResult = _textClient.DetectLanguageAsync(text, countryHint: "US").Result;
-        string languageCode = "en";
-        if (langResult != null && langResult.DetectedLanguages.Any())
-        {
-            Console.WriteLine();
-            Console.WriteLine("Detected Language");
-            foreach (DetectedLanguage lang in langResult.DetectedLanguages)
-            {
-                Console.WriteLine($"{lang.Name}: {lang.Score:P}");
-            }
-
-            languageCode = langResult.DetectedLanguages.First().Iso6391Name;
-        }
-
-        // Detect Key Phrases
-        KeyPhraseResult result = _textClient.KeyPhrasesAsync(text, language: languageCode).Result;
-        if (result.KeyPhrases.Any())
-        {
-            Console.WriteLine();
-            Console.WriteLine("Key Phrases:");
-            foreach (string phrase in result.KeyPhrases)
-            {
-                Console.WriteLine($"\t{phrase}");
-            }
-        }
-
-        // Detect Entities
-        EntitiesResult entities = _textClient.EntitiesAsync(text, language: languageCode).Result;
-        if (entities.Entities.Any())
-        {
-            Console.WriteLine();
-            Console.WriteLine("Entities:");
-            foreach (EntityRecord entity in entities.Entities)
-            {
-                Console.WriteLine($"\t{entity.Name}");
-            }
-        }
-
-        // Detect Sentiment
-        SentimentResult sentimentResult = _textClient.SentimentAsync(text, language: languageCode).Result;
-        if (sentimentResult.Score.HasValue)
-        {
-            Console.WriteLine();
-            Console.WriteLine($"Sentiment: {sentimentResult.Score}");
-        }
-    }
-
-    private string DetectIntent(string message)
-    {
-        PredictionRequest request = new() { Query = message };
-        HttpOperationResponse<PredictionResponse> predictResult =
-            _luisClient.Prediction.GetSlotPredictionWithHttpMessagesAsync(_luisAppId, _luisSlotId, request).Result;
-
-        Prediction prediction = predictResult.Body.Prediction;
-
-        Console.WriteLine();
-        Console.WriteLine("Intents: ");
-        foreach (KeyValuePair<string, Intent> intent in prediction.Intents)
-        {
-            Console.WriteLine(intent.Key + ": " + intent.Value.Score);
-        }
-
-        string topIntent = prediction.TopIntent;
-
-        // Ensure we only react to intents over a specific threshold
-        if (prediction.Intents.Max(i => i.Value.Score) < 0.6)
-        {
-            topIntent = "Unknown";
-        }
-
-        Console.WriteLine();
-        Console.WriteLine("Top intent was: " + topIntent);
-
-        return topIntent;
     }
 
 }
