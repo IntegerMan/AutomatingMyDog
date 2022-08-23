@@ -64,11 +64,11 @@ public class AutomatingMyDogMenu
             switch (option.ToUpperInvariant())
             {
                 case "1": // Computer Vision / Speech Synthesis
-                    LookAtPicturesAsync().RunSynchronously();
+                    LookAtPictures();
                     break;
 
                 case "2": // Speech Recognition / LUIS
-                    ListenToSpeechAsync();
+                    ListenToSpeechAsync().RunSynchronously();
                     break;
 
                 case "3": // LUIS
@@ -99,15 +99,18 @@ public class AutomatingMyDogMenu
         using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
     }
 
-    private async Task LookAtPicturesAsync()
+    private void LookAtPictures()
     {
-
         string[] files = Directory.GetFiles("images");
+
+        // TODO: Ask the user which file they want to look at
 
         DemoImageAnalyzer analyzer = new();
         foreach (string imagePath in files.Skip(3).Take(1))
         {
-            List<string> detectedItems = await analyzer.AnalyzeImageAsync(imagePath, _computerVision);
+            // Have Azure analyze the image            
+            List<string> detectedItems = analyzer.AnalyzeImageAsync(imagePath, _computerVision).Result;
+            // Note: Normally you wouldn't use .Result and would instead await this call
 
             // Potentially bark at the thing we saw
             bool ShouldBarkAt(string thing)
