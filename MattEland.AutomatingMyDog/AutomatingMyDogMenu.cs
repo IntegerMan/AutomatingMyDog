@@ -68,11 +68,11 @@ public class AutomatingMyDogMenu
                     break;
 
                 case "2": // Speech Recognition / LUIS
-                    ListenToSpeechAsync().RunSynchronously();
+                    ListenToSpeech();
                     break;
 
                 case "3": // LUIS
-                    PromptForCommandAsync().RunSynchronously();
+                    PromptForCommand();
                     break;
 
                 case "Q": // Quit
@@ -133,12 +133,12 @@ public class AutomatingMyDogMenu
         }
     }
 
-    private async Task ListenToSpeechAsync()
+    private void ListenToSpeech()
     {
         // Listen to a speech stream and transcribe it to words
         using (SpeechRecognizer recognizer = new(_speechConfig))
         {
-            SpeechRecognitionResult? result = await recognizer.RecognizeOnceAsync();
+            SpeechRecognitionResult? result = recognizer.RecognizeOnceAsync().Result;
 
             switch (result.Reason)
             {
@@ -151,22 +151,22 @@ public class AutomatingMyDogMenu
                     break;
 
                 case ResultReason.RecognizedSpeech:
-                    await ProcessCommandAsync(result.Text);
+                    ProcessCommand(result.Text);
                     break;
             }
         }
     }
 
-    private async Task PromptForCommandAsync()
+    private void PromptForCommand()
     {
         // TODO: Listen to a speech stream and transcribe it to words
         Console.WriteLine("What would you like to tell me?");
         string input = Console.ReadLine()!;
 
-        await ProcessCommandAsync(input);
+        ProcessCommand(input);
     }
 
-    private async Task ProcessCommandAsync(string command)
+    private void ProcessCommand(string command)
     {
         // Protect against empty inputs; don't display any errors to the user, though
         if (string.IsNullOrWhiteSpace(command))
@@ -179,10 +179,10 @@ public class AutomatingMyDogMenu
         Console.WriteLine();
 
         // Call out to text analytics and try to understand the parts of speech
-        await AnalyzeTextAsync(command);
+        AnalyzeText(command);
 
         // Parse the text into an intent
-        string intent = await DetectIntentAsync(command);
+        string intent = DetectIntent(command);
         switch (intent.ToUpperInvariant())
 
         {
@@ -200,10 +200,10 @@ public class AutomatingMyDogMenu
         }
     }
 
-    private async Task AnalyzeTextAsync(string text)
+    private void AnalyzeText(string text)
     {
         // Detect Language
-        LanguageResult? langResult = await _textClient.DetectLanguageAsync(text, countryHint: "US");
+        LanguageResult? langResult = _textClient.DetectLanguageAsync(text, countryHint: "US").Result;
         string languageCode = "en";
         if (langResult != null && langResult.DetectedLanguages.Any())
         {
@@ -218,7 +218,7 @@ public class AutomatingMyDogMenu
         }
 
         // Detect Key Phrases
-        KeyPhraseResult result = await _textClient.KeyPhrasesAsync(text, language: languageCode);
+        KeyPhraseResult result = _textClient.KeyPhrasesAsync(text, language: languageCode).Result;
         if (result.KeyPhrases.Any())
         {
             Console.WriteLine();
@@ -230,7 +230,7 @@ public class AutomatingMyDogMenu
         }
 
         // Detect Entities
-        EntitiesResult entities = await _textClient.EntitiesAsync(text, language: languageCode);
+        EntitiesResult entities = _textClient.EntitiesAsync(text, language: languageCode).Result;
         if (entities.Entities.Any())
         {
             Console.WriteLine();
@@ -242,7 +242,7 @@ public class AutomatingMyDogMenu
         }
 
         // Detect Sentiment
-        SentimentResult sentimentResult = await _textClient.SentimentAsync(text, language: languageCode);
+        SentimentResult sentimentResult = _textClient.SentimentAsync(text, language: languageCode).Result;
         if (sentimentResult.Score.HasValue)
         {
             Console.WriteLine();
@@ -250,17 +250,17 @@ public class AutomatingMyDogMenu
         }
     }
 
-    private async Task<string> DetectIntentAsync(string message)
+    private string DetectIntent(string message)
     {
         PredictionRequest request = new() { Query = message };
         HttpOperationResponse<PredictionResponse> predictResult =
-            await _luisClient.Prediction.GetSlotPredictionWithHttpMessagesAsync(_luisAppId, _luisSlotId, request);
+            _luisClient.Prediction.GetSlotPredictionWithHttpMessagesAsync(_luisAppId, _luisSlotId, request).Result;
 
         Prediction prediction = predictResult.Body.Prediction;
 
         Console.WriteLine();
         Console.WriteLine("Intents: ");
-        foreach (var intent in prediction.Intents)
+        foreach (KeyValuePair<string, Intent> intent in prediction.Intents)
         {
             Console.WriteLine(intent.Key + ": " + intent.Value.Score);
         }
