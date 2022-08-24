@@ -33,6 +33,7 @@ public class AutomatingMyDogMenu
             Console.WriteLine("3) React to typed commands (and probably ignore them)");
             Console.WriteLine("Q) Quit");
             Console.WriteLine();
+            
             string option = Console.ReadLine()!;
             Console.WriteLine();
 
