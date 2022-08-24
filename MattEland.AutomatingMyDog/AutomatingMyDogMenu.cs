@@ -91,7 +91,8 @@ public class AutomatingMyDogMenu
         }
         else
         {
-            message = $"Nothing to bark at, but here's some things I saw: {string.Join(", ", detectedItems.Take(5))}";
+            IEnumerable<string> itemsToMention = detectedItems.Distinct().Take(5);
+            message = $"Nothing to bark at, but here's some things I saw: {string.Join(", ", itemsToMention)}";
         }
 
         _speechDemos.SayMessage(message);

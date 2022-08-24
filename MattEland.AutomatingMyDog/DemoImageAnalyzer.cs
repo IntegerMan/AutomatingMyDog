@@ -98,6 +98,7 @@ public class DemoImageAnalyzer
                 string bounding = $"({rect.X},{rect.Y}):({rect.X + rect.W},{rect.Y + rect.H})";
                 Console.WriteLine($"{obj.ObjectProperty} (Confidence: {obj.Confidence:p}) at {bounding}");
                 
+                /* If we want parents and their parents, this would work:
                 ObjectHierarchy? parent = obj.Parent;
                 while (parent != null)
                 {
@@ -106,6 +107,7 @@ public class DemoImageAnalyzer
                     items.Add(parent.ObjectProperty);
                     parent = parent.Parent;
                 }
+                */
             }
         }
 
