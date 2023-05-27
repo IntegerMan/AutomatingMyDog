@@ -20,7 +20,7 @@ namespace MattEland.AutomatingMyDog.Desktop
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : RadWindow
+    public partial class MainWindow : RadTabbedWindow
     {
         public MainWindow()
         {
