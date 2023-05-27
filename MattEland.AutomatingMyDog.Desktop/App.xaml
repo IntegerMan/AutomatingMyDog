@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:convert="clr-namespace:MattEland.AutomatingMyDog.Desktop.Converters"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation">
     <Application.Resources>
         <ResourceDictionary>

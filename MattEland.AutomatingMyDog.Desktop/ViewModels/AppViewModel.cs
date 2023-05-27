@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.FieldList;
 
 namespace MattEland.AutomatingMyDog.Desktop.ViewModels;
 
@@ -34,6 +35,18 @@ public class AppViewModel : ViewModelBase
     {
         OnPropertyChanged(nameof(IsBusy));
         OnPropertyChanged(nameof(FooterText));
+    }
+
+    internal void SaveSettings(string endpoint, string key)
+    {
+        // Change our global settings
+        Endpoint = endpoint;
+        Key = key;
+
+        // Update the settings file
+        Settings.Default.CogServicesEndpoint = endpoint;
+        Settings.Default.CogServicesKey = key;
+        Settings.Default.Save();
     }
 
     private string _busyText = string.Empty;
@@ -77,10 +90,6 @@ public class AppViewModel : ViewModelBase
             _endpoint = value;
             OnPropertyChanged(nameof(Endpoint));
             OnPropertyChanged(nameof(IsConfigured));
-
-            // Save the setting
-            Settings.Default.CogServicesEndpoint = value;
-            Settings.Default.Save();
         }
     }
 
@@ -92,10 +101,6 @@ public class AppViewModel : ViewModelBase
             _key = value;
             OnPropertyChanged(nameof(Key));
             OnPropertyChanged(nameof(IsConfigured));
-
-            // Save the setting
-            Settings.Default.CogServicesKey = value;
-            Settings.Default.Save();
         }
     }
 
