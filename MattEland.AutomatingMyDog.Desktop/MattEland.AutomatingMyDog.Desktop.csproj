@@ -5,10 +5,29 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+	<ApplicationIcon>favicon.ico</ApplicationIcon>
+	<PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Telerik.UI.for.Wpf.70.Xaml" Version="2023.1.315" />
+	</ItemGroup>
+	
+	<ItemGroup>
+    <None Remove="favicon.ico" />
+    <None Remove="Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Logo.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MattEland.AutomatingMyDog.Core\MattEland.AutomatingMyDog.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="favicon.ico" />
   </ItemGroup>
 
 </Project>
