@@ -1,4 +1,6 @@
-﻿namespace MattEland.AutomatingMyDog;
+﻿using MattEland.AutomatingMyDog.Core;
+
+namespace MattEland.AutomatingMyDog;
 
 public class AutomatingMyDogMenu
 {

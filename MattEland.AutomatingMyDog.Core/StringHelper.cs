@@ -1,4 +1,4 @@
-﻿namespace MattEland.AutomatingMyDog;
+﻿namespace MattEland.AutomatingMyDog.Core;
 
 public static class StringHelper
 {

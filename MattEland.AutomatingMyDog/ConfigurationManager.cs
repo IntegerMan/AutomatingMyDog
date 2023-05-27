@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MattEland.AutomatingMyDog.Core;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MattEland.AutomatingMyDog;
