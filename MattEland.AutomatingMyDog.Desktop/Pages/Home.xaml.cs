@@ -16,23 +16,13 @@ using System.Windows.Shapes;
 namespace MattEland.AutomatingMyDog.Desktop.Pages
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class Settings : UserControl
+    public partial class Home : UserControl
     {
-        public Settings()
+        public Home()
         {
             InitializeComponent();
-        }
-
-        private void SaveSettingsClick(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CancelSettingsClick(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

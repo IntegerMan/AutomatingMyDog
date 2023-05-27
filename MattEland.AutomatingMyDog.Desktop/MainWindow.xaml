@@ -29,7 +29,10 @@
             <telerik:RadToolBar DockPanel.Dock="Bottom" IsManipulationEnabled="False" AutoHideOverflowButton="True">
                 <TextBlock VerticalAlignment="Center" FontSize="11" Text="{Binding Path=FooterText}" />
             </telerik:RadToolBar>
-            <Grid>
+            <Grid VerticalAlignment="Top" Margin="24" HorizontalAlignment="Center">
+                <!-- <pages:Home /> -->
+                <!-- <pages:Vision /> -->
+                <!-- <pages:Chat /> -->
                 <pages:Settings />
             </Grid>
         </DockPanel>

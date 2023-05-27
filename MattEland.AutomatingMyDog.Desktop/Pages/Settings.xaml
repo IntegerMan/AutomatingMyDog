@@ -7,20 +7,31 @@
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
+    <Border Background="Black" BorderBrush="Cyan" BorderThickness="1" Padding="12">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+            <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
             Settings
-        </TextBlock>
-        <TextBlock Style="{DynamicResource PageBodyTextStyle}">
-            Please configure the endpoint and key you'd like to use for your Azure Cognitive Services resource.
-        </TextBlock>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+            Please configure the endpoint and key you'd like to use for your <Span FontWeight="Bold">Azure Cognitive Services</Span> resource.
+            </TextBlock>
 
-        <telerik:Label Content="Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
-        <TextBox x:Name="txtEndpoint"  Text="{Binding Path=Endpoint}"
-                    telerik:RadToolTipService.ToolTipContent="The endpoint of your Azure Cognitive Services resource. This can be found on the Keys and Endpoints blade of the resource in Azure." />
+            <telerik:Label Content="Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:RadWatermarkTextBox x:Name="txtEndpoint"  Text="{Binding Path=Endpoint, Mode=OneWay}"
+                                     WatermarkContent="Azure Cognitive Services Endpoint"
+                                     telerik:RadToolTipService.ToolTipContent="The endpoint of your Azure Cognitive Services resource. This can be found on the Keys and Endpoints blade of the resource in Azure." />
 
-        <telerik:Label Content="Key" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
-        <TextBox x:Name="txtKey" Text="{Binding Path=Endpoint}"
-                    telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure Cognitive Services resource. This can be found on the Keys and Endpoints blade of the resource in Azure." />
-    </StackPanel>
+            <telerik:Label Content="Key" Target="{Binding ElementName=txtKey}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:RadPasswordBox x:Name="txtKey"
+                                WatermarkContent="Azure Cognitive Services Key"
+                                telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure Cognitive Services resource. This can be found on the Keys and Endpoints blade of the resource in Azure." />
+
+            <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+                <telerik:RadButton Content="Save" Click="SaveSettingsClick"  Margin="0,0,8,0" IsDefault="True" MinWidth="100"
+                           telerik:RadToolTipService.ToolTipContent="Saves these settings"  />
+                <telerik:RadButton Content="Cancel" Click="CancelSettingsClick" Margin="0,0,8,0" IsCancel="True" MinWidth="100"
+                           telerik:RadToolTipService.ToolTipContent="Cancels the settings changes"  />
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </UserControl>

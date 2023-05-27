@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MattEland.AutomatingMyDog.Desktop.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,10 @@ public class AppViewModel : ViewModelBase
     public AppViewModel()
     {
         UIThread = Dispatcher.CurrentDispatcher;
+
+        // Load Settings
+        _endpoint = Settings.Default.CogServicesEndpoint;
+        _key = Settings.Default.CogServicesKey;
     }
 
     public string AppName => "DogOS";
@@ -30,7 +35,6 @@ public class AppViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsBusy));
         OnPropertyChanged(nameof(FooterText));
     }
-
 
     private string _busyText = string.Empty;
     private double _busyProgress;
@@ -73,6 +77,10 @@ public class AppViewModel : ViewModelBase
             _endpoint = value;
             OnPropertyChanged(nameof(Endpoint));
             OnPropertyChanged(nameof(IsConfigured));
+
+            // Save the setting
+            Settings.Default.CogServicesEndpoint = value;
+            Settings.Default.Save();
         }
     }
 
@@ -84,6 +92,10 @@ public class AppViewModel : ViewModelBase
             _key = value;
             OnPropertyChanged(nameof(Key));
             OnPropertyChanged(nameof(IsConfigured));
+
+            // Save the setting
+            Settings.Default.CogServicesKey = value;
+            Settings.Default.Save();
         }
     }
 
