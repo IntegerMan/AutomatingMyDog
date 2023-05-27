@@ -1,5 +1,4 @@
-﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,19 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Telerik.Windows.Controls;
 
-namespace MattEland.AutomatingMyDog.Desktop
+namespace MattEland.AutomatingMyDog.Desktop.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Vision.xaml
     /// </summary>
-    public partial class MainWindow : RadWindow
+    public partial class Vision : UserControl
     {
-        public MainWindow()
+        public Vision()
         {
-            this.DataContext = new AppViewModel();
-
             InitializeComponent();
         }
     }

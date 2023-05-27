@@ -3,21 +3,35 @@
                          xmlns:navigation="clr-namespace:Telerik.Windows.Controls.Navigation;assembly=Telerik.Windows.Controls.Navigation"
                          navigation:RadWindowInteropHelper.Icon="favicon.ico"
                          navigation:RadWindowInteropHelper.ShowInTaskbar="True"
-                         Header="DogOS by Matt Eland"
+                         Header="{Binding Path=Title}"
                          WindowStartupLocation="CenterScreen"
                          Width="1280"
                          Height="720"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                          xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                         >
+                         xmlns:pages="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages"
+                         xmlns:vm="clr-namespace:MattEland.AutomatingMyDog.Desktop.ViewModels">
+    <telerik:RadWindow.Background>
+        <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+    </telerik:RadWindow.Background>
     <telerik:RadWindow.IconTemplate>
         <DataTemplate>
             <Image Source="favicon.ico" Stretch="None" />
         </DataTemplate>
     </telerik:RadWindow.IconTemplate>
+    <telerik:RadBusyIndicator IsBusy="{Binding Path=IsBusy}" 
+                              BusyContent="{Binding Path=BusyText}" 
+                              ProgressValue="{Binding Path=BusyProgress}"
+                              IsIndeterminate="{Binding Path=IsBusyIndeterminent}">
 
-    <Grid>
-
-    </Grid>
+        <DockPanel>
+            <telerik:RadToolBar DockPanel.Dock="Bottom" IsManipulationEnabled="False" AutoHideOverflowButton="True">
+                <TextBlock VerticalAlignment="Center" FontSize="11" Text="{Binding Path=FooterText}" />
+            </telerik:RadToolBar>
+            <Grid>
+                <pages:Settings />
+            </Grid>
+        </DockPanel>
+    </telerik:RadBusyIndicator>
 </telerik:RadWindow>

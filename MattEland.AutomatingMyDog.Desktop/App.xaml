@@ -28,6 +28,11 @@
                 <Setter Property="Margin" Value="0 6" />
             </Style>
 
+            <Style TargetType="telerik:Label" x:Key="FieldLabelStyle">
+                <Setter Property="Margin" Value="0 12 0 6" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+
             <Style x:Key="ControlReference" TargetType="TextElement">
                 <Setter Property="FontWeight" Value="Bold" />
             </Style>
