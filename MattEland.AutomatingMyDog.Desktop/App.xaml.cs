@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Text;
+using System.Windows;
 using Telerik.Windows.Controls;
 
 namespace MattEland.AutomatingMyDog.Desktop;
@@ -19,11 +20,18 @@ public partial class App : Application
 
     private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
+        StringBuilder sb = new();
+        sb.AppendLine(e.Exception.Message);
+
+#if DEBUG
+        sb.AppendLine(e.Exception.StackTrace);
+#endif
+
         // Display a message box with the error details and mark the error as handled
         RadWindow.Alert(new DialogParameters()
         {
             Header = "Unhandled Error",
-            Content = e.Exception.Message,
+            Content = sb.ToString(),
         });
         e.Handled = true;
 

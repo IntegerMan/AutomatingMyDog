@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.ConversationalUI;
 
@@ -34,4 +35,6 @@ public class ChatMessageViewModel : ViewModelBase
 
     public bool IsFromUser => Author.Name == "User";
     public DateTime CreationDate { get; }
+    public ImageSource? ImageSource { get; init; }
+    public string? ImagePath { get; init; }
 }

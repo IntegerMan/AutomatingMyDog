@@ -2,6 +2,7 @@
 using MattEland.AutomatingMyDog.Desktop.ViewModels;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -46,15 +47,21 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             BitmapSource snapshot = e.Snapshot;
 
             // Save the file to disk
-            using (Stream fileStream = File.OpenWrite(Path.Combine(Environment.CurrentDirectory, "Snapshot.png")))
+            string imageFilePath = Path.Combine(Environment.CurrentDirectory, "Snapshot.png");
+            using (Stream fileStream = File.OpenWrite(imageFilePath))
             {
                 BitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(e.Snapshot));
                 encoder.Save(fileStream);
             }
 
+            // Record the message
             AppViewModel vm = (AppViewModel)DataContext;
-            vm.RegisterMessage(new AppMessage("Snapshot taken", MessageSource.DogOS));
+            vm.RegisterMessage(new ChatMessageViewModel("Image Uploaded", Chat.GetAuthor(MessageSource.User))
+            {
+                ImageSource = snapshot,
+                ImagePath = imageFilePath
+            });
         }
     }
 }

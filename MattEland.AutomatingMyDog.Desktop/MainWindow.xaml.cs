@@ -31,8 +31,6 @@ namespace MattEland.AutomatingMyDog.Desktop
             InitializeComponent();
         }
 
-        public object SpeakText { get; private set; }
-
         private void RadTabbedWindow_Loaded(object sender, RoutedEventArgs e)
         {
             AppViewModel vm = (AppViewModel)DataContext;

@@ -1,4 +1,5 @@
 ﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Telerik.Windows.Controls;
@@ -25,7 +26,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
             if (vm.IsConfigured)
             {
-                vm.RegisterMessage(new ChatMessageViewModel("Your settings have been saved.", Chat.DogOSAuthor));
+                vm.RegisterMessageAsync(new ChatMessageViewModel("Your settings have been saved.", Chat.DogOSAuthor)).RunSynchronously();
             }
             else
             {

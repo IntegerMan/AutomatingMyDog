@@ -25,13 +25,11 @@ Images:
 - [x] Add a Telerik Webcam to the desktop app
 - [x] Add a "take a picture" button to the desktop app
 - [x] Save snapshot to snapshot.png
-- [ ] Add an "upload picture" button to the chat region
-- [ ] Drop image onto chat from desktop to send the image
+- [x] Include source image in image chat
 - [ ] Send image on to computer vision
-- [ ] Include source image in image chat
-- [ ] Smart thumbnail results in image chat
-- [ ] Object bounding boxes in image chat
 - [ ] Include image tags, etc. in chat results
+- [ ] Object bounding boxes in image chat
+- [ ] Smart thumbnail results in image chat
 
 ## Future Enhancements
 For KCDC these enhancements would help "sell" it more:
@@ -55,6 +53,13 @@ For KCDC these enhancements would help "sell" it more:
 ### Hardware
 - [ ] Mount a webcam on the stuffed dog
 - [ ] Mount a speaker on the stuffed dog as a backup for HDMI audio-out issues
+- [ ] Bring a stuffed animal to show DogOS
+
+### Vision
+- [ ] Add an "upload picture" button to the chat region
+- [ ] Drop image onto chat from desktop to send the image
+- [ ] Include sample images in the app
+- [ ] Respond with voice depending on what was detected in the image
 
 ### Speech
 - [ ] Allow changing the voice of the dog to a set of presets

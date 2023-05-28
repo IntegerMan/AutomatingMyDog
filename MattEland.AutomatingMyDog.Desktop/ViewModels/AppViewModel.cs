@@ -3,6 +3,7 @@ using MattEland.AutomatingMyDog.Desktop.Commands;
 using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using Telerik.Windows.Controls;
 
@@ -22,6 +23,7 @@ public class AppViewModel : ViewModelBase
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
         _text = new TextViewModel(this);
+        _vision = new VisionViewModel(this);
 
         // Set commands
         _sendMessageCommand = new SendChatMessageCommand(this);
@@ -33,6 +35,7 @@ public class AppViewModel : ViewModelBase
 
     public SpeechViewModel Speech => _speech;
     public TextViewModel Text => _text;
+    public VisionViewModel ComputerVision => _vision;
 
     public ObservableCollection<ChatMessageViewModel> Messages => _messages;
 
@@ -60,16 +63,29 @@ public class AppViewModel : ViewModelBase
     }
 
     internal void RegisterMessage(AppMessage message) => RegisterMessage(new ChatMessageViewModel(message));
+    internal async Task RegisterMessageAsync(AppMessage message) => await RegisterMessageAsync(new ChatMessageViewModel(message));
 
     internal void RegisterMessage(ChatMessageViewModel message)
+    {
+        _ = RegisterMessageAsync(message);
+    }
+
+    internal async Task RegisterMessageAsync(ChatMessageViewModel message)
     {
         _messages.Add(message);
 
         // If the message is from the user, send it on to Azure
         if (message.Author == Chat.UserAuthor)
         {
-            // Send it on to Azure
-            Text.RespondTo(message.Message);
+            // Send it on to Azure based on if it's an image or text message
+            if (message.ImagePath != null)
+            {
+                await ComputerVision.RespondToAsync(message.ImagePath);
+            }
+            else
+            {
+                await Text.RespondToAsync(message.Message);
+            }
         } 
         else if (message.Author == Chat.DogOSAuthor)
         {
@@ -89,7 +105,7 @@ public class AppViewModel : ViewModelBase
 
     internal void HandleError(Exception ex, string header, bool showErrorBox = true)
     {
-        RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+        RegisterMessageAsync(new AppMessage(ex.Message, MessageSource.Error)).RunSynchronously();
         
         if (showErrorBox)
         {
@@ -103,6 +119,7 @@ public class AppViewModel : ViewModelBase
     private string _chatText = "";
     private readonly SpeechViewModel _speech;
     private readonly TextViewModel _text;
+    private readonly VisionViewModel _vision;
     private readonly SendChatMessageCommand _sendMessageCommand;
     private readonly ListenToSpeechCommand _listenCommand;
     private readonly ObservableCollection<ChatMessageViewModel> _messages = new();

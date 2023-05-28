@@ -2,6 +2,7 @@
 using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Telerik.Windows.Controls;
 
 namespace MattEland.AutomatingMyDog.Desktop.ViewModels
@@ -33,26 +34,26 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             Update(appViewModel);
         }
 
-        public void RespondTo(string message)
+        public async Task RespondToAsync(string message)
         {
             // Abort if the app is not configured
             if (_text == null || _luis == null)
             {
-                AppMessage notConfigMessage = new AppMessage("The application settings have not been configured. Please configure those first and try again.", MessageSource.DogOS);
-                appViewModel.RegisterMessage(notConfigMessage);
+                AppMessage notConfigMessage = new("The application settings have not been configured. Please configure those first and try again.", MessageSource.DogOS);
+                await appViewModel.RegisterMessageAsync(notConfigMessage);
             }
             else
             {
                 // Start with text analysis
                 foreach (AppMessage response in _text.AnalyzeText(message))
                 {
-                    appViewModel.RegisterMessage(response);
+                    await appViewModel.RegisterMessageAsync(response);
                 }
 
                 // Move on to LUIS
                 foreach (AppMessage response in _luis.AnalyzeText(message))
                 {
-                    appViewModel.RegisterMessage(response);
+                    await appViewModel.RegisterMessageAsync(response);
                 }
             }
 

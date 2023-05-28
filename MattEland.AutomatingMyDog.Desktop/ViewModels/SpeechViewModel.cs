@@ -7,12 +7,12 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 {
     public class SpeechViewModel : ViewModelBase
     {
-        private AppViewModel appViewModel;
+        private AppViewModel _vm;
         private SpeechHelper? _speech;
 
         public SpeechViewModel(AppViewModel appViewModel)
         {
-            this.appViewModel = appViewModel;
+            _vm = appViewModel;
 
             UpdateTextToSpeech(appViewModel);
         }
@@ -45,7 +45,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
             catch (SpeechException ex)
             {
-                appViewModel.HandleError(ex, "Could not detect audio");
+                _vm.HandleError(ex, "Could not detect audio");
 
                 return string.Empty;
             }
