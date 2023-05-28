@@ -29,9 +29,13 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             UpdateTextToSpeech(appViewModel);
         }
 
-        public void Say(string message)
+        public void Say(string message, string? speechText=null)
         {
-            _speech?.SayMessage(message);
+            // If the user provided speech text to customize the pronunciation, use that. Otherwise, use the message.
+            _speech?.SayMessage(speechText ?? message);
+
+            // Always just display the message
+            appViewModel.RegisterMessage(new ChatMessageViewModel(message, false));
         }
     }
 }

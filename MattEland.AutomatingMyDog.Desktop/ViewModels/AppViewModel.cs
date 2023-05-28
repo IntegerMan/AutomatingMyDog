@@ -1,15 +1,9 @@
-﻿using MattEland.AutomatingMyDog.Core;
+﻿using MattEland.AutomatingMyDog.Desktop.Commands;
 using MattEland.AutomatingMyDog.Desktop.Properties;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
+using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Controls.FieldList;
 
 namespace MattEland.AutomatingMyDog.Desktop.ViewModels;
 
@@ -26,9 +20,16 @@ public class AppViewModel : ViewModelBase
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
+
+        // Set commands
+        _sendMessageCommand = new SendChatMessageCommand(this);
     }
 
+    public SendChatMessageCommand SendMessageCommand => _sendMessageCommand;
+
     public SpeechViewModel Speech => _speech;
+
+    public ObservableCollection<ChatMessageViewModel> Messages => _messages;
 
     public string AppName => "DogOS";
     public string Author => "Matt Eland";
@@ -61,13 +62,32 @@ public class AppViewModel : ViewModelBase
         _speech.UpdateAzureSettings(this);
     }
 
+    internal void RegisterMessage(ChatMessageViewModel message)
+    {
+        _messages.Add(message);
+
+        // TODO: if the message is from the user, send it to Azure
+    }
+
     private string _busyText = string.Empty;
     private double _busyProgress;
     private string _endpoint;
     private string _key;
     private string _region;
-
+    private string _chatText = "";
     private readonly SpeechViewModel _speech;
+    private readonly SendChatMessageCommand _sendMessageCommand;
+    private readonly ObservableCollection<ChatMessageViewModel> _messages = new();
+
+    public string ChatText
+    {
+        get => _chatText;
+        set
+        {
+            _chatText = value;
+            OnPropertyChanged(nameof(ChatText));
+        }
+    }
 
     public string BusyText
     {
@@ -131,7 +151,6 @@ public class AppViewModel : ViewModelBase
     }
 
     public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Region);
-
 
     public bool IsBusy => !string.IsNullOrEmpty(_busyText);
     public Dispatcher UIThread { get; }

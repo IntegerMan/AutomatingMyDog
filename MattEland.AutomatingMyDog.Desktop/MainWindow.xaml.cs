@@ -32,7 +32,7 @@ namespace MattEland.AutomatingMyDog.Desktop
         private void RadTabbedWindow_Loaded(object sender, RoutedEventArgs e)
         {
             AppViewModel vm = (AppViewModel)DataContext;
-            vm.Speech.Say("Welcome to Doggos");
+            vm.Speech.Say("Welcome to DogOS", "Welcome to doggos");
         }
     }
 }
