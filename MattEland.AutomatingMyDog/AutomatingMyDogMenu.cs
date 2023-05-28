@@ -73,7 +73,7 @@ public class AutomatingMyDogMenu
     private void LookAtPictures()
     {
         // Let the user pick which file to analyze
-        string? imagePath = ImageSelectionHelper.SelectImage(Directory.GetFiles("images"));
+        string? imagePath = @"C:\Dev\repos\AutomatingMyDog\MattEland.AutomatingMyDog.Desktop\bin\Debug\net7.0-windows\snapshot.png";// ImageSelectionHelper.SelectImage(Directory.GetFiles("images"));
 
         // The user is allowed to not pick an image, in which case we just exit
         if (string.IsNullOrWhiteSpace(imagePath)) return;

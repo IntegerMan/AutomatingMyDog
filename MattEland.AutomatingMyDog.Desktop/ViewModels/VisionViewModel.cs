@@ -1,11 +1,8 @@
 ﻿using MattEland.AutomatingMyDog.Core;
 using MattEland.AutomatingMyDog.Desktop.Pages;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
@@ -20,9 +17,6 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         public VisionViewModel(AppViewModel appViewModel)
         {
             _vm = appViewModel;
-
-            worker.DoWork += worker_DoWork;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
 
             Update(appViewModel);
         }
@@ -40,23 +34,6 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             Update(appViewModel);
         }
 
-        private readonly BackgroundWorker worker = new();
-
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            string filePath = (string)e.Argument;
-            e.Result = _vision?.AnalyzeImageAsync(filePath).Result;
-        }
-
-        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            List<AppMessage> results = ((IEnumerable<AppMessage>)e.Result).ToList();
-            foreach (AppMessage message in results)
-            {
-                _vm.RegisterMessage(message);
-            }
-        }
-
         public async Task RespondToAsync(string imagePath)
         {
             // Abort if the app is not configured
@@ -67,7 +44,16 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
             else
             {
-                worker.RunWorkerAsync(imagePath);
+                IEnumerable<AppMessage> results;
+
+                // Open the file in a stream for analysis
+                results = await _vision.AnalyzeImageAsync(imagePath);
+
+                // Respond to results
+                foreach (AppMessage message in results)
+                {
+                    await _vm.RegisterMessageAsync(message);
+                }
             }
 
         }

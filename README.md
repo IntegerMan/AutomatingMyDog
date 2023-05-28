@@ -26,8 +26,8 @@ Images:
 - [x] Add a "take a picture" button to the desktop app
 - [x] Save snapshot to snapshot.png
 - [x] Include source image in image chat
-- [ ] Send image on to computer vision
-- [ ] Include image tags, etc. in chat results
+- [x] Send image on to computer vision
+- [/] Include image tags, etc. in chat results
 - [ ] Object bounding boxes in image chat
 - [ ] Smart thumbnail results in image chat
 

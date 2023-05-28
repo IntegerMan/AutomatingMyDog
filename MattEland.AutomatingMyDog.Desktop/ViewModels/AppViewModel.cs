@@ -103,15 +103,17 @@ public class AppViewModel : ViewModelBase
         });
     }
 
-    internal void HandleError(Exception ex, string header, bool showErrorBox = true)
+    internal void HandleError(string message, string header, bool showErrorBox = true)
     {
-        RegisterMessageAsync(new AppMessage(ex.Message, MessageSource.Error)).RunSynchronously();
-        
+        RegisterMessage(new AppMessage(message, MessageSource.Error));
+
         if (showErrorBox)
         {
-            ShowMessage(ex.Message, header);
+            ShowMessage(message, header);
         }
     }
+
+    internal void HandleError(Exception ex, string header, bool showErrorBox = true) => HandleError(ex.Message, header, showErrorBox);
 
     private string _endpoint;
     private string _key;
