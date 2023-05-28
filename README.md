@@ -23,18 +23,20 @@ Images:
 - [ ] Add an "drop picture here" button to the desktop app
 - [ ] Object bounding boxes on image analysis view
 - [ ] Image Analysis view 
-- [ ] JSON View of Image Results
 
 Text / Chat:
 - [x] Add a "listen" button to the desktop app
 - [x] Add a text chat feature to the desktop app
 - [x] Add a log of things the app has said to you
+- [x] Send message on to Text Analytics APIs to get sentiment analysis etc.
 - [ ] Send message on to LUIS / CLU to get app responses
-- [ ] Send message on to Text Analytics APIs to get sentiment analysis etc.
-- [ ] JSON View of Text Results
 
 For KCDC these enhancements would help "sell" it more:
 - [ ] Additional styling and polish
+- [ ] Better card responses
+- [ ] Chat on the sidebar at all times
+- [ ] Better global navigation
+- [ ] Add filter buttons to filter out irrelevant messages
 - [ ] Azure OpenAI Integration
 - [ ] Allow changing the voice of the dog
 - [ ] Offline Mode
