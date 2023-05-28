@@ -14,13 +14,16 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+    <None Remove="CogServicesKeys.png" />
     <None Remove="DogOSBackground.png" />
     <None Remove="DogOSSplash.png" />
     <None Remove="favicon.ico" />
     <None Remove="Logo.png" />
+    <None Remove="TitleBlock.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="CogServicesKeys.png" />
     <EmbeddedResource Include="Logo.png" />
   </ItemGroup>
 
@@ -32,6 +35,7 @@
     <Resource Include="DogOSSplash.png" />
     <Resource Include="DogOSBackground.png" />
     <Resource Include="favicon.ico" />
+    <Resource Include="TitleBlock.png" />
   </ItemGroup>
 
   <ItemGroup>

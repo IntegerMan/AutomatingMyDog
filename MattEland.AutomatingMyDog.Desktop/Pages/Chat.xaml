@@ -3,10 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages"
+             xmlns:local="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages" 
+             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <DockPanel DockPanel.Dock="Bottom" Margin="12">
+            <telerik:RadButton Content="Send" DockPanel.Dock="Right" Margin="0 0 0 0" IsDefault="True" />
+            <telerik:RadWatermarkTextBox x:Name="txtChat" WatermarkContent="Type your message here" />
+        </DockPanel>
+        <DockPanel MaxWidth="600" DockPanel.Dock="Left" Margin="12">
+            <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" />
+
+            <Border Style="{DynamicResource PanelStyle}" >
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
+                    Chat
+                    </TextBlock>
+                    <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                    Use your voice and text to chat with DogOS. Your words will be understood by Azures Cognitive Services' speech to text API to build a string based on what you said.
+                    </TextBlock>
+                    <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                    Once your words are understood, they will be sent to Conversational Language Understanding (CLU) on Azure Cognitive Services to be matched against a list of supported intents or commands the application can process.
+                    </TextBlock>
+                    <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                    The results of this intent mapping will be displayed here for your education and amusement.
+                    </TextBlock>
+                    <Border BorderBrush="Green" BorderThickness="0 1 0 0" Margin="0 12 0 0" Padding="0 12 0 0">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                        Some things you may wish to try saying include:
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                        - "Are you a good boy?"
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                        - "Do you want to go on a walk?"
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </DockPanel>
+        <Border Style="{DynamicResource PanelStyle}" Margin="12" MaxWidth="999999999">
+            <TextBlock>Chat Results Go Here</TextBlock>
+        </Border>
+    </DockPanel>
 </UserControl>

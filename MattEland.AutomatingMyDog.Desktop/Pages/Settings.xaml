@@ -8,7 +8,7 @@
              Loaded="UserControl_Loaded"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border Background="Black" BorderBrush="Cyan" BorderThickness="1" Padding="12">
+    <Border Style="{DynamicResource PanelStyle}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Top">
             <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
             Settings
@@ -16,6 +16,8 @@
             <TextBlock Style="{DynamicResource PageBodyTextStyle}">
             Please configure the endpoint and key you'd like to use for your <Span FontWeight="Bold">Azure Cognitive Services</Span> resource.
             </TextBlock>
+
+            <Image Source="/CogServicesKeys.png" Stretch="Uniform" StretchDirection="DownOnly" Height="420" />
 
             <telerik:Label Content="Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
             <telerik:RadWatermarkTextBox x:Name="txtEndpoint"

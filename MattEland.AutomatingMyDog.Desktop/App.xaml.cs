@@ -17,8 +17,8 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        FluentPalette.LoadPreset(FluentPalette.ColorVariation.Dark);
-        StyleManager.ApplicationTheme = new FluentTheme();
+        GreenPalette.LoadPreset(GreenPalette.ColorVariation.Dark);
+        StyleManager.ApplicationTheme = new GreenTheme();
 
         new MainWindow().Show();
         base.OnStartup(e);

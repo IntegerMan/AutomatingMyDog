@@ -60,7 +60,7 @@
                     <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
                 </Grid.Background>
 
-                <pages:Chat HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <pages:Chat/>
             </Grid>
         </telerik:RadBusyIndicator>
     </telerik:RadTabItem>

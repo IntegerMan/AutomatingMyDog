@@ -6,10 +6,42 @@
              xmlns:local="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-        <TextBlock Style="{DynamicResource PageHeaderTextStyle}" Text="{Binding Path=AppName}" />
-        <TextBlock Style="{DynamicResource PageBodyTextStyle}">
-            Welcome to DogOS! This is a sample application that demonstrates how <Span FontWeight="Bold">Azure Cognitive Services</Span> can help automate the common things my dog does.
-        </TextBlock>
-    </StackPanel>
+    <Border Style="{DynamicResource PanelStyle}">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+            <TextBlock Style="{DynamicResource PageHeaderTextStyle}" Text="{Binding Path=AppName}" />
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                Welcome to <Span FontWeight="Bold">DogOS</Span> by <Span FontWeight="Bold">Matt Eland</Span>!
+            </TextBlock>
+
+            <Image Source="/TitleBlock.png" Stretch="Uniform" StretchDirection="DownOnly" Margin="0 12" />
+
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                This is a sample application that demonstrates how <Span FontWeight="Bold">Azure Cognitive Services</Span> can help automate the common things my dog does 
+                through the use of the following APIs on Azure:
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                - <Span FontWeight="Bold">Computer Vision</Span>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                - <Span FontWeight="Bold">Text to Speech</Span>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                - <Span FontWeight="Bold">Speech to Text</Span>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                - <Span FontWeight="Bold">Conversational Language Understanding (CLU)</Span>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                - <Span FontWeight="Bold">Text Analysis</Span>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                This app is not intended to be a serious application, or a working replacement for my dog or any other animal.
+            </TextBlock>
+            <Border BorderBrush="Green" BorderThickness="0 1 0 0" Margin="0 12 0 0" Padding="0 12 0 0">
+                <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                    No dogs were harmed in the making of this application.
+                </TextBlock>
+            </Border>
+        </StackPanel>
+    </Border>
 </UserControl>
