@@ -13,8 +13,10 @@ public class ChatMessageViewModel : ViewModelBase
     {
         Message = message;
         IsFromUser = isFromUser;
+        CreationDate = DateTime.Now;
     }
 
     public string Message { get; }
     public bool IsFromUser { get; }
+    public DateTime CreationDate { get; }
 }

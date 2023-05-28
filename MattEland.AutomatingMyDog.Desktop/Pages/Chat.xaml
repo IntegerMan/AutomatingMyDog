@@ -4,18 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:sys="clr-namespace:System" 
-             xmlns:local="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages" 
+             xmlns:converters="clr-namespace:MattEland.AutomatingMyDog.Desktop.Converters" 
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:telerikChat="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.ConversationalUI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <DockPanel DockPanel.Dock="Bottom" Margin="12">
-            <telerik:RadButton Content="Send" DockPanel.Dock="Right" Margin="0 0 0 0" IsDefault="True" Command="{Binding Path=SendMessageCommand}" />
-            <telerik:RadWatermarkTextBox x:Name="txtChat" WatermarkContent="Type your message here" Text="{Binding Path=ChatText, UpdateSourceTrigger=PropertyChanged}" />
-        </DockPanel>
-        <DockPanel MaxWidth="600" DockPanel.Dock="Left" Margin="12">
-            <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" />
-
+        <DockPanel MaxWidth="800" DockPanel.Dock="Left" Margin="12">
             <Border Style="{DynamicResource PanelStyle}" >
                 <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                     <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
@@ -48,13 +43,13 @@
         </DockPanel>
         <Border Style="{DynamicResource PanelStyle}" Margin="12" MaxWidth="{x:Static sys:Double.PositiveInfinity}">
             <DockPanel>
-                <ItemsControl ItemsSource="{Binding Path=Messages}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Message}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" />
+
+                <telerikChat:RadChat x:Name="chat" SendMessage="RadChat_SendMessage" TypingIndicatorText="DogOS is typing..." DataSource="{Binding Path=Messages}">
+                    <telerikChat:RadChat.MessageConverter>
+                        <converters:ChatMessageConverter />
+                    </telerikChat:RadChat.MessageConverter>
+                </telerikChat:RadChat>
             </DockPanel>
         </Border>
     </DockPanel>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Telerik.Windows.Controls.ConversationalUI;
 
 namespace MattEland.AutomatingMyDog.Desktop.Pages
 {
@@ -20,9 +22,32 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
     /// </summary>
     public partial class Chat : UserControl
     {
+
+        public static Author UserAuthor = new Author("User");
+        public static Author DogOSAuthor = new Author("DogOS");
+
         public Chat()
         {
             InitializeComponent();
+        }
+
+        private void RadChat_SendMessage(object sender, Telerik.Windows.Controls.ConversationalUI.SendMessageEventArgs e)
+        {
+            AppViewModel appVm = (AppViewModel)DataContext;
+
+            chat.CurrentAuthor = Chat.UserAuthor;
+
+            // Indicate to the user that DogOS is processing the message
+            chat.TypingIndicatorVisibility = Visibility.Visible;
+
+
+            // Send the message over
+            TextMessage message = (TextMessage)e.Message;
+            appVm.ChatText = message.Text;
+            appVm.SendMessageCommand.Execute(e.Message);
+
+            // Don't have it show up automatically in the control
+            e.Handled = true;
         }
     }
 }
