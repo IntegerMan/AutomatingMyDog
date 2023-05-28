@@ -29,20 +29,36 @@ Text / Chat:
 - [x] Add a text chat feature to the desktop app
 - [x] Add a log of things the app has said to you
 - [x] Send message on to Text Analytics APIs to get sentiment analysis etc.
-- [ ] Send message on to LUIS / CLU to get app responses
+- [x] Send message on to LUIS to get app responses
+- [ ] Speak a message as a result of the intent
 
+
+## Future Enhancements
 For KCDC these enhancements would help "sell" it more:
+
+### Global Improvements
 - [ ] Additional styling and polish
 - [ ] Better card responses
 - [ ] Chat on the sidebar at all times
 - [ ] Better global navigation
 - [ ] Add filter buttons to filter out irrelevant messages
-- [ ] Azure OpenAI Integration
-- [ ] Allow changing the voice of the dog
 - [ ] Offline Mode
-- [ ] Move from LUIS to CLU
-- [ ] Add a greater amount of intents to the CLU model
 - [ ] Link to Settings Page from Welcome Page
 - [ ] Icons on Navigation and Buttons
+- [ ] Include code examples in the app UI
+
+### Hardware
 - [ ] Mount a webcam on the stuffed dog
 - [ ] Mount a speaker on the stuffed dog
+
+### Speech
+- [ ] Allow changing the voice of the dog to a set of presets
+- [ ] Include a SSML example
+
+### Language Understanding
+- [ ] Add a greater amount of intents to the CLU model
+- [ ] Move from LUIS to CLU
+- [ ] Settings for LUIS / CLU
+- [ ] Async / Await for Tasks
+- [ ] Detect entities from LUIS / CLU
+- [ ] Azure OpenAI Integration

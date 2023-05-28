@@ -98,6 +98,9 @@ public class AppViewModel : ViewModelBase
         }
     }
 
+    public Guid LuisAppId => new Guid("490898ab-294d-45b2-8c51-d7787a613153");
+    public string LuisSlotId => "Production";
+
     public string Endpoint
     {
         get => _endpoint;

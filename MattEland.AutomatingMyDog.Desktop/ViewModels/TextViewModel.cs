@@ -10,6 +10,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
     {
         private AppViewModel appViewModel;
         private TextAnalyticsHelper? _text;
+        private LanguageUnderstandingHelper? _luis;
 
         public TextViewModel(AppViewModel appViewModel)
         {
@@ -23,6 +24,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             if (appViewModel.IsConfigured)
             {
                 _text = new TextAnalyticsHelper(appViewModel.Key, appViewModel.Endpoint);
+                _luis = new LanguageUnderstandingHelper(appViewModel.Key, appViewModel.Endpoint, appViewModel.LuisAppId, appViewModel.LuisSlotId);
             }
         }
 
@@ -34,7 +36,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         public IEnumerable<ChatMessageViewModel> RespondTo(string message)
         {
             // Abort if the app is not configured
-            if (_text == null)
+            if (_text == null || _luis == null)
             {
                 RadWindow.Alert(new DialogParameters()
                 {
@@ -46,9 +48,16 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
             else
             {
+                // Start with text analysis
                 foreach (string response in _text.AnalyzeText(message))
                 {
                     appViewModel.RegisterMessage(new ChatMessageViewModel(response, Chat.TextAnalysisAuthor));
+                }
+
+                // Move on to LUIS
+                foreach (string response in _luis.AnalyzeText(message))
+                {
+                    appViewModel.RegisterMessage(new ChatMessageViewModel(response, Chat.LuisAuthor));
                 }
             }
 

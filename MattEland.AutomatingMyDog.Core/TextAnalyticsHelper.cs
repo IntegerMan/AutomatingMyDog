@@ -27,7 +27,7 @@ public class TextAnalyticsHelper
         // Detect Language
         Response<DetectedLanguage> langResponse = _textClient.DetectLanguage(text);
         DetectedLanguage language = langResponse.Value;
-        yield return $"Detected Language {language.Name} ({langResponse.Value.Iso6391Name}) with confidence of {langResponse.Value.ConfidenceScore:P1}";
+        yield return $"Detected Language {language.Name} ({langResponse.Value.Iso6391Name}) with confidence of {langResponse.Value.ConfidenceScore:P0}";
 
         // Detect Key Phrases
         Response<KeyPhraseCollection> keyPhrasesResponse = _textClient.ExtractKeyPhrases(text);
@@ -41,7 +41,7 @@ public class TextAnalyticsHelper
         {
             foreach (CategorizedEntity entity in entities)
             {
-                yield return $"Detected entity '{entity.Text}' (Category: {entity.Category}) with {entity.ConfidenceScore:P1} confidence";
+                yield return $"Detected entity '{entity.Text}' (Category: {entity.Category}) with {entity.ConfidenceScore:P0} confidence";
             }
         }
 
@@ -66,7 +66,7 @@ public class TextAnalyticsHelper
                     category += "/" + entity.SubCategory;
                 }
 
-                yield return $"PII Encountered '{entity.Text}' (Category: {category}) with {entity.ConfidenceScore:P} confidence";
+                yield return $"PII Encountered '{entity.Text}' (Category: {category}) with {entity.ConfidenceScore:P0} confidence";
             }
             yield return $"Redacted Text: {piiEntities.RedactedText}";
         }
@@ -75,7 +75,7 @@ public class TextAnalyticsHelper
         Response<DocumentSentiment> sentimentResponse = _textClient.AnalyzeSentiment(text);
         DocumentSentiment sentiment = sentimentResponse.Value;
         SentimentConfidenceScores confidence = sentiment.ConfidenceScores;
-        yield return $"Detected Sentiment {sentiment.Sentiment} with positive / neutral / negative confidence scores of {sentiment.ConfidenceScores.Positive:P1}, {confidence.Neutral:P1}, {sentiment.ConfidenceScores.Negative:P1}";
+        yield return $"Detected Sentiment {sentiment.Sentiment} with positive / neutral / negative confidence scores of {sentiment.ConfidenceScores.Positive:P0} / {confidence.Neutral:P0} / {sentiment.ConfidenceScores.Negative:P0}";
     }
 
 }
