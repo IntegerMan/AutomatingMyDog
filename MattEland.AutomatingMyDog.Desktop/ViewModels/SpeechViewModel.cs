@@ -34,9 +34,6 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         {
             // If the user provided speech text to customize the pronunciation, use that. Otherwise, use the message.
             _speech?.SayMessage(speechText ?? message);
-
-            // Always just display the message
-            appViewModel.RegisterMessage(new ChatMessageViewModel(message, Chat.DogOSAuthor));
         }
 
         public string ListenForText()
@@ -48,12 +45,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
             catch (SpeechException ex)
             {
-                // Display the message 
-                RadWindow.Alert(new DialogParameters()
-                {
-                    Header = "Could Not Detect Audio",
-                    Content = ex.Message,
-                });
+                appViewModel.HandleError(ex, "Could not detect audio");
 
                 return string.Empty;
             }

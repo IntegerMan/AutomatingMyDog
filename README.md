@@ -30,8 +30,7 @@ Text / Chat:
 - [x] Add a log of things the app has said to you
 - [x] Send message on to Text Analytics APIs to get sentiment analysis etc.
 - [x] Send message on to LUIS to get app responses
-- [ ] Speak a message as a result of the intent
-
+- [x] Speak a message as a result of the intent
 
 ## Future Enhancements
 For KCDC these enhancements would help "sell" it more:

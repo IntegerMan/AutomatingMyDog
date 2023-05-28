@@ -1,10 +1,4 @@
-﻿using MattEland.AutomatingMyDog.Desktop.Pages;
-using MattEland.AutomatingMyDog.Desktop.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
 using Telerik.Windows.Controls.ConversationalUI;
 
 namespace MattEland.AutomatingMyDog.Desktop.Converters;

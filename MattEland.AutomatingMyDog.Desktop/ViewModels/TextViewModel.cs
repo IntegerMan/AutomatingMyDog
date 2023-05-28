@@ -33,31 +33,26 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             Update(appViewModel);
         }
 
-        public IEnumerable<ChatMessageViewModel> RespondTo(string message)
+        public void RespondTo(string message)
         {
             // Abort if the app is not configured
             if (_text == null || _luis == null)
             {
-                RadWindow.Alert(new DialogParameters()
-                {
-                    Header = "Not Configured",
-                    Content = "The application settings have not been configured. Please configure those first and try again.",
-                });
-
-                yield break;
+                AppMessage notConfigMessage = new AppMessage("The application settings have not been configured. Please configure those first and try again.", MessageSource.DogOS);
+                appViewModel.RegisterMessage(notConfigMessage);
             }
             else
             {
                 // Start with text analysis
-                foreach (string response in _text.AnalyzeText(message))
+                foreach (AppMessage response in _text.AnalyzeText(message))
                 {
-                    appViewModel.RegisterMessage(new ChatMessageViewModel(response, Chat.TextAnalysisAuthor));
+                    appViewModel.RegisterMessage(response);
                 }
 
                 // Move on to LUIS
-                foreach (string response in _luis.AnalyzeText(message))
+                foreach (AppMessage response in _luis.AnalyzeText(message))
                 {
-                    appViewModel.RegisterMessage(new ChatMessageViewModel(response, Chat.LuisAuthor));
+                    appViewModel.RegisterMessage(response);
                 }
             }
 

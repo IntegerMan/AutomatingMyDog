@@ -1,6 +1,4 @@
-﻿using Azure.AI.TextAnalytics;
-using Azure;
-using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
+﻿using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 
 namespace MattEland.AutomatingMyDog.Core;
@@ -37,14 +35,16 @@ public class LanguageUnderstandingHelper
         _slotId = slotId; // Slots are typically Production or Staging
     }
 
-    public IEnumerable<string> AnalyzeText(string text)
+    public IEnumerable<AppMessage> AnalyzeText(string text)
     {
+        const MessageSource source = MessageSource.LanguageUnderstanding;
+
         // Call out to LUIS
         PredictionRequest request = new(text);
         PredictionResponse predictResult = _luisClient.Prediction.GetSlotPredictionAsync(_appId, _slotId, request, showAllIntents: true, verbose: false).Result;
 
         // Display the top intent first
-        yield return $"Top Intent: {predictResult.Prediction.TopIntent} with {predictResult.Prediction.Intents[predictResult.Prediction.TopIntent].Score!.Value:P2} confidence";
+        yield return new AppMessage($"Top Intent: {predictResult.Prediction.TopIntent} with {predictResult.Prediction.Intents[predictResult.Prediction.TopIntent].Score!.Value:P2} confidence", source);
 
         // Display other considered intents
         foreach (KeyValuePair<string, Intent> intent in predictResult.Prediction.Intents.OrderByDescending(i => i.Value.Score))
@@ -55,22 +55,22 @@ public class LanguageUnderstandingHelper
                 continue;
             }
 
-            yield return $"Possible Intent: {intent.Key} with {intent.Value.Score!.Value:P2} confidence";
+            yield return new AppMessage($"Possible Intent: {intent.Key} with {intent.Value.Score!.Value:P2} confidence", source);
         }
 
         // Respond to the top intent
         switch (predictResult.Prediction.TopIntent.ToUpperInvariant())
         {
             case "GOOD BOY":
-                yield return "Jester is a good doggo!";
+                yield return new AppMessage("Jester is a good doggo!", MessageSource.DogOS);
                 break;
 
             case "WALK":
-                yield return "Why yes, Jester DOES want to go on a walk!";
+                yield return new AppMessage("Why yes, Jester DOES want to go on a walk!", MessageSource.DogOS);
                 break;
 
             default:
-                yield return "Jester does not understand.";
+                yield return new AppMessage("Jester does not understand.", MessageSource.DogOS);
                 break;
         }
     }

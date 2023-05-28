@@ -1,4 +1,6 @@
-﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
+﻿using MattEland.AutomatingMyDog.Core;
+using MattEland.AutomatingMyDog.Desktop.Pages;
+using MattEland.AutomatingMyDog.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,10 +31,12 @@ namespace MattEland.AutomatingMyDog.Desktop
             InitializeComponent();
         }
 
+        public object SpeakText { get; private set; }
+
         private void RadTabbedWindow_Loaded(object sender, RoutedEventArgs e)
         {
             AppViewModel vm = (AppViewModel)DataContext;
-            vm.Speech.Say("Welcome to DogOS", "Welcome to doggos");
+            vm.RegisterMessage(new AppMessage("Welcome to DogOS", MessageSource.DogOS) { SpeakText = "Welcome to doggos" });
         }
     }
 }

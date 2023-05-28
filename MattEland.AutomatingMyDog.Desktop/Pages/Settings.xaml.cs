@@ -25,15 +25,13 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
             if (vm.IsConfigured)
             {
-                vm.Speech.Say("Your settings have been saved.");
+                vm.RegisterMessage(new ChatMessageViewModel("Your settings have been saved.", Chat.DogOSAuthor));
             }
-
-            // Tell the user we saved the settings
-            RadWindow.Alert(new DialogParameters()
+            else
             {
-                Header = "Settings Saved",
-                Content = "Your settings have been saved",
-            });
+                // Tell the user we saved the settings since the audio won't work
+                vm.ShowMessage("Your settings have been saved.", "Settings Saved");
+            }
 
             // TODO: Navigate to the home page
         }

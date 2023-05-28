@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MattEland.AutomatingMyDog.Core;
+using MattEland.AutomatingMyDog.Desktop.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +12,26 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels;
 
 public class ChatMessageViewModel : ViewModelBase
 {
-    public ChatMessageViewModel(string message, Author author)
+    public ChatMessageViewModel(string message, Author author, string? speakText = null)
     {
         Message = message;
         Author = author;
+        SpeakText = speakText;
         CreationDate = DateTime.Now;
+    }    
+    
+    public ChatMessageViewModel(AppMessage message)
+    {
+        Message = message.Message;
+        Author = Chat.GetAuthor(message.Source);
+        CreationDate = DateTime.Now;
+        SpeakText = message.SpeakText;
     }
 
     public string Message { get; }
     public Author Author { get; }
+    public string? SpeakText { get; }
+
     public bool IsFromUser => Author.Name == "User";
     public DateTime CreationDate { get; }
 }

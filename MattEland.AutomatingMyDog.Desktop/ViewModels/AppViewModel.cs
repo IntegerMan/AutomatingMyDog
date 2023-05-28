@@ -1,7 +1,7 @@
-﻿using MattEland.AutomatingMyDog.Desktop.Commands;
-using MattEland.AutomatingMyDog.Desktop.Properties;
+﻿using MattEland.AutomatingMyDog.Core;
+using MattEland.AutomatingMyDog.Desktop.Commands;
+using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Telerik.Windows.Controls;
@@ -15,9 +15,9 @@ public class AppViewModel : ViewModelBase
         UIThread = Dispatcher.CurrentDispatcher;
 
         // Load Settings
-        _endpoint = Settings.Default.CogServicesEndpoint ?? "";
-        _key = Settings.Default.CogServicesKey ?? "";
-        _region = Settings.Default.CogServicesRegion ?? "";
+        _endpoint = Properties.Settings.Default.CogServicesEndpoint ?? "";
+        _key = Properties.Settings.Default.CogServicesKey ?? "";
+        _region = Properties.Settings.Default.CogServicesRegion ?? "";
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
@@ -49,32 +49,51 @@ public class AppViewModel : ViewModelBase
         Region = region;
 
         // Update the settings file
-        Settings.Default.CogServicesEndpoint = endpoint;
-        Settings.Default.CogServicesKey = key;
-        Settings.Default.CogServicesRegion = region;
-        Settings.Default.Save();
+        Properties.Settings.Default.CogServicesEndpoint = endpoint;
+        Properties.Settings.Default.CogServicesKey = key;
+        Properties.Settings.Default.CogServicesRegion = region;
+        Properties.Settings.Default.Save();
 
         // Notify VMs that our settings have changed
         _speech.UpdateAzureSettings(this);
         _text.UpdateAzureSettings(this);
     }
 
+    internal void RegisterMessage(AppMessage message) => RegisterMessage(new ChatMessageViewModel(message));
+
     internal void RegisterMessage(ChatMessageViewModel message)
     {
         _messages.Add(message);
 
         // If the message is from the user, send it on to Azure
-        if (message.IsFromUser)
+        if (message.Author == Chat.UserAuthor)
         {
             // Send it on to Azure
-            IEnumerable<ChatMessageViewModel> responses = Text.RespondTo(message.Message);
+            Text.RespondTo(message.Message);
+        } 
+        else if (message.Author == Chat.DogOSAuthor)
+        {
+            // Say it aloud
+            Speech.Say(message.Message, message.SpeakText);
+        }
+    }
 
-            // Process the responses
-            foreach (ChatMessageViewModel response in responses)
-            {
-                // TODO: Some of these should be spoken aloud while others shouldn't
-                _messages.Add(response);
-            }
+    internal void ShowMessage(string message, string header)
+    {
+        RadWindow.Alert(new DialogParameters()
+        {
+            Header = header,
+            Content = message,
+        });
+    }
+
+    internal void HandleError(Exception ex, string header, bool showErrorBox = true)
+    {
+        RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+        
+        if (showErrorBox)
+        {
+            ShowMessage(ex.Message, header);
         }
     }
 

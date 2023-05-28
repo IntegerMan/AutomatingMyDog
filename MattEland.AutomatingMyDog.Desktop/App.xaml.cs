@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
 namespace MattEland.AutomatingMyDog.Desktop;
 
