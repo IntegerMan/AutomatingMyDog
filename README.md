@@ -5,16 +5,13 @@ Ridiculous reference materials demonstrating using Azure Cognitive Services to b
 
 I want to get the following tasks done for demos:
 
-Repository:
-- [ ] Expand the `README.md` to include a description of the project and getting started configuration
-- [ ] Expand the `README.md` to include links to helpful content I've made
-
 Global App:
 - [x] Set the basic layout of the desktop app
 - [x] Global Navigation
 - [x] Global error handling in the desktop app
 - [x] Add a place in the desktop app to enter your cognitive services keys / endpoints
 - [x] Save Settings to a Settings File
+- [ ] Extract a control for the chat region
 
 Images: 
 - [ ] Add a Telerik Webcam to the desktop app
@@ -35,6 +32,11 @@ Text / Chat:
 ## Future Enhancements
 For KCDC these enhancements would help "sell" it more:
 
+### Onboarding Improvements
+- [ ] Expand the `README.md` to include a description of the project and getting started configuration
+- [ ] Expand the `README.md` to include links to helpful content I've made
+- [ ] Investigate Telerik use by non-license holders
+
 ### Global Improvements
 - [ ] Additional styling and polish
 - [ ] Better card responses
@@ -48,7 +50,7 @@ For KCDC these enhancements would help "sell" it more:
 
 ### Hardware
 - [ ] Mount a webcam on the stuffed dog
-- [ ] Mount a speaker on the stuffed dog
+- [ ] Mount a speaker on the stuffed dog as a backup for HDMI audio-out issues
 
 ### Speech
 - [ ] Allow changing the voice of the dog to a set of presets
