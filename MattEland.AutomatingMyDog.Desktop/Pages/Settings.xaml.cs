@@ -31,7 +31,12 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
         {
             AppViewModel vm = (AppViewModel)DataContext;
 
-            vm.SaveSettings(txtEndpoint.Text, txtKey.Password);
+            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text);
+
+            if (vm.IsConfigured)
+            {
+                vm.Speech.Say("Your settings have been saved.");
+            }
 
             // Tell the user we saved the settings
             RadWindow.Alert(new DialogParameters()
@@ -39,11 +44,15 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
                 Header = "Settings Saved",
                 Content = "Your settings have been saved",
             });
+
+            // TODO: Navigate to the home page
         }
 
         private void CancelSettingsClick(object sender, RoutedEventArgs e)
         {
             ResetSettings();
+
+            // TODO: Navigate to the home page
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -56,6 +65,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             AppViewModel vm = ((AppViewModel)DataContext);
             txtKey.Password = vm.Key;
             txtEndpoint.Text = vm.Endpoint;
+            txtRegion.Text = vm.Region;
         }
     }
 }

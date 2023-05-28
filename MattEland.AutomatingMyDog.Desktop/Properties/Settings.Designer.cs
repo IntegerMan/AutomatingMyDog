@@ -46,5 +46,17 @@ namespace MattEland.AutomatingMyDog.Desktop.Properties {
                 this["CogServicesKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CogServicesRegion {
+            get {
+                return ((string)(this["CogServicesRegion"]));
+            }
+            set {
+                this["CogServicesRegion"] = value;
+            }
+        }
     }
 }
