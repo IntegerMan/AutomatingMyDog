@@ -26,9 +26,11 @@ Images:
 - [ ] JSON View of Image Results
 
 Text / Chat:
-- [ ] Add a "listen" button to the desktop app
-- [ ] Add a text chat feature to the desktop app
-- [ ] Add a log of things the app has said to you
+- [x] Add a "listen" button to the desktop app
+- [x] Add a text chat feature to the desktop app
+- [x] Add a log of things the app has said to you
+- [ ] Send message on to LUIS / CLU to get app responses
+- [ ] Send message on to Text Analytics APIs to get sentiment analysis etc.
 - [ ] JSON View of Text Results
 
 For KCDC these enhancements would help "sell" it more:
@@ -36,6 +38,8 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Azure OpenAI Integration
 - [ ] Allow changing the voice of the dog
 - [ ] Offline Mode
+- [ ] Move from LUIS to CLU
+- [ ] Add a greater amount of intents to the CLU model
 - [ ] Link to Settings Page from Welcome Page
 - [ ] Icons on Navigation and Buttons
 - [ ] Mount a webcam on the stuffed dog

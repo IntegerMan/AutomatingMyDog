@@ -1,6 +1,7 @@
 ﻿using MattEland.AutomatingMyDog.Desktop.Commands;
 using MattEland.AutomatingMyDog.Desktop.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Telerik.Windows.Controls;
@@ -20,6 +21,7 @@ public class AppViewModel : ViewModelBase
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
+        _text = new TextViewModel(this);
 
         // Set commands
         _sendMessageCommand = new SendChatMessageCommand(this);
@@ -30,6 +32,7 @@ public class AppViewModel : ViewModelBase
     public ListenToSpeechCommand ListenCommand => _listenCommand;
 
     public SpeechViewModel Speech => _speech;
+    public TextViewModel Text => _text;
 
     public ObservableCollection<ChatMessageViewModel> Messages => _messages;
 
@@ -37,15 +40,6 @@ public class AppViewModel : ViewModelBase
     public string Author => "Matt Eland";
     public string Title => $"{AppName} by {Author}";
     public string Version => "SciFiDevCon 2023 Edition";
-
-    public string FooterText => $"{AppName} {Version}";
-
-
-    private void NotifyViewsChanged()
-    {
-        OnPropertyChanged(nameof(IsBusy));
-        OnPropertyChanged(nameof(FooterText));
-    }
 
     internal void SaveSettings(string endpoint, string key, string region)
     {
@@ -62,22 +56,34 @@ public class AppViewModel : ViewModelBase
 
         // Notify VMs that our settings have changed
         _speech.UpdateAzureSettings(this);
+        _text.UpdateAzureSettings(this);
     }
 
     internal void RegisterMessage(ChatMessageViewModel message)
     {
         _messages.Add(message);
 
-        // TODO: if the message is from the user, send it to Azure
+        // If the message is from the user, send it on to Azure
+        if (message.IsFromUser)
+        {
+            // Send it on to Azure
+            IEnumerable<ChatMessageViewModel> responses = Text.RespondTo(message.Message);
+
+            // Process the responses
+            foreach (ChatMessageViewModel response in responses)
+            {
+                // TODO: Some of these should be spoken aloud while others shouldn't
+                _messages.Add(response);
+            }
+        }
     }
 
-    private string _busyText = string.Empty;
-    private double _busyProgress;
     private string _endpoint;
     private string _key;
     private string _region;
     private string _chatText = "";
     private readonly SpeechViewModel _speech;
+    private readonly TextViewModel _text;
     private readonly SendChatMessageCommand _sendMessageCommand;
     private readonly ListenToSpeechCommand _listenCommand;
     private readonly ObservableCollection<ChatMessageViewModel> _messages = new();
@@ -89,34 +95,6 @@ public class AppViewModel : ViewModelBase
         {
             _chatText = value;
             OnPropertyChanged(nameof(ChatText));
-        }
-    }
-
-    public string BusyText
-    {
-        get => _busyText;
-        set
-        {
-            if (_busyText != value)
-            {
-                _busyText = value;
-                NotifyViewsChanged();
-            }
-        }
-    }
-
-    public bool IsBusyIndeterminent => false;
-
-    public double BusyProgress
-    {
-        get => _busyProgress;
-        set
-        {
-            if (_busyProgress != value)
-            {
-                _busyProgress = value;
-                OnPropertyChanged(nameof(BusyProgress));
-            }
         }
     }
 
@@ -155,6 +133,5 @@ public class AppViewModel : ViewModelBase
 
     public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Region);
 
-    public bool IsBusy => !string.IsNullOrEmpty(_busyText);
     public Dispatcher UIThread { get; }
 }

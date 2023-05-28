@@ -22,7 +22,8 @@ public class SendChatMessageCommand : CommandBase
     public override void Execute(object? parameter = null)
     {
         // Create the message
-        ChatMessageViewModel message = new(_vm.ChatText, Chat.UserAuthor);
+        string messageText = _vm.ChatText;
+        ChatMessageViewModel message = new(messageText, Chat.UserAuthor);
 
         // Send the message to the chat service
         _vm.RegisterMessage(message);

@@ -24,59 +24,39 @@
     </telerik:RadTabbedWindow.IconTemplate>
 
     <telerik:RadTabItem Header="Welcome" CloseButtonVisibility="Collapsed">
-        <telerik:RadBusyIndicator IsBusy="{Binding Path=IsBusy}" 
-                              BusyContent="{Binding Path=BusyText}" 
-                              ProgressValue="{Binding Path=BusyProgress}"
-                              IsIndeterminate="{Binding Path=IsBusyIndeterminent}">
-            <Grid>
-                <Grid.Background>
-                    <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
-                </Grid.Background>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+            </Grid.Background>
 
-                <pages:Home HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-        </telerik:RadBusyIndicator>
+            <pages:Home HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Vision" CloseButtonVisibility="Collapsed">
-        <telerik:RadBusyIndicator IsBusy="{Binding Path=IsBusy}" 
-                              BusyContent="{Binding Path=BusyText}" 
-                              ProgressValue="{Binding Path=BusyProgress}"
-                              IsIndeterminate="{Binding Path=IsBusyIndeterminent}">
-            <Grid>
-                <Grid.Background>
-                    <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
-                </Grid.Background>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+            </Grid.Background>
 
-                <pages:Vision HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-        </telerik:RadBusyIndicator>
+            <pages:Vision HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Chat" CloseButtonVisibility="Collapsed">
-        <telerik:RadBusyIndicator IsBusy="{Binding Path=IsBusy}" 
-                              BusyContent="{Binding Path=BusyText}" 
-                              ProgressValue="{Binding Path=BusyProgress}"
-                              IsIndeterminate="{Binding Path=IsBusyIndeterminent}">
-            <Grid>
-                <Grid.Background>
-                    <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
-                </Grid.Background>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+            </Grid.Background>
 
-                <pages:Chat/>
-            </Grid>
-        </telerik:RadBusyIndicator>
+            <pages:Chat/>
+        </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Settings" CloseButtonVisibility="Collapsed">
-        <telerik:RadBusyIndicator IsBusy="{Binding Path=IsBusy}" 
-                              BusyContent="{Binding Path=BusyText}" 
-                              ProgressValue="{Binding Path=BusyProgress}"
-                              IsIndeterminate="{Binding Path=IsBusyIndeterminent}">
-            <Grid>
-                <Grid.Background>
-                    <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
-                </Grid.Background>
-                
-                <pages:Settings HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-        </telerik:RadBusyIndicator>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <pages:Settings HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
     </telerik:RadTabItem>
 </telerik:RadTabbedWindow>

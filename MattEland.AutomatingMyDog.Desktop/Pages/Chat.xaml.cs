@@ -25,6 +25,9 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
         public static Author UserAuthor = new Author("User");
         public static Author DogOSAuthor = new Author("DogOS");
+        public static Author TextAnalysisAuthor = new Author("Text Analysis");
+        public static Author ComputerVisionAuthor = new Author("Computer Vision");
+        public static Author LuisAuthor = new Author("Language Understanding (LUIS)");
 
         public Chat()
         {
