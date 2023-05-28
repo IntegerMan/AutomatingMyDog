@@ -22,10 +22,12 @@ Text / Chat:
 - [x] Speak a message as a result of the intent
 
 Images: 
-- [ ] Add a Telerik Webcam to the desktop app
-- [ ] Add a "take a picture" button to the desktop app
-- [ ] Add an "upload picture" button to the desktop app
+- [x] Add a Telerik Webcam to the desktop app
+- [x] Add a "take a picture" button to the desktop app
+- [x] Save snapshot to snapshot.png
+- [ ] Add an "upload picture" button to the chat region
 - [ ] Drop image onto chat from desktop to send the image
+- [ ] Send image on to computer vision
 - [ ] Include source image in image chat
 - [ ] Smart thumbnail results in image chat
 - [ ] Object bounding boxes in image chat
@@ -64,4 +66,9 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Settings for LUIS / CLU
 - [ ] Async / Await for Tasks
 - [ ] Detect entities from LUIS / CLU
+
+### Other Ideas
+- [ ] Blazor Version
+- [ ] Azure Bot Service Integration
 - [ ] Azure OpenAI Integration
+- [ ] Testimonial for Telerik

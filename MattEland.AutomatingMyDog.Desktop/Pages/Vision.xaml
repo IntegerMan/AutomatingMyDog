@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages" xmlns:controls="clr-namespace:MattEland.AutomatingMyDog.Desktop.Controls"
+             xmlns:local="clr-namespace:MattEland.AutomatingMyDog.Desktop.Pages" xmlns:controls="clr-namespace:MattEland.AutomatingMyDog.Desktop.Controls" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel MinHeight="600">
@@ -16,7 +16,15 @@
                 <TextBlock Style="{DynamicResource PageBodyTextStyle}">
                     The Computer Vision API can extract information from any image using pre-trained models on Azure as part of Azure Cognitive Services.
                 </TextBlock>
-
+                <telerik:RadWebCam AutoStart="False" 
+                                   x:Name="webCam" 
+                                   SnapshotTaken="RadWebCam_SnapshotTaken"
+                                   ToolbarPanelVisibility="Collapsed"
+                                   RecordingButtonVisibility="Collapsed" 
+                                   SnapshotButtonVisibility="Collapsed" 
+                                   PreviewSnapshots="False" />
+                <telerik:RadButton Content="Start Camera" Click="StartCamera_Click" Margin="0 8 0 0" />
+                <telerik:RadButton Content="Take Snapshot" Click="TakeSnapshot_Click" Margin="0 8 0 0" x:Name="btnSnapshot" Visibility="Collapsed" />
             </StackPanel>
         </Border>
     </DockPanel>
