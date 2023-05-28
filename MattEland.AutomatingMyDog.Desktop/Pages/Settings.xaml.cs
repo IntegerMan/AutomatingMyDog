@@ -26,7 +26,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
             if (vm.IsConfigured)
             {
-                vm.RegisterMessageAsync(new ChatMessageViewModel("Your settings have been saved.", Chat.DogOSAuthor)).RunSynchronously();
+                vm.RegisterMessage(new ChatMessageViewModel("Your settings have been saved.", Chat.DogOSAuthor));
             }
             else
             {
