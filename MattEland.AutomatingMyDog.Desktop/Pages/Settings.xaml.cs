@@ -1,18 +1,6 @@
 ﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 
 namespace MattEland.AutomatingMyDog.Desktop.Pages
@@ -31,6 +19,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
         {
             AppViewModel vm = (AppViewModel)DataContext;
 
+            // A lot of the manual code in this View is due to PasswordBox not supporting data binding for security purposes
+            // Because of that we need to get the password out manually and set it manually
             vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text);
 
             if (vm.IsConfigured)
@@ -62,6 +52,11 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
         private void ResetSettings()
         {
+            // A lot of the manual code in this View is due to PasswordBox not supporting data binding for security purposes
+            // Because of that we need to get the password out manually and set it manually. However, this also gives us the ability
+            // to allow edits to the settings that don't propagate to the main VM until the user clicks save. This also allows us to
+            // easily reset the edit state by just reloading the settings from the VM
+
             AppViewModel vm = ((AppViewModel)DataContext);
             txtKey.Password = vm.Key;
             txtEndpoint.Text = vm.Endpoint;
