@@ -14,12 +14,12 @@ public class ChatMessageConverter : IMessageConverter
     public MessageBase ConvertItem(object item)
     {
         var messageModel = (ChatMessageViewModel)item;
-        return new TextMessage(messageModel.IsFromUser ? Chat.UserAuthor : Chat.DogOSAuthor, messageModel.Message, messageModel.CreationDate);
+        return new TextMessage(messageModel.Author, messageModel.Message, messageModel.CreationDate);
     }
 
     public object ConvertMessage(MessageBase message)
     {
         TextMessage textMessage = (TextMessage)message;
-        return new ChatMessageViewModel(textMessage.Text, textMessage.Author.Name == "User");
+        return new ChatMessageViewModel(textMessage.Text, textMessage.Author);
     }
 }

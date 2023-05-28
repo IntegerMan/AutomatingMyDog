@@ -23,9 +23,11 @@ public class AppViewModel : ViewModelBase
 
         // Set commands
         _sendMessageCommand = new SendChatMessageCommand(this);
+        _listenCommand = new ListenToSpeechCommand(this);
     }
 
     public SendChatMessageCommand SendMessageCommand => _sendMessageCommand;
+    public ListenToSpeechCommand ListenCommand => _listenCommand;
 
     public SpeechViewModel Speech => _speech;
 
@@ -77,6 +79,7 @@ public class AppViewModel : ViewModelBase
     private string _chatText = "";
     private readonly SpeechViewModel _speech;
     private readonly SendChatMessageCommand _sendMessageCommand;
+    private readonly ListenToSpeechCommand _listenCommand;
     private readonly ObservableCollection<ChatMessageViewModel> _messages = new();
 
     public string ChatText

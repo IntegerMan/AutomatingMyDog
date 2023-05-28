@@ -29,14 +29,14 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
         public Chat()
         {
             InitializeComponent();
+
+            chat.CurrentAuthor = UserAuthor;
         }
 
-        private void RadChat_SendMessage(object sender, Telerik.Windows.Controls.ConversationalUI.SendMessageEventArgs e)
+        private void RadChat_SendMessage(object sender, SendMessageEventArgs e)
         {
             AppViewModel appVm = (AppViewModel)DataContext;
-
-            chat.CurrentAuthor = Chat.UserAuthor;
-
+            
             // Indicate to the user that DogOS is processing the message
             chat.TypingIndicatorVisibility = Visibility.Visible;
 

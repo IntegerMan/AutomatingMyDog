@@ -1,4 +1,5 @@
 ﻿using MattEland.AutomatingMyDog.Core;
+using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
 using Telerik.Windows.Controls;
 
@@ -7,7 +8,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
     public class SpeechViewModel : ViewModelBase
     {
         private AppViewModel appViewModel;
-        private TextToSpeechHelper? _speech;
+        private SpeechHelper? _speech;
 
         public SpeechViewModel(AppViewModel appViewModel)
         {
@@ -20,7 +21,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         {
             if (appViewModel.IsConfigured)
             {
-                _speech = new TextToSpeechHelper(appViewModel.Key, appViewModel.Region);
+                _speech = new SpeechHelper(appViewModel.Key, appViewModel.Region);
             }
         }
 
@@ -35,7 +36,27 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             _speech?.SayMessage(speechText ?? message);
 
             // Always just display the message
-            appViewModel.RegisterMessage(new ChatMessageViewModel(message, false));
+            appViewModel.RegisterMessage(new ChatMessageViewModel(message, Chat.DogOSAuthor));
+        }
+
+        public string ListenForText()
+        {
+            try
+            {
+                if (_speech == null) { throw new SpeechException("Speech is not configured. Configure application settings first"); }
+                return _speech.ListenToSpokenText();
+            }
+            catch (SpeechException ex)
+            {
+                // Display the message 
+                RadWindow.Alert(new DialogParameters()
+                {
+                    Header = "Could Not Detect Audio",
+                    Content = ex.Message,
+                });
+
+                return string.Empty;
+            }
         }
     }
 }

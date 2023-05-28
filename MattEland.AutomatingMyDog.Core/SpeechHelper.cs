@@ -1,18 +1,12 @@
 ﻿using Microsoft.CognitiveServices.Speech;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MattEland.AutomatingMyDog.Core;
 
-public class TextToSpeechHelper
+public class SpeechHelper
 {
     private readonly SpeechConfig _speechConfig;
 
-    public TextToSpeechHelper(string subscriptionKey, string region, string voiceName= "en-US-GuyNeural")
+    public SpeechHelper(string subscriptionKey, string region, string voiceName= "en-US-GuyNeural")
     {
         if (string.IsNullOrWhiteSpace(subscriptionKey))
         {
@@ -39,6 +33,23 @@ public class TextToSpeechHelper
     {
         using SpeechSynthesizer synthesizer = new(_speechConfig);
         using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
+    }
+
+    public string ListenToSpokenText()
+    {
+        // Listen to a speech stream and transcribe it to words
+        using (SpeechRecognizer recognizer = new(_speechConfig))
+        {
+            SpeechRecognitionResult? result = recognizer.RecognizeOnceAsync().Result;
+
+            return result.Reason switch
+            {
+                ResultReason.RecognizedSpeech => result.Text,
+                ResultReason.Canceled => throw new SpeechException("Speech Recognition canceled.", result),
+                ResultReason.NoMatch => throw new SpeechException("Speech Recognition could not understand audio. Your mic may not be working.", result),
+                _ => throw new SpeechException($"Unhandled speech recognition result: {result.Reason}", result),
+            };
+        }
     }
 
 }

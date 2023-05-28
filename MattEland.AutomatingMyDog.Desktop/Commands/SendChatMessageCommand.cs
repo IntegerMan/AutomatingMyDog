@@ -1,4 +1,5 @@
-﻿using MattEland.AutomatingMyDog.Desktop.ViewModels;
+﻿using MattEland.AutomatingMyDog.Desktop.Pages;
+using MattEland.AutomatingMyDog.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,10 @@ public class SendChatMessageCommand : CommandBase
         this._vm = vm;
     }
 
-    public override void Execute(object parameter)
+    public override void Execute(object? parameter = null)
     {
         // Create the message
-        ChatMessageViewModel message = new(_vm.ChatText, true);
+        ChatMessageViewModel message = new(_vm.ChatText, Chat.UserAuthor);
 
         // Send the message to the chat service
         _vm.RegisterMessage(message);

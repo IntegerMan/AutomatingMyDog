@@ -43,9 +43,13 @@
         </DockPanel>
         <Border Style="{DynamicResource PanelStyle}" Margin="12" MaxWidth="{x:Static sys:Double.PositiveInfinity}">
             <DockPanel>
-                <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" />
+                <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" Command="{Binding Path=ListenCommand}" />
 
-                <telerikChat:RadChat x:Name="chat" SendMessage="RadChat_SendMessage" TypingIndicatorText="DogOS is typing..." DataSource="{Binding Path=Messages}">
+                <telerikChat:RadChat x:Name="chat" 
+                                     CanUserSelectMessage="False"                                     
+                                     SendMessage="RadChat_SendMessage" 
+                                     TypingIndicatorText="DogOS is typing..." 
+                                     DataSource="{Binding Path=Messages}">
                     <telerikChat:RadChat.MessageConverter>
                         <converters:ChatMessageConverter />
                     </telerikChat:RadChat.MessageConverter>
