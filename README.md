@@ -11,15 +11,7 @@ Global App:
 - [x] Global error handling in the desktop app
 - [x] Add a place in the desktop app to enter your cognitive services keys / endpoints
 - [x] Save Settings to a Settings File
-- [ ] Extract a control for the chat region
-
-Images: 
-- [ ] Add a Telerik Webcam to the desktop app
-- [ ] Add a "take a picture" button to the desktop app
-- [ ] Add an "upload picture" button to the desktop app
-- [ ] Add an "drop picture here" button to the desktop app
-- [ ] Object bounding boxes on image analysis view
-- [ ] Image Analysis view 
+- [x] Extract a control for the chat region
 
 Text / Chat:
 - [x] Add a "listen" button to the desktop app
@@ -28,6 +20,16 @@ Text / Chat:
 - [x] Send message on to Text Analytics APIs to get sentiment analysis etc.
 - [x] Send message on to LUIS to get app responses
 - [x] Speak a message as a result of the intent
+
+Images: 
+- [ ] Add a Telerik Webcam to the desktop app
+- [ ] Add a "take a picture" button to the desktop app
+- [ ] Add an "upload picture" button to the desktop app
+- [ ] Drop image onto chat from desktop to send the image
+- [ ] Include source image in image chat
+- [ ] Smart thumbnail results in image chat
+- [ ] Object bounding boxes in image chat
+- [ ] Include image tags, etc. in chat results
 
 ## Future Enhancements
 For KCDC these enhancements would help "sell" it more:

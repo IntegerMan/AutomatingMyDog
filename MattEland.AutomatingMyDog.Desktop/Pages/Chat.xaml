@@ -3,18 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:sys="clr-namespace:System" 
-             xmlns:converters="clr-namespace:MattEland.AutomatingMyDog.Desktop.Converters" 
+             xmlns:controls="clr-namespace:MattEland.AutomatingMyDog.Desktop.Controls" 
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
              xmlns:telerikChat="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.ConversationalUI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <DockPanel MaxWidth="800" DockPanel.Dock="Left" Margin="12">
+        <DockPanel MaxWidth="600" DockPanel.Dock="Left" Margin="12">
             <Border Style="{DynamicResource PanelStyle}" >
                 <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                     <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
-                    Chat
+                    Text Analysis &amp; Language Understanding (LUIS)
                     </TextBlock>
                     <TextBlock Style="{DynamicResource PageBodyTextStyle}">
                     Use your voice and text to chat with DogOS. Your words will be understood by Azures Cognitive Services' speech to text API to build a string based on what you said.
@@ -41,18 +40,11 @@
                 </StackPanel>
             </Border>
         </DockPanel>
-        <DockPanel Margin="0 12 12 12" MaxWidth="{x:Static sys:Double.PositiveInfinity}">
-            <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" Command="{Binding Path=ListenCommand}" />
+        <controls:DogOSChat DockPanel.Dock="Right" MaxWidth="800" MinWidth="600" Margin="0 12 12 12" />
 
-            <telerikChat:RadChat x:Name="chat" 
-                                     CanUserSelectMessage="False"                                     
-                                     SendMessage="RadChat_SendMessage" 
-                                     TypingIndicatorText="DogOS is typing..." 
-                                     DataSource="{Binding Path=Messages}">
-                <telerikChat:RadChat.MessageConverter>
-                    <converters:ChatMessageConverter />
-                </telerikChat:RadChat.MessageConverter>
-            </telerikChat:RadChat>
-        </DockPanel>
+        <!-- Empty area in center -->
+        <Grid>
+
+        </Grid>
     </DockPanel>
 </UserControl>

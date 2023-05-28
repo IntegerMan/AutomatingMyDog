@@ -12,19 +12,16 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages;
 /// </summary>
 public partial class Chat : UserControl
 {
-
-    public static Author UserAuthor = new Author("User");
-    public static Author DogOSAuthor = new Author("DogOS");
-    public static Author TextAnalysisAuthor = new Author("Text Analysis");
-    public static Author ComputerVisionAuthor = new Author("Computer Vision");
-    public static Author LuisAuthor = new Author("Language Understanding (LUIS)");
-    public static Author ErrorAuthor = new Author("App Error Handler");
+    public static Author UserAuthor = new("User");
+    public static Author DogOSAuthor = new("DogOS");
+    public static Author TextAnalysisAuthor = new("Text Analysis");
+    public static Author ComputerVisionAuthor = new("Computer Vision");
+    public static Author LuisAuthor = new("Language Understanding (LUIS)");
+    public static Author ErrorAuthor = new("App Error Handler");
 
     public Chat()
     {
         InitializeComponent();
-
-        chat.CurrentAuthor = UserAuthor;
     }
 
     internal static Author GetAuthor(MessageSource source)
@@ -39,21 +36,5 @@ public partial class Chat : UserControl
             MessageSource.ComputerVision => ComputerVisionAuthor,
             _ => throw new ArgumentOutOfRangeException(nameof(source), source, null),
         };
-    }
-
-    private void RadChat_SendMessage(object sender, SendMessageEventArgs e)
-    {
-        AppViewModel appVm = (AppViewModel)DataContext;
-        
-        // TODO: Indicate to the user that DogOS is processing the message
-        // chat.TypingIndicatorVisibility = Visibility.Visible;
-
-        // Send the message over
-        TextMessage message = (TextMessage)e.Message;
-        appVm.ChatText = message.Text;
-        appVm.SendMessageCommand.Execute(e.Message);
-
-        // Don't have it show up automatically in the control
-        e.Handled = true;
     }
 }
