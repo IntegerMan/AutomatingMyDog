@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
-using static System.Net.Mime.MediaTypeNames;
 using System.Drawing;
 
 namespace MattEland.AutomatingMyDog.Core;
@@ -33,23 +32,23 @@ public class VisionHelper
 
         const MessageSource source = MessageSource.ComputerVision;
 
-        // We need to tell it what types of results we care about
-        List<VisualFeatureTypes?> features = new()
+        // Generate a smart thumbnail and save it to the thumbnail file
+        string thumbnailFilePath = Path.GetTempFileName();
+        await using (Stream thumbStream = await _computerVision.GenerateThumbnailInStreamAsync(200, 200, File.OpenRead(filePath), smartCropping: true))
         {
-            VisualFeatureTypes.Categories,
-            VisualFeatureTypes.Description,
-            VisualFeatureTypes.Tags,
-            VisualFeatureTypes.Objects,
-            VisualFeatureTypes.Adult,
-            VisualFeatureTypes.Brands,
-            VisualFeatureTypes.Color,
-        };
+            using (FileStream fileStream = new(thumbnailFilePath, FileMode.Create, FileAccess.Write))
+            {
+                thumbStream.CopyTo(fileStream);
+            }
+        }
 
-        await using Stream imageStream = File.OpenRead(filePath);
-        ImageAnalysis result = await _computerVision.AnalyzeImageInStreamAsync(imageStream, features);
+        ImageAnalysis result = await AnalyzeImage(filePath);
 
         // Describe Image with Caption
-        results.Add(new AppMessage($"Image Caption: {result.Description.Captions.First().Text}", source));
+        results.Add(new AppMessage($"Description: {result.Description.Captions.First().Text}", source)
+        {
+            ImagePath = thumbnailFilePath,
+        });
 
         // Adult / Racy Message
         AdultInfo adult = result.Adult;
@@ -58,7 +57,7 @@ public class VisionHelper
         // Color Message
         if (result.Color.DominantColors.Any())
         {
-            results.Add(new AppMessage($"Dominant Colors: {string.Join(", ", result.Color.DominantColors)}. Accent Color: {result.Color.AccentColor}", source));
+            results.Add(new AppMessage($"Dominant Colors: {string.Join(", ", result.Color.DominantColors)}. Accent Color: #{result.Color.AccentColor}", source));
         }
 
         // Tags
@@ -86,32 +85,12 @@ public class VisionHelper
         {
             detectedItems.AddRange(result.Objects.Select(t => t.ObjectProperty));
 
-            // Add bounding boxes to an image
-            // TODO: Only do this on Windows
-#pragma warning disable CA1416 // Validate platform compatibility
-            var image = System.Drawing.Image.FromFile(filePath);
-            Graphics graphics = Graphics.FromImage(image);
-            Pen pen = new(Color.Green, 5);
-            Font font = new("Arial", 16, FontStyle.Bold);
-            SolidBrush brush = new(Color.Black);
-
-            foreach (DetectedObject detectedObject in result.Objects)
-            {
-                // Draw object bounding box
-                var r = detectedObject.Rectangle;
-                Rectangle rect = new(r.X, r.Y, r.W, r.H);
-                graphics.DrawRectangle(pen, rect);
-                graphics.DrawString(detectedObject.ObjectProperty, font, brush, r.X, r.Y);
-            }
-
-            // Save annotated image
-            string output_file = Path.Combine(Environment.CurrentDirectory, "objects.jpg");
-            image.Save(output_file);
-#pragma warning restore CA1416 // Validate platform compatibility
+            // Optionally add bounding boxes to an image
+            string? output_file = BuildBoundingBoxFile(filePath, result);
 
             results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source)
             {
-                ImagePath = output_file,                
+                ImagePath = output_file,
             });
         }
 
@@ -120,6 +99,51 @@ public class VisionHelper
         results.Add(new AppMessage(message, MessageSource.DogOS));
 
         return results;
+    }
+
+    private async Task<ImageAnalysis> AnalyzeImage(string filePath)
+    {
+        // We need to tell it what types of results we care about
+        List<VisualFeatureTypes?> features = new()
+        {
+            VisualFeatureTypes.Categories,
+            VisualFeatureTypes.Description,
+            VisualFeatureTypes.Tags,
+            VisualFeatureTypes.Objects,
+            VisualFeatureTypes.Adult,
+            VisualFeatureTypes.Brands,
+            VisualFeatureTypes.Color,
+        };
+
+        await using (Stream imageStream = File.OpenRead(filePath))
+        return await _computerVision.AnalyzeImageInStreamAsync(imageStream, features);
+    }
+
+    private static string? BuildBoundingBoxFile(string filePath, ImageAnalysis result)
+    {
+        // TODO: Only do this on Windows
+#pragma warning disable CA1416 // Validate platform compatibility
+        Image image = Image.FromFile(filePath);
+        Graphics graphics = Graphics.FromImage(image);
+        Pen pen = new(Color.Green, 5);
+        Font font = new("Arial", 16, FontStyle.Bold);
+        SolidBrush brush = new(Color.Black);
+
+        foreach (DetectedObject detectedObject in result.Objects)
+        {
+            // Draw object bounding box
+            var r = detectedObject.Rectangle;
+            Rectangle rect = new(r.X, r.Y, r.W, r.H);
+            graphics.DrawRectangle(pen, rect);
+            graphics.DrawString(detectedObject.ObjectProperty, font, brush, r.X, r.Y);
+        }
+
+        // Save annotated image
+        string output_file = Path.GetTempFileName();
+        image.Save(output_file);
+#pragma warning restore CA1416 // Validate platform compatibility
+
+        return output_file;
     }
 
     private static string GenerateBarkMessage(List<string> detectedItems)

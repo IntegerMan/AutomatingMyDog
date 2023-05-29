@@ -70,7 +70,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             BitmapSource snapshot = e.Snapshot;
 
             // Save the file to disk
-            string imageFilePath = Path.Combine(Environment.CurrentDirectory, "Snapshot.png");
+            string imageFilePath = Path.GetTempFileName();
             using (Stream fileStream = new FileStream(imageFilePath, FileMode.Create))
             {
                 BitmapEncoder encoder = new PngBitmapEncoder();

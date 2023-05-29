@@ -29,7 +29,7 @@ Images:
 - [x] Send image on to computer vision
 - [x] Include image tags, etc. in chat results
 - [x] Object bounding boxes in image chat
-- [ ] Smart thumbnail results in image chat
+- [x] Smart thumbnail results in image chat
 
 ## Future Enhancements
 For KCDC these enhancements would help "sell" it more:
