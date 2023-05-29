@@ -82,7 +82,7 @@ public class AutomatingMyDogMenu
         List<string> detectedItems = _visionDemos.DetectItemsAsync(imagePath).Result;
 
         // Potentially bark at the thing we saw
-        string? barkTarget = detectedItems.FirstOrDefault(IsSomethingToBarkAt);
+        string? barkTarget = detectedItems.FirstOrDefault(t => t.IsSomethingToBarkAt());
         string message;
         if (barkTarget != null)
         {
@@ -98,16 +98,6 @@ public class AutomatingMyDogMenu
         }
 
         _speechDemos.SayMessage(message);
-    }
-
-    private static bool IsSomethingToBarkAt(string thing)
-    {
-        thing = thing.ToLowerInvariant();
-
-        return thing.Contains("squirrel") ||
-               thing.Contains("rabbit") ||
-               thing.Contains("rodent") ||
-               thing.Contains("dog");
     }
 
     private void RespondToTextCommand(string? command)

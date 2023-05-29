@@ -27,6 +27,8 @@ public class VisionHelper
     public async Task<IEnumerable<AppMessage>> AnalyzeImageAsync(string filePath)
     {
         List<AppMessage> results = new();
+        List<string> detectedItems = new();
+
         const MessageSource source = MessageSource.ComputerVision;
 
         // We need to tell it what types of results we care about
@@ -34,7 +36,6 @@ public class VisionHelper
         {
             VisualFeatureTypes.Categories,
             VisualFeatureTypes.Description,
-            VisualFeatureTypes.ImageType,
             VisualFeatureTypes.Tags,
             VisualFeatureTypes.Objects,
             VisualFeatureTypes.Adult,
@@ -50,27 +51,67 @@ public class VisionHelper
 
         // Adult / Racy Message
         AdultInfo adult = result.Adult;
-        results.Add(new AppMessage($"Adult Content: {adult.IsAdultContent} Confidence in Adult / Gore / Racy: {adult.AdultScore:P} / {adult.GoreScore:P} / {adult.RacyScore:P}", source));
+        results.Add(new AppMessage($"Confidence in Adult / Gore / Racy content in the image: {adult.AdultScore:P} / {adult.GoreScore:P} / {adult.RacyScore:P}", source));
 
         // Color Message
-        results.Add(new AppMessage($"Accent Color: {result.Color.AccentColor} Dominant Color: {result.Color.DominantColorForeground} foreground / {result.Color.DominantColorBackground}", source));
-
-        // Image Type
-        results.Add(new AppMessage($"Clip Art Type: {result.ImageType.ClipArtType} Line Drawing Type: {result.ImageType.LineDrawingType}", source));
+        if (result.Color.DominantColors.Any())
+        {
+            results.Add(new AppMessage($"Dominant Colors: {string.Join(", ", result.Color.DominantColors)}. Accent Color: {result.Color.AccentColor}", source));
+        }
 
         // Tags
-        results.Add(new AppMessage($"Tags: {string.Join(", ", result.Tags.Select(t => t.Name))}", source));
+        if (result.Tags.Any())
+        {
+            detectedItems.AddRange(result.Tags.Select(t => t.Name));
+            results.Add(new AppMessage($"Tags: {string.Join(", ", result.Tags.Select(t => t.Name))}", source));
+        }
 
         // Categories
-        results.Add(new AppMessage($"Categories: {string.Join(", ", result.Categories.Select(c => c.Name))}", source));
+        if (result.Categories.Any())
+        {
+            detectedItems.AddRange(result.Categories.Select(t => t.Name));
+            results.Add(new AppMessage($"Categories: {string.Join(", ", result.Categories.Select(c => c.Name))}", source));
+        }
 
         // Brands
-        results.Add(new AppMessage($"Brands: {string.Join(", ", result.Brands.Select(b => b.Name))}", source));
+        if (result.Brands.Any())
+        {
+            results.Add(new AppMessage($"Brands: {string.Join(", ", result.Brands.Select(b => b.Name))}", source));
+        }
 
         // Objects
-        results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source));
+        if (result.Objects.Any())
+        {
+            detectedItems.AddRange(result.Objects.Select(t => t.ObjectProperty));
+            results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source));
+
+            // TODO: Add bounding boxes to an image
+        }
+
+        // Determine if we should "bark" at something
+        string message = GenerateBarkMessage(detectedItems);
+        results.Add(new AppMessage(message, MessageSource.DogOS));
 
         return results;
     }
 
+    private static string GenerateBarkMessage(List<string> detectedItems)
+    {
+        string? barkTarget = detectedItems.FirstOrDefault(t => t.IsSomethingToBarkAt());
+        string message;
+        if (barkTarget != null)
+        {
+            // Add the word "a" in front of it if needed, but only if it doesn't start with an article already
+            barkTarget = StringHelper.AddArticleIfNotPresent(barkTarget);
+
+            message = $"I saw {barkTarget}; Bark, bark, bark!";
+        }
+        else
+        {
+            IEnumerable<string> itemsToMention = detectedItems.Distinct().Take(5);
+            message = $"Nothing to bark at, but here's some things I saw: {string.Join(", ", itemsToMention)}";
+        }
+
+        return message;
+    }
 }
