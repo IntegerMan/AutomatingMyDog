@@ -39,6 +39,11 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Expand the `README.md` to include links to helpful content I've made
 - [ ] Investigate Telerik use by non-license holders
 
+### Error Handling
+- [ ] No Internet Connection Handling
+- [ ] Too Large File Handling
+- [ ] Bad Key or Endpoint Handling
+
 ### Global Improvements
 - [ ] Additional styling and polish
 - [ ] Better card responses

@@ -36,13 +36,39 @@ public class VisionHelper
             VisualFeatureTypes.Description,
             VisualFeatureTypes.ImageType,
             VisualFeatureTypes.Tags,
-            VisualFeatureTypes.Objects
+            VisualFeatureTypes.Objects,
+            VisualFeatureTypes.Adult,
+            VisualFeatureTypes.Brands,
+            VisualFeatureTypes.Color,
         };
 
         await using Stream imageStream = File.OpenRead(filePath);
         ImageAnalysis result = await _computerVision.AnalyzeImageInStreamAsync(imageStream, features);
 
+        // Describe Image with Caption
         results.Add(new AppMessage($"Image Caption: {result.Description.Captions.First().Text}", source));
+
+        // Adult / Racy Message
+        AdultInfo adult = result.Adult;
+        results.Add(new AppMessage($"Adult Content: {adult.IsAdultContent} Confidence in Adult / Gore / Racy: {adult.AdultScore:P} / {adult.GoreScore:P} / {adult.RacyScore:P}", source));
+
+        // Color Message
+        results.Add(new AppMessage($"Accent Color: {result.Color.AccentColor} Dominant Color: {result.Color.DominantColorForeground} foreground / {result.Color.DominantColorBackground}", source));
+
+        // Image Type
+        results.Add(new AppMessage($"Clip Art Type: {result.ImageType.ClipArtType} Line Drawing Type: {result.ImageType.LineDrawingType}", source));
+
+        // Tags
+        results.Add(new AppMessage($"Tags: {string.Join(", ", result.Tags.Select(t => t.Name))}", source));
+
+        // Categories
+        results.Add(new AppMessage($"Categories: {string.Join(", ", result.Categories.Select(c => c.Name))}", source));
+
+        // Brands
+        results.Add(new AppMessage($"Brands: {string.Join(", ", result.Brands.Select(b => b.Name))}", source));
+
+        // Objects
+        results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source));
 
         return results;
     }
