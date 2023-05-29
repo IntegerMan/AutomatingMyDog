@@ -17,5 +17,6 @@ namespace MattEland.AutomatingMyDog.Core
         public string Message { get;  }
         public MessageSource Source { get;  }
         public string? SpeakText { get; init; }
+        public string ImagePath { get; init; }
     }
 }

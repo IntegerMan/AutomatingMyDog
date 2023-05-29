@@ -27,8 +27,8 @@ Images:
 - [x] Save snapshot to snapshot.png
 - [x] Include source image in image chat
 - [x] Send image on to computer vision
-- [/] Include image tags, etc. in chat results
-- [ ] Object bounding boxes in image chat
+- [x] Include image tags, etc. in chat results
+- [x] Object bounding boxes in image chat
 - [ ] Smart thumbnail results in image chat
 
 ## Future Enhancements

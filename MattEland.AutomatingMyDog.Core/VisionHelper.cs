@@ -1,5 +1,7 @@
 ﻿using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using static System.Net.Mime.MediaTypeNames;
+using System.Drawing;
 
 namespace MattEland.AutomatingMyDog.Core;
 
@@ -83,9 +85,34 @@ public class VisionHelper
         if (result.Objects.Any())
         {
             detectedItems.AddRange(result.Objects.Select(t => t.ObjectProperty));
-            results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source));
 
-            // TODO: Add bounding boxes to an image
+            // Add bounding boxes to an image
+            // TODO: Only do this on Windows
+#pragma warning disable CA1416 // Validate platform compatibility
+            var image = System.Drawing.Image.FromFile(filePath);
+            Graphics graphics = Graphics.FromImage(image);
+            Pen pen = new(Color.Green, 5);
+            Font font = new("Arial", 16, FontStyle.Bold);
+            SolidBrush brush = new(Color.Black);
+
+            foreach (DetectedObject detectedObject in result.Objects)
+            {
+                // Draw object bounding box
+                var r = detectedObject.Rectangle;
+                Rectangle rect = new(r.X, r.Y, r.W, r.H);
+                graphics.DrawRectangle(pen, rect);
+                graphics.DrawString(detectedObject.ObjectProperty, font, brush, r.X, r.Y);
+            }
+
+            // Save annotated image
+            string output_file = Path.Combine(Environment.CurrentDirectory, "objects.jpg");
+            image.Save(output_file);
+#pragma warning restore CA1416 // Validate platform compatibility
+
+            results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source)
+            {
+                ImagePath = output_file,                
+            });
         }
 
         // Determine if we should "bark" at something

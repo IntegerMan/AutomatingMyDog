@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.ConversationalUI;
 
@@ -27,6 +28,11 @@ public class ChatMessageViewModel : ViewModelBase
         Author = Chat.GetAuthor(message.Source);
         CreationDate = DateTime.Now;
         SpeakText = message.SpeakText;
+        ImagePath = message.ImagePath;
+        if (!string.IsNullOrWhiteSpace(ImagePath))
+        {
+            ImageSource = new BitmapImage(new Uri(ImagePath));
+        }
     }
 
     public string Message { get; }

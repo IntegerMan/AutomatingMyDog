@@ -25,8 +25,7 @@ public class ChatMessageConverter : IMessageConverter
 
     public object ConvertMessage(MessageBase message)
     {
-        TextMessage? textMessage = message as TextMessage;
-        if (textMessage != null)
+        if (message is TextMessage textMessage)
         {
             return new ChatMessageViewModel(textMessage.Text, textMessage.Author);
         }
