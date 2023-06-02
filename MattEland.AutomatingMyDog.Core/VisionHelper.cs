@@ -27,27 +27,32 @@ public class VisionHelper
 
     public async Task<IEnumerable<AppMessage>> AnalyzeImageAsync(string filePath)
     {
+        string outputFile = Path.GetTempFileName();
+        const int Width = 200;
+        const int Height = 200;
+
+        // Generate a smart thumbnail and save it to the thumbnail file
+        using (FileStream inputStream = new(filePath, FileMode.Open, FileAccess.Read))
+        {
+            await using (Stream croppedStream = await _computerVision.GenerateThumbnailInStreamAsync(Width, Height, inputStream, smartCropping: true))
+            {
+                using (FileStream outputStream = new(outputFile, FileMode.Create, FileAccess.Write))
+                {
+                    croppedStream.CopyTo(outputStream);
+                }
+            }
+        }
+
         List<AppMessage> results = new();
         List<string> detectedItems = new();
 
         const MessageSource source = MessageSource.ComputerVision;
-
-        // Generate a smart thumbnail and save it to the thumbnail file
-        string thumbnailFilePath = Path.GetTempFileName();
-        await using (Stream thumbStream = await _computerVision.GenerateThumbnailInStreamAsync(200, 200, File.OpenRead(filePath), smartCropping: true))
-        {
-            using (FileStream fileStream = new(thumbnailFilePath, FileMode.Create, FileAccess.Write))
-            {
-                thumbStream.CopyTo(fileStream);
-            }
-        }
-
         ImageAnalysis result = await AnalyzeImage(filePath);
 
         // Describe Image with Caption
         results.Add(new AppMessage($"Description: {result.Description.Captions.First().Text}", source)
         {
-            ImagePath = thumbnailFilePath,
+            ImagePath = outputFile,
         });
 
         // Adult / Racy Message

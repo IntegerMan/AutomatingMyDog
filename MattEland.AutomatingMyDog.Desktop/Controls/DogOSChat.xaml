@@ -13,6 +13,8 @@
         <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" Command="{Binding Path=ListenCommand}" />
 
         <telerikChat:RadChat x:Name="chat" 
+                             AllowDrop="True"
+                             Drop="chat_Drop"
                                      CanUserSelectMessage="False"                                     
                                      SendMessage="RadChat_SendMessage" 
                                      TypingIndicatorText="DogOS is typing..." 

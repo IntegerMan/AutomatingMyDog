@@ -43,6 +43,7 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] No Internet Connection Handling
 - [ ] Too Large File Handling
 - [ ] Bad Key or Endpoint Handling
+- [ ] Non-Image or locked file error handling on Dragon Drop
 
 ### Global Improvements
 - [ ] Additional styling and polish
@@ -62,9 +63,10 @@ For KCDC these enhancements would help "sell" it more:
 
 ### Vision
 - [ ] Add an "upload picture" button to the chat region
-- [ ] Drop image onto chat from desktop to send the image
-- [ ] Include sample images in the app
+- [x] Drop image onto chat from desktop to send the image
 - [ ] Respond with voice depending on what was detected in the image
+- [ ] Better Drop Preview for Drag / Drop Image
+- [ ] Respond to Batman in image
 
 ### Speech
 - [ ] Allow changing the voice of the dog to a set of presets
