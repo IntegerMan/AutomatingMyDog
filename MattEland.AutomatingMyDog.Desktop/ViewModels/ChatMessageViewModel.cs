@@ -35,6 +35,8 @@ public class ChatMessageViewModel : ViewModelBase
         {
             ImageSource = new BitmapImage(new Uri(ImagePath));
         }
+        Items = message.Items;
+        UseLandscapeLayout = message.UseLandscapeLayout;
     }
 
     public string Message { get; }
@@ -45,4 +47,6 @@ public class ChatMessageViewModel : ViewModelBase
     public DateTime CreationDate { get; }
     public ImageSource? ImageSource { get; init; }
     public string? ImagePath { get; init; }
+    public IEnumerable<string>? Items { get; }
+    public bool UseLandscapeLayout { get; }
 }

@@ -12,7 +12,6 @@ public class DemoImageAnalyzer
         ApiKeyServiceClientCredentials visionCredentials = new(subscriptionKey);
         _computerVision = new ComputerVisionClient(visionCredentials);
         _computerVision.Endpoint = endpoint;
-
     }
 
     public async Task<List<string>> DetectItemsAsync(string filePath)

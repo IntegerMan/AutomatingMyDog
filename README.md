@@ -38,20 +38,20 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Expand the `README.md` to include a description of the project and getting started configuration
 - [ ] Expand the `README.md` to include links to helpful content I've made
 - [ ] Investigate Telerik use by non-license holders
+- [ ] Add downloadable files in GitHub Releases
 
 ### Error Handling
 - [ ] No Internet Connection Handling
 - [ ] Too Large File Handling
 - [ ] Bad Key or Endpoint Handling
 - [ ] Non-Image or locked file error handling on Dragon Drop
+- [ ] Offline Mode
 
 ### Global Improvements
 - [ ] Additional styling and polish
-- [ ] Better card responses
-- [ ] Chat on the sidebar at all times
+- [x] Chat on the sidebar at all times
 - [ ] Better global navigation
 - [ ] Add filter buttons to filter out irrelevant messages
-- [ ] Offline Mode
 - [ ] Link to Settings Page from Welcome Page
 - [ ] Icons on Navigation and Buttons
 - [ ] Include code examples in the app UI
@@ -62,9 +62,10 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Bring a stuffed animal to show DogOS
 
 ### Vision
-- [ ] Add an "upload picture" button to the chat region
+- [x] Better card responses
 - [x] Drop image onto chat from desktop to send the image
-- [ ] Respond with voice depending on what was detected in the image
+- [x] Respond with voice depending on what was detected in the image
+- [ ] Add an "upload picture" button to the chat region
 - [ ] Better Drop Preview for Drag / Drop Image
 - [ ] Respond to Batman in image
 

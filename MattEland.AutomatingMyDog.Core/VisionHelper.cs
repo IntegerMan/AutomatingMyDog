@@ -4,6 +4,8 @@ using System.Drawing;
 
 namespace MattEland.AutomatingMyDog.Core;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 public class VisionHelper
 {
     private readonly ComputerVisionClient _computerVision;
@@ -50,39 +52,86 @@ public class VisionHelper
         ImageAnalysis result = await AnalyzeImage(filePath);
 
         // Describe Image with Caption
-        results.Add(new AppMessage($"Description: {result.Description.Captions.First().Text}", source)
+        results.Add(new AppMessage("Captioning", source)
         {
             ImagePath = outputFile,
+            UseLandscapeLayout = true,
+            Items = result.Description.Captions.Select(c => $"{c.Text} ({c.Confidence:P})"),
         });
 
         // Adult / Racy Message
         AdultInfo adult = result.Adult;
-        results.Add(new AppMessage($"Confidence in Adult / Gore / Racy content in the image: {adult.AdultScore:P} / {adult.GoreScore:P} / {adult.RacyScore:P}", source));
+        results.Add(new AppMessage("Content Moderation", source)
+        {
+            Items = new List<string>
+            {
+                $"Adult Content: {adult.AdultScore:P}",
+                $"Racy Content: {adult.RacyScore:P}",
+                $"Gory Content: {adult.GoreScore:P}",
+            },
+        });
 
         // Color Message
-        if (result.Color.DominantColors.Any())
+        Color accentColor = Color.Green;
+        if (result.Color.AccentColor != null || result.Color.DominantColors.Any())
         {
-            results.Add(new AppMessage($"Dominant Colors: {string.Join(", ", result.Color.DominantColors)}. Accent Color: #{result.Color.AccentColor}", source));
+            HashSet<string> colors = GetColorsFromResult(result.Color);
+
+            // Convert the hex code to a Color object
+            accentColor = ColorTranslator.FromHtml($"#{result.Color.AccentColor}");
+
+            // Create a bitmap image to include in the card and represent the accent color
+            string accentImage = Path.GetTempFileName();
+            CreateColorImage(accentColor, accentImage);
+
+            results.Add(new AppMessage("Colors", source)
+            {
+                Items = colors,
+                ImagePath = accentImage,
+                UseLandscapeLayout = true,
+            });
         }
 
         // Tags
         if (result.Tags.Any())
         {
             detectedItems.AddRange(result.Tags.Select(t => t.Name));
-            results.Add(new AppMessage($"Tags: {string.Join(", ", result.Tags.Select(t => t.Name))}", source));
+            results.Add(new AppMessage("Tags", source) {
+                Items = result.Tags.Select(t => $"{t.Name} ({t.Confidence:P}) {t.Hint}"),
+            });
         }
 
         // Categories
         if (result.Categories.Any())
         {
             detectedItems.AddRange(result.Categories.Select(t => t.Name));
-            results.Add(new AppMessage($"Categories: {string.Join(", ", result.Categories.Select(c => c.Name))}", source));
+
+            List<string> cats = new();
+            foreach (Category category in result.Categories)
+            {
+                cats.Add($"{category.Name} ({category.Score:P})");
+                foreach (LandmarksModel landmark in category.Detail?.Landmarks ?? Enumerable.Empty<LandmarksModel>())
+                {
+                    cats.Add($"Landmark: {landmark.Name} ({landmark.Confidence:P})");
+                }
+                foreach (CelebritiesModel celebrity in category.Detail?.Celebrities ?? Enumerable.Empty<CelebritiesModel>())
+                {
+                    cats.Add($"Celebrity: {celebrity.Name} ({celebrity.Confidence:P})");
+                }
+            }   
+            results.Add(new AppMessage("Categories", source)
+            {
+                Items = cats,
+            });
         }
 
         // Brands
         if (result.Brands.Any())
         {
-            results.Add(new AppMessage($"Brands: {string.Join(", ", result.Brands.Select(b => b.Name))}", source));
+            results.Add(new AppMessage("Brands", source)
+            {
+                Items = result.Brands.Select(b => b.Name)
+            });
         }
 
         // Objects
@@ -91,11 +140,12 @@ public class VisionHelper
             detectedItems.AddRange(result.Objects.Select(t => t.ObjectProperty));
 
             // Optionally add bounding boxes to an image
-            string? output_file = BuildBoundingBoxFile(filePath, result);
+            string? output_file = BuildBoundingBoxFile(filePath, result, accentColor);
 
-            results.Add(new AppMessage($"Objects: {string.Join(", ", result.Objects.Select(o => o.ObjectProperty))}", source)
+            results.Add(new AppMessage("Objects", source)
             {
                 ImagePath = output_file,
+                Items = result.Objects.Select(o => o.ObjectProperty),
             });
         }
 
@@ -104,6 +154,35 @@ public class VisionHelper
         results.Add(new AppMessage(message, MessageSource.DogOS));
 
         return results;
+    }
+
+    private static HashSet<string> GetColorsFromResult(ColorInfo colorInfo)
+    {
+        HashSet<string> colors = new()
+        {
+            $"#{colorInfo.AccentColor} (Accent)",
+            $"{colorInfo.DominantColorForeground} (Foreground)",
+            $"{colorInfo.DominantColorBackground} (Background)",
+        };
+
+        // Add any additional colors
+        foreach (string color in colorInfo.DominantColors.Where(c => c != colorInfo.DominantColorForeground &&
+                                                                     c != colorInfo.DominantColorBackground))
+        {
+            colors.Add(color);
+        }
+
+        return colors;
+    }
+
+    private static void CreateColorImage(Color color, string accentImage)
+    {
+        using (Bitmap bmp = new(8, 8))
+        {
+            Graphics g = Graphics.FromImage(bmp);
+            g.Clear(color);
+            bmp.Save(accentImage);
+        }
     }
 
     private async Task<ImageAnalysis> AnalyzeImage(string filePath)
@@ -124,13 +203,12 @@ public class VisionHelper
         return await _computerVision.AnalyzeImageInStreamAsync(imageStream, features);
     }
 
-    private static string? BuildBoundingBoxFile(string filePath, ImageAnalysis result)
+    private static string? BuildBoundingBoxFile(string filePath, ImageAnalysis result, Color boundingBoxColor)
     {
         // TODO: Only do this on Windows
-#pragma warning disable CA1416 // Validate platform compatibility
         Image image = Image.FromFile(filePath);
         Graphics graphics = Graphics.FromImage(image);
-        Pen pen = new(Color.Green, 5);
+        Pen pen = new(boundingBoxColor, 5);
         Font font = new("Arial", 16, FontStyle.Bold);
         SolidBrush brush = new(Color.Black);
 
@@ -146,7 +224,6 @@ public class VisionHelper
         // Save annotated image
         string output_file = Path.GetTempFileName();
         image.Save(output_file);
-#pragma warning restore CA1416 // Validate platform compatibility
 
         return output_file;
     }
@@ -164,10 +241,13 @@ public class VisionHelper
         }
         else
         {
-            IEnumerable<string> itemsToMention = detectedItems.Distinct().Take(5);
+            IEnumerable<string> itemsToMention = detectedItems.Distinct()
+                                                              .Take(5)
+                                                              .Select(i => i.Replace("_", ""));
             message = $"Nothing to bark at, but here's some things I saw: {string.Join(", ", itemsToMention)}";
         }
 
         return message;
     }
 }
+#pragma warning restore CA1416 // Validate platform compatibility
