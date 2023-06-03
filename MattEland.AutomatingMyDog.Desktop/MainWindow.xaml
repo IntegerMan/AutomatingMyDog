@@ -29,7 +29,7 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Home HorizontalAlignment="Center" VerticalAlignment="Center"  MaxHeight="800"/>
+            <pages:Home HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Margin="24"/>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Vision" CloseButtonVisibility="Collapsed">
