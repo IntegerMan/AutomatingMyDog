@@ -57,21 +57,21 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Include code examples in the app UI
 
 ### Hardware
-- [ ] Mount a webcam on the stuffed dog
-- [ ] Mount a speaker on the stuffed dog as a backup for HDMI audio-out issues
-- [ ] Bring a stuffed animal to show DogOS
+- [x] Mount a webcam on the stuffed dog
+- [x] Mount a speaker on the stuffed dog as a backup for HDMI audio-out issues
+- [x] Bring a stuffed animal to show DogOS (Squirrel)
 
 ### Vision
 - [x] Better card responses
 - [x] Drop image onto chat from desktop to send the image
 - [x] Respond with voice depending on what was detected in the image
-- [ ] Add an "upload picture" button to the chat region
-- [ ] Better Drop Preview for Drag / Drop Image
+- [x] Add an "upload picture" button to the chat region
 - [ ] Respond to Batman in image
+- [ ] Next Camera or Prefer Specific Camera
+- [ ] Include a few interesting images in the executing directory
 
 ### Speech
-- [ ] Allow changing the voice of the dog to a set of presets
-- [ ] Include a SSML example
+- [x] Allow changing the voice of the dog to a set of presets
 
 ### Language Understanding
 - [ ] Add a greater amount of intents to the CLU model
@@ -79,9 +79,3 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Settings for LUIS / CLU
 - [ ] Async / Await for Tasks
 - [ ] Detect entities from LUIS / CLU
-
-### Other Ideas
-- [ ] Blazor Version
-- [ ] Azure Bot Service Integration
-- [ ] Azure OpenAI Integration
-- [ ] Testimonial for Telerik

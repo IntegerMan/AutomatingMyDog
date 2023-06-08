@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Telerik.Windows.Controls;
+using System.Linq;
 
 namespace MattEland.AutomatingMyDog.Desktop.Pages
 {
@@ -22,7 +23,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
             // A lot of the manual code in this View is due to PasswordBox not supporting data binding for security purposes
             // Because of that we need to get the password out manually and set it manually
-            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text);
+            string voice = ddlVoice.SelectedItem?.ToString() ?? "en-US-GuyNeural";
+            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice);
 
             if (vm.IsConfigured)
             {
@@ -60,6 +62,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             txtKey.Password = vm.Key;
             txtEndpoint.Text = vm.Endpoint;
             txtRegion.Text = vm.Region;
+            ddlVoice.SelectedIndex = vm.Speech.Voices.ToList().IndexOf(vm.Voice);
         }
     }
 }

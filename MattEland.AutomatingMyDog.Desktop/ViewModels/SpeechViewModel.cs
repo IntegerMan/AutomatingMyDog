@@ -1,6 +1,8 @@
 ﻿using MattEland.AutomatingMyDog.Core;
 using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Telerik.Windows.Controls;
 
 namespace MattEland.AutomatingMyDog.Desktop.ViewModels
@@ -9,6 +11,22 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
     {
         private AppViewModel _vm;
         private SpeechHelper? _speech;
+
+        public IEnumerable<string> Voices { get; } = new string[]
+        {
+            "en-US-GuyNeural",
+            "en-US-JennyMultilingualNeural",
+            "en-US-AnaNeural",
+            "en-CA-LiamNeural",
+            "en-CA-ClaraNeural",
+            "en-GB-MaisieNeural",
+            "en-GB-NoahNeural",
+            "en-AU-DuncanNeural",
+            "en-AU-ElsieNeural",
+            "en-SG-LunaNeural",
+            "en-KE-AsiliaNeural",
+            "en-IE-EmilyNeural"
+        };
 
         public SpeechViewModel(AppViewModel appViewModel)
         {
@@ -19,9 +37,13 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 
         private void UpdateTextToSpeech(AppViewModel appViewModel)
         {
-            if (appViewModel.IsConfigured)
+            if (appViewModel.IsConfigured || _speech == null)
             {
-                _speech = new SpeechHelper(appViewModel.Key, appViewModel.Region);
+                _speech = new SpeechHelper(appViewModel.Key, appViewModel.Region, appViewModel.Voice);
+            } 
+            else
+            {
+                _speech.VoiceName = appViewModel.Voice;
             }
         }
 

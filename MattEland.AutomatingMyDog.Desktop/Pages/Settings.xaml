@@ -34,6 +34,10 @@
                                 WatermarkContent="Azure Cognitive Services Key"
                                 telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure Cognitive Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
 
+            <telerik:Label Content="Voice" Target="{Binding ElementName=ddlVoice}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:RadComboBox x:Name="ddlVoice" ItemsSource="{Binding Path=Speech.Voices}" />
+
+
             <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
                 <telerik:RadButton Content="Save" Click="SaveSettingsClick"  Margin="0,0,8,0" IsDefault="True" MinWidth="100"
                            telerik:RadToolTipService.ToolTipContent="Saves these settings"  />

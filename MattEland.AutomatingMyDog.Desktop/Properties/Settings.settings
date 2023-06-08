@@ -11,5 +11,8 @@
     <Setting Name="CogServicesRegion" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Voice" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en-US-GuyNeural</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

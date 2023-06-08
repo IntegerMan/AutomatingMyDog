@@ -10,7 +10,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <telerik:RadButton Content="Listen" DockPanel.Dock="Bottom" Margin="0 12 0 0" FontSize="24" Command="{Binding Path=ListenCommand}" />
+        <Grid DockPanel.Dock="Bottom" Margin="0 12 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <telerik:RadButton Content="Listen to Command" Grid.Column="0" FontSize="24" Command="{Binding Path=ListenCommand}" />
+            <telerik:RadButton Content="Show Photo" Grid.Column="2" FontSize="24" x:Name="btnSendPhoto" Click="btnSendPhoto_Click" />
+        </Grid>
 
         <telerikChat:RadChat x:Name="chat" 
                              AllowDrop="True"

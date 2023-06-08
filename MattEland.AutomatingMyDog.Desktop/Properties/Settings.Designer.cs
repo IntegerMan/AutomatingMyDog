@@ -58,5 +58,17 @@ namespace MattEland.AutomatingMyDog.Desktop.Properties {
                 this["CogServicesRegion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US-GuyNeural")]
+        public string Voice {
+            get {
+                return ((string)(this["Voice"]));
+            }
+            set {
+                this["Voice"] = value;
+            }
+        }
     }
 }

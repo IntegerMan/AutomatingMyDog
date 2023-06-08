@@ -23,14 +23,20 @@ public class SpeechHelper
             throw new ArgumentException($"'{nameof(voiceName)}' cannot be null or whitespace.", nameof(voiceName));
         }
 
+        VoiceName = voiceName;
+
         _speechConfig = SpeechConfig.FromSubscription(subscriptionKey, region);
         _speechConfig.SpeechSynthesisVoiceName = voiceName;
     }
+
+    public string VoiceName { get; set; } = "en-US-GuyNeural";
 
     public void SayMessage(string message) => SayMessageAsync(message);
 
     public async Task SayMessageAsync(string message)
     {
+        _speechConfig.SpeechSynthesisVoiceName = VoiceName;
+
         using SpeechSynthesizer synthesizer = new(_speechConfig);
         using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
     }

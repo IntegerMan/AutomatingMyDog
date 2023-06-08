@@ -19,6 +19,7 @@ public class AppViewModel : ViewModelBase
         _endpoint = Properties.Settings.Default.CogServicesEndpoint ?? "";
         _key = Properties.Settings.Default.CogServicesKey ?? "";
         _region = Properties.Settings.Default.CogServicesRegion ?? "";
+        _voice = Properties.Settings.Default.Voice ?? "en-US-GuyNeural";
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
@@ -44,17 +45,19 @@ public class AppViewModel : ViewModelBase
     public string Title => $"{AppName} by {Author}";
     public string Version => "SciFiDevCon 2023 Edition";
 
-    internal void SaveSettings(string endpoint, string key, string region)
+    internal void SaveSettings(string endpoint, string key, string region, string? voice)
     {
         // Change our global settings
         Endpoint = endpoint;
         Key = key;
         Region = region;
+        Voice = voice ?? "en-US-GuyNeural";
 
         // Update the settings file
         Properties.Settings.Default.CogServicesEndpoint = endpoint;
         Properties.Settings.Default.CogServicesKey = key;
         Properties.Settings.Default.CogServicesRegion = region;
+        Properties.Settings.Default.Voice = voice;
         Properties.Settings.Default.Save();
 
         // Notify VMs that our settings have changed
@@ -118,6 +121,7 @@ public class AppViewModel : ViewModelBase
     private string _endpoint;
     private string _key;
     private string _region;
+    private string _voice;
     private string _chatText = "";
     private readonly SpeechViewModel _speech;
     private readonly TextViewModel _text;
@@ -168,6 +172,17 @@ public class AppViewModel : ViewModelBase
         {
             _region = value;
             OnPropertyChanged(nameof(Region));
+            OnPropertyChanged(nameof(IsConfigured));
+        }
+    }
+
+    public string Voice
+    {
+        get => _voice;
+        set
+        {
+            _voice = value;
+            OnPropertyChanged(nameof(Voice));
             OnPropertyChanged(nameof(IsConfigured));
         }
     }

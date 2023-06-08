@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.ConversationalUI;
 
 namespace MattEland.AutomatingMyDog.Desktop.Controls;
@@ -47,20 +48,43 @@ public partial class DogOSChat : UserControl
 
             // Assuming you have one file that you care about, pass it off to whatever
             // handling code you have defined.
-            string? firstFile = files.FirstOrDefault();
+            string? imageFile = files.FirstOrDefault();
 
-            if (!string.IsNullOrWhiteSpace(firstFile))
+            if (!string.IsNullOrWhiteSpace(imageFile))
             {
-                AppViewModel appVm = (AppViewModel)DataContext;
-
-                // TODO: Indicate to the user that DogOS is processing the message
-                // chat.TypingIndicatorVisibility = Visibility.Visible;
-
-                appVm.RegisterMessage(new AppMessage($"Analyze Image File", MessageSource.User)
-                {
-                    ImagePath = firstFile
-                });
+                AnalyzeImage(imageFile);
             }
+        }
+    }
+
+    private void AnalyzeImage(string imageFilePath)
+    {
+        AppViewModel appVm = (AppViewModel)DataContext;
+
+        // TODO: Indicate to the user that DogOS is processing the message
+        // chat.TypingIndicatorVisibility = Visibility.Visible;
+
+        appVm.RegisterMessage(new AppMessage($"Analyze Image File", MessageSource.User)
+        {
+            ImagePath = imageFilePath
+        });
+    }
+
+    private void btnSendPhoto_Click(object sender, RoutedEventArgs e)
+    {
+        RadOpenFileDialog openFileDialog = new()
+        {
+            Owner = this,
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+            RestoreDirectory = true
+        };
+        openFileDialog.ShowDialog();
+
+        if (openFileDialog.DialogResult == true)
+        {
+            string fileName = openFileDialog.FileName;
+
+            AnalyzeImage(fileName);
         }
     }
 }

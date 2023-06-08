@@ -29,7 +29,11 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Home HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Margin="24"/>
+            <pages:Home HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        VerticalAlignment="Stretch" 
+                        VerticalContentAlignment="Center" 
+                        Margin="24"/>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Vision" CloseButtonVisibility="Collapsed">
@@ -38,7 +42,11 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Vision HorizontalAlignment="Center" VerticalAlignment="Center"  MaxHeight="800"/>
+            <pages:Vision HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        VerticalAlignment="Stretch" 
+                        VerticalContentAlignment="Center" 
+                        Margin="24"/>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Chat" CloseButtonVisibility="Collapsed">
@@ -47,7 +55,11 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Chat MaxHeight="800"/>
+            <pages:Chat HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        VerticalAlignment="Stretch" 
+                        VerticalContentAlignment="Center" 
+                        Margin="24"/>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Settings" CloseButtonVisibility="Collapsed">
@@ -56,7 +68,11 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Settings HorizontalAlignment="Center" VerticalAlignment="Center"  MaxHeight="800"/>
+            <pages:Settings HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        VerticalAlignment="Stretch" 
+                        VerticalContentAlignment="Center" 
+                        Margin="24"/>
         </Grid>
     </telerik:RadTabItem>
 </telerik:RadTabbedWindow>
