@@ -24,7 +24,18 @@
                                    RecordingButtonVisibility="Collapsed" 
                                    SnapshotButtonVisibility="Collapsed" 
                                    PreviewSnapshots="False" />
-                <telerik:RadButton Content="Start Camera" Click="StartCamera_Click" Margin="0 8 0 0" />
+                <Grid x:Name="panelCameraSelect" Margin="0 8 0 0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Target="{Binding ElementName=comboCameras}" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White">Camera</Label>
+                    <telerik:RadComboBox x:Name="comboCameras" Grid.Column="2" />
+                    <telerik:RadButton Content="Start Camera" Click="StartCamera_Click" Grid.Column="4" />
+                </Grid>
                 <telerik:RadButton Content="Take Snapshot" Click="TakeSnapshot_Click" Margin="0 8 0 0" x:Name="btnSnapshot" Visibility="Collapsed" />
             </StackPanel>
         </Border>

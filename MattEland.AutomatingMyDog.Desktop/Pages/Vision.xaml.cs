@@ -18,10 +18,15 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
     /// </summary>
     public partial class Vision : UserControl
     {
+        private readonly ReadOnlyCollection<MediaFoundationDeviceInfo> _videoDevices;
 
         public Vision()
         {
             InitializeComponent();
+
+            _videoDevices = RadWebCam.GetVideoCaptureDevices();
+            comboCameras.ItemsSource = _videoDevices;
+            comboCameras.SelectedIndex = 0;
         }
 
         private void TakeSnapshot_Click(object sender, RoutedEventArgs e)
@@ -34,8 +39,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             // TODO: These visibility tweaks feel like hacks. This would be better with bindings and converters
 
             // Start the camera
-            ReadOnlyCollection<MediaFoundationDeviceInfo> videoDevices = RadWebCam.GetVideoCaptureDevices();
-            MediaFoundationDeviceInfo? cam = videoDevices.FirstOrDefault();
+            MediaFoundationDeviceInfo? cam = comboCameras.SelectedItem as MediaFoundationDeviceInfo;
             if (cam != null)
             {
                 ReadOnlyCollection<MediaFoundationVideoFormatInfo> videoFormats = RadWebCam.GetVideoFormats(cam);
@@ -51,9 +55,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
                 webCam.Visibility = Visibility.Visible;
                 webCam.Start();
 
-                // Hide the button
-                FrameworkElement control = (FrameworkElement)sender;
-                control.Visibility = Visibility.Collapsed;
+                // Hide the camera select button
+                panelCameraSelect.Visibility = Visibility.Collapsed;
 
                 // Show our snapshot button
                 btnSnapshot.Visibility = Visibility.Visible;
@@ -61,7 +64,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             else
             {
                 AppViewModel vm = (AppViewModel)DataContext;
-                vm.HandleError("No cameras found", "Could not start camera");
+                vm.HandleError("No camera found", "Could not start camera");
             }
         }
 
