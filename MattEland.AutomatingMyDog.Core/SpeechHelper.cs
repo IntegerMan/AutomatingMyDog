@@ -31,14 +31,14 @@ public class SpeechHelper
 
     public string VoiceName { get; set; } = "en-US-GuyNeural";
 
-    public void SayMessage(string message) => SayMessageAsync(message);
-
-    public async Task SayMessageAsync(string message)
+    public async Task<bool> SayMessageAsync(string message)
     {
         _speechConfig.SpeechSynthesisVoiceName = VoiceName;
 
         using SpeechSynthesizer synthesizer = new(_speechConfig);
-        using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
+        using SpeechSynthesisResult result = await synthesizer.SpeakTextAsync(message);
+
+        return result.Reason == ResultReason.SynthesizingAudioStarted || result.Reason == ResultReason.SynthesizingAudioCompleted;
     }
 
     public string ListenToSpokenText()

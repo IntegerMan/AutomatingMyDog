@@ -41,20 +41,23 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Add downloadable files in GitHub Releases
 
 ### Error Handling
-- [ ] Too Large File Handling
+- [x] Too Large File Handling
 - [x] Non-Image or locked file error handling on Dragon Drop
-- [ ] Bad Key or Endpoint Handling
+- [x] Bad Key or Endpoint Handling
 - [ ] No Internet Connection Handling
 - [ ] Offline Mode
 
 ### Global Improvements
 - [ ] Additional styling and polish
+- [ ] UI Thread busy experience
 - [x] Chat on the sidebar at all times
 - [ ] Better global navigation
 - [ ] Add filter buttons to filter out irrelevant messages
 - [ ] Link to Settings Page from Welcome Page
 - [ ] Icons on Navigation and Buttons
 - [ ] Include code examples in the app UI
+- [ ] Light Theme or light theme option?
+- [ ] Upgrade to latest Telerik
 
 ### Hardware
 - [x] Mount a webcam on the stuffed dog

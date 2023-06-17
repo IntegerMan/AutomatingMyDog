@@ -1,5 +1,7 @@
 ﻿using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.Rest;
+using Newtonsoft.Json;
 using System.Drawing;
 
 namespace MattEland.AutomatingMyDog.Core;
@@ -34,15 +36,18 @@ public class VisionHelper
         const int Height = 200;
 
         // Generate a smart thumbnail and save it to the thumbnail file
-        using (FileStream inputStream = new(filePath, FileMode.Open, FileAccess.Read))
+        try 
         {
-            await using (Stream croppedStream = await _computerVision.GenerateThumbnailInStreamAsync(Width, Height, inputStream, smartCropping: true))
-            {
-                using (FileStream outputStream = new(outputFile, FileMode.Create, FileAccess.Write))
-                {
-                    croppedStream.CopyTo(outputStream);
+            using (FileStream inputStream = new(filePath, FileMode.Open, FileAccess.Read)) {
+                await using (Stream croppedStream = await _computerVision.GenerateThumbnailInStreamAsync(Width, Height, inputStream, smartCropping: true)) {
+                    using (FileStream outputStream = new(outputFile, FileMode.Create, FileAccess.Write)) {
+                        croppedStream.CopyTo(outputStream);
+                    }
                 }
             }
+        }
+        catch (HttpOperationException ex) {
+            return HandleImageError(ex);
         }
 
         List<AppMessage> results = new();
@@ -154,6 +159,28 @@ public class VisionHelper
         results.Add(new AppMessage(message, MessageSource.DogOS));
 
         return results;
+    }
+
+    private static IEnumerable<AppMessage> HandleImageError(HttpOperationException ex) {
+        // Deserialize ex.Response to ImageError class if it exists
+        ImageErrorResponse? errorResponse = null;
+        if (!string.IsNullOrEmpty(ex.Response.Content)) {
+            errorResponse = JsonConvert.DeserializeObject<ImageErrorResponse>(ex.Response.Content);
+        }
+
+        string errorMessage = "Could not analyze image: ";
+        if (!string.IsNullOrWhiteSpace(errorResponse?.Error?.Message)) {
+            errorMessage += errorResponse.Error.Message;
+        } else {
+            errorMessage += ex.Message;
+        }
+
+        // Handle cases where we got a non-success response
+        return new List<AppMessage>() {
+                new AppMessage(errorMessage, MessageSource.Error) {
+                    SpeakText = errorMessage,
+                }
+            };
     }
 
     private static HashSet<string> GetColorsFromResult(ColorInfo colorInfo)

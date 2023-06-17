@@ -24,8 +24,15 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         {
             if (appViewModel.IsConfigured)
             {
-                _text = new TextAnalyticsHelper(appViewModel.Key, appViewModel.Endpoint);
-                _luis = new LanguageUnderstandingHelper(appViewModel.Key, appViewModel.Endpoint, appViewModel.LuisAppId, appViewModel.LuisSlotId);
+                try {
+                    _text = new TextAnalyticsHelper(appViewModel.Key, appViewModel.Endpoint);
+                    _luis = new LanguageUnderstandingHelper(appViewModel.Key, appViewModel.Endpoint, appViewModel.LuisAppId, appViewModel.LuisSlotId);
+                }
+                catch (Exception ex) {
+                    _text = null;
+                    _luis = null;
+                    appViewModel.HandleError(ex, "Could not configure Cognitive Services", showErrorBox: false);
+                }
             }
         }
 

@@ -3,6 +3,7 @@ using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Telerik.Windows.Controls;
 
 namespace MattEland.AutomatingMyDog.Desktop.ViewModels
@@ -52,10 +53,15 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             UpdateTextToSpeech(appViewModel);
         }
 
-        public void Say(string message, string? speechText=null)
+        public async Task SayAsync(string message, string? speechText=null)
         {
             // If the user provided speech text to customize the pronunciation, use that. Otherwise, use the message.
-            _speech?.SayMessage(speechText ?? message);
+            if (_speech != null) {
+                bool result = await _speech.SayMessageAsync(speechText ?? message);
+                if (!result) {
+                    _vm.RegisterMessage(new AppMessage("Could not generate speech. Your Azure Cognitive Services settings are likely not correctly configured", MessageSource.Error));
+                }
+            }
         }
 
         public string ListenForText()
