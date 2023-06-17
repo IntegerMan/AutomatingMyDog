@@ -16,6 +16,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Controls;
 /// </summary>
 public partial class DogOSChat : UserControl
 {
+
     public DogOSChat()
     {
         InitializeComponent();
@@ -64,10 +65,16 @@ public partial class DogOSChat : UserControl
         // TODO: Indicate to the user that DogOS is processing the message
         // chat.TypingIndicatorVisibility = Visibility.Visible;
 
-        appVm.RegisterMessage(new AppMessage($"Analyze Image File", MessageSource.User)
+        try {
+            appVm.RegisterMessage(new AppMessage($"Analyze Image File", MessageSource.User) {
+                ImagePath = imageFilePath
+            });
+        }
+        catch (NotSupportedException ex) 
         {
-            ImagePath = imageFilePath
-        });
+            const string ImageErrorMessage = "That image doesn't appear to be valid";
+            appVm.RegisterMessage(new ChatMessageViewModel($"{ImageErrorMessage}: {ex.Message}", Chat.ErrorAuthor, "That image doesn't appear to be valid"));
+        }
     }
 
     private void btnSendPhoto_Click(object sender, RoutedEventArgs e)

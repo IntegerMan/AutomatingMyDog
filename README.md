@@ -41,10 +41,10 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Add downloadable files in GitHub Releases
 
 ### Error Handling
-- [ ] No Internet Connection Handling
 - [ ] Too Large File Handling
+- [x] Non-Image or locked file error handling on Dragon Drop
 - [ ] Bad Key or Endpoint Handling
-- [ ] Non-Image or locked file error handling on Dragon Drop
+- [ ] No Internet Connection Handling
 - [ ] Offline Mode
 
 ### Global Improvements
@@ -66,8 +66,8 @@ For KCDC these enhancements would help "sell" it more:
 - [x] Drop image onto chat from desktop to send the image
 - [x] Respond with voice depending on what was detected in the image
 - [x] Add an "upload picture" button to the chat region
+- [x] Select specific camera
 - [ ] Respond to Batman in image
-- [ ] Next Camera or Prefer Specific Camera
 - [ ] Include a few interesting images in the executing directory
 
 ### Speech

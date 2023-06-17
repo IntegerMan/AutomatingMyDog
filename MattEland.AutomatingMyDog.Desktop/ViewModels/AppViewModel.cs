@@ -90,7 +90,7 @@ public class AppViewModel : ViewModelBase
                 await Text.RespondToAsync(message.Message);
             }
         } 
-        else if (message.Author == Chat.DogOSAuthor)
+        else if (message.Author == Chat.DogOSAuthor || !string.IsNullOrEmpty(message.SpeakText))
         {
             // Say it aloud
             Speech.Say(message.Message, message.SpeakText);
