@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExampleCode\ComputerVision.cs" />
+    <Compile Remove="ExampleCode\Cropping.cs" />
     <Compile Remove="ExampleCode\SpeechToText.cs" />
     <Compile Remove="ExampleCode\TextToSpeech.cs" />
   </ItemGroup>
@@ -38,6 +40,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ExampleCode\ComputerVision.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExampleCode\Cropping.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="ExampleCode\SpeechToText.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -15,6 +15,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages {
             syntaxEditor.TaggersRegistry.RegisterTagger(new CSharpFoldingTagger(syntaxEditor));
             syntaxEditor.TaggersRegistry.RegisterTagger(new CSharpTagger(syntaxEditor));
             syntaxEditor.Palette = SyntaxPalettes.NeutralDark;
+            syntaxEditor.ZoomTo(1.25); // 125%
         }
     }
 }

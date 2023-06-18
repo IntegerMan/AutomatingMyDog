@@ -23,7 +23,9 @@ public partial class Chat : UserControl
     {
         InitializeComponent();
 
-        SyntaxHelpers.ConfigureSyntaxEditor(syntaxEditor, "ExampleCode/TextToSpeech.cs");
+        SyntaxHelpers.ConfigureSyntaxEditor(syntaxText, "ExampleCode/TextAnalysis.cs");
+        SyntaxHelpers.ConfigureSyntaxEditor(syntaxLUIS, "ExampleCode/LUIS.cs");
+        SyntaxHelpers.ConfigureSyntaxEditor(syntaxCLU, "ExampleCode/CLU.cs");
     }
 
     internal static Author GetAuthor(MessageSource source)

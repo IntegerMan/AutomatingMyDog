@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <telerik:RadTabControl DockPanel.Dock="Right" MaxWidth="800" MinWidth="600" Margin="12 0 0 0" Padding="8">
+        <telerik:RadTabControl DockPanel.Dock="Right" Width="960" Margin="12 0 0 0" Padding="8">
             <telerik:RadTabItem Header="Chat">
                 <controls:DogOSChat Height="600" />
             </telerik:RadTabItem>

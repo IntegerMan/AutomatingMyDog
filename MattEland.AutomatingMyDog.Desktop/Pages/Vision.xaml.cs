@@ -28,7 +28,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             comboCameras.ItemsSource = _videoDevices;
             comboCameras.SelectedIndex = 0;
 
-            SyntaxHelpers.ConfigureSyntaxEditor(syntaxEditor, "ExampleCode/TextToSpeech.cs");
+            SyntaxHelpers.ConfigureSyntaxEditor(syntaxCropping, "ExampleCode/Cropping.cs");
+            SyntaxHelpers.ConfigureSyntaxEditor(syntaxVision, "ExampleCode/ComputerVision.cs");
         }
 
         private void TakeSnapshot_Click(object sender, RoutedEventArgs e)
