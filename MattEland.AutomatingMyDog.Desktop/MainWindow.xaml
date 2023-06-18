@@ -67,6 +67,20 @@
             </Viewbox>
         </Grid>
     </telerik:RadTabItem>
+    <telerik:RadTabItem Header="Code" CloseButtonVisibility="Collapsed">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/DogOSSplash.png" Stretch="UniformToFill" Opacity="0.5"/>
+            </Grid.Background>
+            <Viewbox Stretch="Uniform">
+                <pages:Code HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        VerticalAlignment="Stretch" 
+                        VerticalContentAlignment="Center" 
+                        Margin="24"/>
+            </Viewbox>
+        </Grid>
+    </telerik:RadTabItem>    
     <telerik:RadTabItem Header="Settings" CloseButtonVisibility="Collapsed">
         <Grid>
             <Grid.Background>

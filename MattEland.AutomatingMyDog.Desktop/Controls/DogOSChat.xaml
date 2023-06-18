@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             
-            <telerik:RadButton Content="Listen to Command" Grid.Column="0" FontSize="24" Command="{Binding Path=ListenCommand}" />
+            <telerik:RadButton Content="Listen" Grid.Column="0" FontSize="24" Command="{Binding Path=ListenCommand}" />
             <telerik:RadButton Content="Show Photo" Grid.Column="2" FontSize="24" x:Name="btnSendPhoto" Click="btnSendPhoto_Click" />
         </Grid>
 
