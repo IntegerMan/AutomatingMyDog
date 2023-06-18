@@ -32,7 +32,7 @@ Images:
 - [x] Smart thumbnail results in image chat
 
 ## Future Enhancements
-For KCDC these enhancements would help "sell" it more:
+For KCDC and beyond:
 
 ### Onboarding Improvements
 - [ ] Expand the `README.md` to include a description of the project and getting started configuration
@@ -53,7 +53,7 @@ For KCDC these enhancements would help "sell" it more:
 - [x] Viewboxing for high resolutions
 - [ ] Icons on Navigation and Buttons
 - [ ] Include code examples in the app UI
-- [ ] Light Theme or light theme option?
+- [x] Light Theme if System Supports it
 - [ ] Upgrade to latest Telerik
 
 ### Hardware

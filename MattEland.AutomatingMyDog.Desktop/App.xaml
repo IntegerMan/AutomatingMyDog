@@ -7,13 +7,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <telerik:GreenResourceDictionary/>
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Common Styling -->
             <Style TargetType="Border" x:Key="PanelStyle">
-                <Setter Property="BorderBrush" Value="Green" />
+                <Setter Property="BorderBrush" Value="{telerik:GreenResource ResourceKey=AccentHighBrush}" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Background" Value="Black" />
+                <Setter Property="Background" Value="{telerik:GreenResource ResourceKey=AlternativeBrush}" />
                 <Setter Property="Padding" Value="12" />
                 <Setter Property="MaxWidth" Value="800" />
             </Style>

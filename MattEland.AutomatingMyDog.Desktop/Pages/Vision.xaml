@@ -32,7 +32,7 @@
                         <ColumnDefinition Width="8" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Label Target="{Binding ElementName=comboCameras}" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White">Camera</Label>
+                    <Label Target="{Binding ElementName=comboCameras}" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="{telerik:GreenResource ResourceKey=MarkerBrush}">Camera</Label>
                     <telerik:RadComboBox x:Name="comboCameras" Grid.Column="2" />
                     <telerik:RadButton Content="Start Camera" Click="StartCamera_Click" Grid.Column="4" />
                 </Grid>

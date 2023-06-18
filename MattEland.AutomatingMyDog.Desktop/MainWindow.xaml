@@ -26,7 +26,7 @@
     <telerik:RadTabItem Header="Welcome" CloseButtonVisibility="Collapsed">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/DogOSSplash.png" Stretch="UniformToFill" Opacity="0.5"/>
             </Grid.Background>
 
             <Viewbox Stretch="Uniform">
@@ -41,7 +41,7 @@
     <telerik:RadTabItem Header="Vision" CloseButtonVisibility="Collapsed">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/DogOSSplash.png" Stretch="UniformToFill" Opacity="0.5"/>
             </Grid.Background>
 
             <Viewbox Stretch="Uniform">
@@ -56,7 +56,7 @@
     <telerik:RadTabItem Header="Chat" CloseButtonVisibility="Collapsed">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/DogOSSplash.png" Stretch="UniformToFill" Opacity="0.5"/>
             </Grid.Background>
             <Viewbox Stretch="Uniform">
                 <pages:Chat HorizontalAlignment="Stretch" 
@@ -70,7 +70,7 @@
     <telerik:RadTabItem Header="Settings" CloseButtonVisibility="Collapsed">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/DogOSSplash.png" Stretch="UniformToFill" Opacity="0.5"/>
             </Grid.Background>
             <Viewbox Stretch="Uniform">
                 <pages:Settings HorizontalAlignment="Stretch" 
