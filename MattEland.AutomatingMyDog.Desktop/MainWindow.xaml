@@ -29,11 +29,13 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Home HorizontalAlignment="Stretch" 
+            <Viewbox Stretch="Uniform">
+                <pages:Home HorizontalAlignment="Stretch" 
                         HorizontalContentAlignment="Center" 
                         VerticalAlignment="Stretch" 
                         VerticalContentAlignment="Center" 
                         Margin="24"/>
+            </Viewbox>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Vision" CloseButtonVisibility="Collapsed">
@@ -42,11 +44,13 @@
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <pages:Vision HorizontalAlignment="Stretch" 
+            <Viewbox Stretch="Uniform">
+                <pages:Vision HorizontalAlignment="Stretch" 
                         HorizontalContentAlignment="Center" 
                         VerticalAlignment="Stretch" 
                         VerticalContentAlignment="Center" 
                         Margin="24"/>
+            </Viewbox>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Chat" CloseButtonVisibility="Collapsed">
@@ -54,12 +58,13 @@
             <Grid.Background>
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
-
-            <pages:Chat HorizontalAlignment="Stretch" 
+            <Viewbox Stretch="Uniform">
+                <pages:Chat HorizontalAlignment="Stretch" 
                         HorizontalContentAlignment="Center" 
                         VerticalAlignment="Stretch" 
                         VerticalContentAlignment="Center" 
                         Margin="24"/>
+            </Viewbox>
         </Grid>
     </telerik:RadTabItem>
     <telerik:RadTabItem Header="Settings" CloseButtonVisibility="Collapsed">
@@ -67,12 +72,13 @@
             <Grid.Background>
                 <ImageBrush ImageSource="/DogOSBackground.png" Stretch="UniformToFill"/>
             </Grid.Background>
-
-            <pages:Settings HorizontalAlignment="Stretch" 
+            <Viewbox Stretch="Uniform">
+                <pages:Settings HorizontalAlignment="Stretch" 
                         HorizontalContentAlignment="Center" 
                         VerticalAlignment="Stretch" 
                         VerticalContentAlignment="Center" 
                         Margin="24"/>
+            </Viewbox>
         </Grid>
     </telerik:RadTabItem>
 </telerik:RadTabbedWindow>

@@ -48,12 +48,9 @@ For KCDC these enhancements would help "sell" it more:
 - [ ] Offline Mode
 
 ### Global Improvements
-- [ ] Additional styling and polish
-- [ ] UI Thread busy experience
 - [x] Chat on the sidebar at all times
-- [ ] Better global navigation
-- [ ] Add filter buttons to filter out irrelevant messages
-- [ ] Link to Settings Page from Welcome Page
+- [ ] UI Thread busy experience
+- [x] Viewboxing for high resolutions
 - [ ] Icons on Navigation and Buttons
 - [ ] Include code examples in the app UI
 - [ ] Light Theme or light theme option?
