@@ -23,7 +23,7 @@ public class DemoSpeechHelper
         Console.WriteLine();
 
         using SpeechSynthesizer synthesizer = new(_speechConfig);
-        using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);
+        using SpeechSynthesisResult? result = await synthesizer.SpeakTextAsync(message);        
     }
 
     public string? ListenToSpokenText()

@@ -66,40 +66,12 @@ For best results, check out my [YouTube Playlist on Azure Cogntive Services](htt
 
 I want to get the following tasks done for demos:
 
-Global App:
-- [x] Set the basic layout of the desktop app
-- [x] Global Navigation
-- [x] Global error handling in the desktop app
-- [x] Add a place in the desktop app to enter your cognitive services keys / endpoints
-- [x] Save Settings to a Settings File
-- [x] Extract a control for the chat region
-
-Text / Chat:
-- [x] Add a "listen" button to the desktop app
-- [x] Add a text chat feature to the desktop app
-- [x] Add a log of things the app has said to you
-- [x] Send message on to Text Analytics APIs to get sentiment analysis etc.
-- [x] Send message on to LUIS to get app responses
-- [x] Speak a message as a result of the intent
-
-Images: 
-- [x] Add a Telerik Webcam to the desktop app
-- [x] Add a "take a picture" button to the desktop app
-- [x] Save snapshot to snapshot.png
-- [x] Include source image in image chat
-- [x] Send image on to computer vision
-- [x] Include image tags, etc. in chat results
-- [x] Object bounding boxes in image chat
-- [x] Smart thumbnail results in image chat
-
-## Future Enhancements
-For KCDC and beyond:
-
 ### Onboarding Improvements
 - [x] Expand the `README.md` to include a description of the project and getting started configuration
 - [x] Expand the `README.md` to include links to helpful content I've made
 - [ ] Investigate Telerik use by non-license holders
 - [ ] Add downloadable files in GitHub Releases
+- [ ] Update Doggo link to have all resources
 
 ### Error Handling
 - [x] Too Large File Handling
@@ -109,12 +81,12 @@ For KCDC and beyond:
 
 ### Global Improvements
 - [x] Chat on the sidebar at all times
-- [ ] UI Thread busy experience
+- [ ] UI busy experience
 - [x] Viewboxing for high resolutions
 - [ ] Icons on Navigation and Buttons
-- [ ] Include code examples in the app UI
+- [x] Include code examples in the app UI
 - [x] Light Theme if System Supports it
-- [ ] Upgrade to latest Telerik
+- [x] Upgrade to latest Telerik
 
 ### Hardware
 - [x] Mount a webcam on the stuffed dog

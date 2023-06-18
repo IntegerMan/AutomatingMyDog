@@ -9,12 +9,18 @@
 	<PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ExampleCode\SpeechToText.cs" />
+    <Compile Remove="ExampleCode\TextToSpeech.cs" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Azure.AI.TextAnalytics" Version="5.2.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision" Version="7.0.1" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.28.0" />
-		<PackageReference Include="Telerik.UI.for.Wpf.70.Xaml" Version="2023.1.315" />
+		<PackageReference Include="Telerik.UI.for.Wpf.70.Xaml" Version="2023.2.606" />
+		<PackageReference Include="Telerik.Windows.SyntaxEditor.Core.for.Wpf.Xaml" Version="2023.2.606" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -29,6 +35,15 @@
   <ItemGroup>
     <Resource Include="CogServicesKeys.png" />
     <EmbeddedResource Include="Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ExampleCode\SpeechToText.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExampleCode\TextToSpeech.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

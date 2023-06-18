@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MattEland.AutomatingMyDog.Desktop.Controls" 
-             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
-             xmlns:telerikChat="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.ConversationalUI"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -40,7 +39,14 @@
                 </StackPanel>
             </Border>
         </DockPanel>
-        <controls:DogOSChat DockPanel.Dock="Right" MaxWidth="800" MinWidth="600" Margin="0 12 12 12" />
+        <telerik:RadTabControl DockPanel.Dock="Right" MaxWidth="800" MinWidth="600" Margin="0 12 12 12" Padding="8">
+            <telerik:RadTabItem Header="Chat">
+                <controls:DogOSChat Height="600" />
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Code">
+                <telerik:RadSyntaxEditor x:Name="syntaxEditor" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
 
         <!-- Empty area in center -->
         <Grid>

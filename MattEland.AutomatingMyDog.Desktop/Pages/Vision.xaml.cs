@@ -27,6 +27,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             _videoDevices = RadWebCam.GetVideoCaptureDevices();
             comboCameras.ItemsSource = _videoDevices;
             comboCameras.SelectedIndex = 0;
+
+            SyntaxHelpers.ConfigureSyntaxEditor(syntaxEditor, "ExampleCode/TextToSpeech.cs");
         }
 
         private void TakeSnapshot_Click(object sender, RoutedEventArgs e)
