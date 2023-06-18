@@ -14,11 +14,14 @@ public async Task<string> MatchUtteranceToIntentAsync(string utterance) {
     ApiKeyServiceClientCredentials creds = new(subscriptionKey);
     LUISRuntimeClient client = new(creds);
 
+
+
     // Call out to LUIS to get a prediction
     PredictionRequest request = new(message);
     IPredictionOperations predictions = client.Prediction;
     PredictionResponse predictResult =
         await predictions.GetSlotPredictionAsync(appId, slotId, request, showAllIntents: true);
+
 
 
     // Get the top intent
