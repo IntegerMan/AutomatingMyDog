@@ -44,7 +44,7 @@ For KCDC these enhancements would help "sell" it more:
 - [x] Too Large File Handling
 - [x] Non-Image or locked file error handling on Dragon Drop
 - [x] Bad Key or Endpoint Handling
-- [ ] No Internet Connection Handling
+- [x] No Internet Connection Handling
 - [ ] Offline Mode
 
 ### Global Improvements

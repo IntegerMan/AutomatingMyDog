@@ -46,8 +46,11 @@ public class VisionHelper
                 }
             }
         }
-        catch (HttpOperationException ex) {
+        catch (HttpRequestException ex) {
             return HandleImageError(ex);
+        }
+        catch (HttpOperationException ex) {
+            return HandleImageError(ex, ex.Response.Content);
         }
 
         List<AppMessage> results = new();
@@ -161,11 +164,11 @@ public class VisionHelper
         return results;
     }
 
-    private static IEnumerable<AppMessage> HandleImageError(HttpOperationException ex) {
+    private static IEnumerable<AppMessage> HandleImageError(Exception ex, string? content = null) {
         // Deserialize ex.Response to ImageError class if it exists
         ImageErrorResponse? errorResponse = null;
-        if (!string.IsNullOrEmpty(ex.Response.Content)) {
-            errorResponse = JsonConvert.DeserializeObject<ImageErrorResponse>(ex.Response.Content);
+        if (!string.IsNullOrEmpty(content)) {
+            errorResponse = JsonConvert.DeserializeObject<ImageErrorResponse>(content);
         }
 
         string errorMessage = "Could not analyze image: ";
