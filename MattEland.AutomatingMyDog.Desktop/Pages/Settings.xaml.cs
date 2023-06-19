@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Telerik.Windows.Controls;
 using System.Linq;
+using System;
 
 namespace MattEland.AutomatingMyDog.Desktop.Pages
 {
@@ -24,7 +25,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             // A lot of the manual code in this View is due to PasswordBox not supporting data binding for security purposes
             // Because of that we need to get the password out manually and set it manually
             string voice = ddlVoice.SelectedItem?.ToString() ?? "en-US-GuyNeural";
-            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice);
+            Uri.TryCreate(txtLanguageEndpoint.Text, UriKind.Absolute, out Uri? languageEndpoint);
+            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password);
 
             if (vm.IsConfigured)
             {
@@ -60,6 +62,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
 
             AppViewModel vm = ((AppViewModel)DataContext);
             txtKey.Password = vm.Key;
+            txtLanguageKey.Password = vm.LanguageKey;
+            txtLanguageEndpoint.Text = vm.LanguageEndpoint?.AbsoluteUri;
             txtEndpoint.Text = vm.Endpoint;
             txtRegion.Text = vm.Region;
             ddlVoice.SelectedIndex = vm.Speech.Voices.ToList().IndexOf(vm.Voice);

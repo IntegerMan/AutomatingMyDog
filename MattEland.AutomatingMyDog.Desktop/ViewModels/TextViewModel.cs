@@ -12,6 +12,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         private AppViewModel appViewModel;
         private TextAnalyticsHelper? _text;
         private LanguageUnderstandingHelper? _luis;
+        private CluHelper? _clu;
 
         public TextViewModel(AppViewModel appViewModel)
         {
@@ -26,11 +27,13 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             {
                 try {
                     _text = new TextAnalyticsHelper(appViewModel.Key, appViewModel.Endpoint);
+                    _clu = new CluHelper(appViewModel.LanguageKey, appViewModel.LanguageEndpoint!);
                     _luis = new LanguageUnderstandingHelper(appViewModel.Key, appViewModel.Endpoint, appViewModel.LuisAppId, appViewModel.LuisSlotId);
                 }
                 catch (Exception ex) {
                     _text = null;
                     _luis = null;
+                    _clu = null;
                     appViewModel.HandleError(ex, "Could not configure Cognitive Services", showErrorBox: false);
                 }
             }
@@ -44,7 +47,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         public async Task RespondToAsync(string message)
         {
             // Abort if the app is not configured
-            if (_text == null || _luis == null)
+            if (_text == null || _clu == null)
             {
                 AppMessage notConfigMessage = new("The application settings have not been configured. Please configure those first and try again.", MessageSource.DogOS);
                 await appViewModel.RegisterMessageAsync(notConfigMessage);
@@ -58,7 +61,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 }
 
                 // Move on to LUIS
-                foreach (AppMessage response in _luis.AnalyzeText(message))
+                foreach (AppMessage response in _clu.AnalyzeText(message))
                 {
                     await appViewModel.RegisterMessageAsync(response);
                 }

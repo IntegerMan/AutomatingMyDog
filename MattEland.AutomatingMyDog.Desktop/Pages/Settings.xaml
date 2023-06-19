@@ -19,7 +19,7 @@
 
             <Image Source="/CogServicesKeys.png" Stretch="Uniform" StretchDirection="DownOnly" Height="420" />
 
-            <telerik:Label Content="Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:Label Content="Azure Cognitive Services Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
             <telerik:RadWatermarkTextBox x:Name="txtEndpoint"
                                      WatermarkContent="Azure Cognitive Services Endpoint"
                                      telerik:RadToolTipService.ToolTipContent="The endpoint of your Azure Cognitive Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
@@ -29,14 +29,23 @@
                                      WatermarkContent="Azure Region (e.g. northcentralus)"
                                      telerik:RadToolTipService.ToolTipContent="The shorthand name of the Azure Region as shown on the Keys and Endpoint blade." />
 
-            <telerik:Label Content="Key" Target="{Binding ElementName=txtKey}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:Label Content="Azure Cognitive Services Key" Target="{Binding ElementName=txtKey}" Style="{DynamicResource FieldLabelStyle}" />
             <telerik:RadPasswordBox x:Name="txtKey"
                                 WatermarkContent="Azure Cognitive Services Key"
                                 telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure Cognitive Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
 
+            <telerik:Label Content="Language Key" Target="{Binding ElementName=txtLanguageKey}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:RadPasswordBox x:Name="txtLanguageKey"
+                                WatermarkContent="Language Key"
+                                telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Language resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
+
+            <telerik:Label Content="Language Endpoint" Target="{Binding ElementName=txtLanguageEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
+            <telerik:RadWatermarkTextBox x:Name="txtLanguageEndpoint"
+                                     WatermarkContent="Language Endpoint"
+                                     telerik:RadToolTipService.ToolTipContent="The language endpoint for your language resource holding your CLU model." />
+
             <telerik:Label Content="Voice" Target="{Binding ElementName=ddlVoice}" Style="{DynamicResource FieldLabelStyle}" />
             <telerik:RadComboBox x:Name="ddlVoice" ItemsSource="{Binding Path=Speech.Voices}" />
-
 
             <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
                 <telerik:RadButton Content="Save" Click="SaveSettingsClick"  Margin="0,0,8,0" IsDefault="True" MinWidth="100"

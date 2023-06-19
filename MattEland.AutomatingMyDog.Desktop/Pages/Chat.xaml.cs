@@ -14,6 +14,7 @@ public partial class Chat : UserControl
 {
     public static Author UserAuthor = new("User");
     public static Author DogOSAuthor = new("DogOS");
+    public static Author CLUAuthor = new("Conversational Language Understanding (CLU)");
     public static Author TextAnalysisAuthor = new("Text Analysis");
     public static Author ComputerVisionAuthor = new("Computer Vision");
     public static Author LuisAuthor = new("Language Understanding (LUIS)");
@@ -34,6 +35,7 @@ public partial class Chat : UserControl
         {
             MessageSource.User => UserAuthor,
             MessageSource.DogOS => DogOSAuthor,
+            MessageSource.CLU => CLUAuthor,
             MessageSource.LanguageUnderstanding => LuisAuthor,
             MessageSource.TextAnalytics => TextAnalysisAuthor,
             MessageSource.Error => ErrorAuthor,

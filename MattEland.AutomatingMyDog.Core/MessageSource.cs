@@ -11,6 +11,7 @@ namespace MattEland.AutomatingMyDog.Core
         User,
         DogOS,
         LanguageUnderstanding,
+        CLU,
         TextAnalytics,
         Error,
         ComputerVision,

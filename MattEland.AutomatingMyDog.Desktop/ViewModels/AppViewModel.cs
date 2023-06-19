@@ -20,6 +20,8 @@ public class AppViewModel : ViewModelBase
         _key = Properties.Settings.Default.CogServicesKey ?? "";
         _region = Properties.Settings.Default.CogServicesRegion ?? "";
         _voice = Properties.Settings.Default.Voice ?? "en-US-GuyNeural";
+        _languageEndpoint = string.IsNullOrWhiteSpace(Properties.Settings.Default.LanguageEndpoint) ? null : new Uri(Properties.Settings.Default.LanguageEndpoint);
+        _languageKey = Properties.Settings.Default.LanguageKey ?? "";
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
@@ -43,9 +45,9 @@ public class AppViewModel : ViewModelBase
     public string AppName => "DogOS";
     public string Author => "Matt Eland";
     public string Title => $"{AppName} by {Author}";
-    public string Version => "SciFiDevCon 2023 Edition";
+    public string Version => "KCDC 2023 Edition";
 
-    internal void SaveSettings(string endpoint, string key, string region, string? voice)
+    internal void SaveSettings(string endpoint, string key, string region, string? voice, Uri? languageEndpoint, string? languageKey)
     {
         // Change our global settings
         Endpoint = endpoint;
@@ -58,6 +60,8 @@ public class AppViewModel : ViewModelBase
         Properties.Settings.Default.CogServicesKey = key;
         Properties.Settings.Default.CogServicesRegion = region;
         Properties.Settings.Default.Voice = voice;
+        Properties.Settings.Default.LanguageKey = languageKey;
+        Properties.Settings.Default.LanguageEndpoint = languageEndpoint?.AbsoluteUri;
         Properties.Settings.Default.Save();
 
         // Notify VMs that our settings have changed
@@ -119,7 +123,9 @@ public class AppViewModel : ViewModelBase
     internal void HandleError(Exception ex, string header, bool showErrorBox = true) => HandleError(ex.Message, header, showErrorBox);
 
     private string _endpoint;
+    private Uri? _languageEndpoint;
     private string _key;
+    private string _languageKey;
     private string _region;
     private string _voice;
     private string _chatText = "";
@@ -150,6 +156,24 @@ public class AppViewModel : ViewModelBase
         {
             _endpoint = value;
             OnPropertyChanged(nameof(Endpoint));
+            OnPropertyChanged(nameof(IsConfigured));
+        }
+    }
+
+    public string LanguageKey {
+        get => _languageKey;
+        set {
+            _languageKey = value;
+            OnPropertyChanged(nameof(LanguageKey));
+            OnPropertyChanged(nameof(IsConfigured));
+        }
+    }
+
+    public Uri? LanguageEndpoint {
+        get => _languageEndpoint;
+        set {
+            _languageEndpoint = value;
+            OnPropertyChanged(nameof(LanguageEndpoint));
             OnPropertyChanged(nameof(IsConfigured));
         }
     }
@@ -187,7 +211,7 @@ public class AppViewModel : ViewModelBase
         }
     }
 
-    public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Region);
+    public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Region) && !string.IsNullOrEmpty(LanguageKey) && LanguageEndpoint != null;
 
     public Dispatcher UIThread { get; }
 }

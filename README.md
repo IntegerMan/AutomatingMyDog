@@ -104,10 +104,8 @@ I want to get the following tasks done for demos:
 - [x] Allow changing the voice of the dog to a set of presets
 
 ### Language Understanding & Content
-- [ ] Add a greater amount of intents to the CLU model
-- [ ] Move from LUIS to CLU
-- [ ] Settings for LUIS / CLU
-- [ ] Async / Await for Tasks
-- [ ] Detect entities from LUIS / CLU
+- [x] Add a greater amount of intents to the CLU model
+- [x] Move from LUIS to CLU
+- [x] Settings for LUIS / CLU
 - [ ] Respond to Batman in image
 - [ ] Include a few interesting images in the executing directory
