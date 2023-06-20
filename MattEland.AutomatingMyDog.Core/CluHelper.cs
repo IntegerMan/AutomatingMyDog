@@ -18,7 +18,7 @@ public class CluHelper
         _client = new ConversationAnalysisClient(endpoint, new AzureKeyCredential(apiKey));
     }
 
-    public IEnumerable<AppMessage> AnalyzeText(string text)
+    public ChatResult AnalyzeText(string text)
     {
         const MessageSource source = MessageSource.CLU;
 
@@ -83,15 +83,18 @@ public class CluHelper
         string topIntent = prediction.GetProperty("topIntent")!.GetString()!;
 
         // List all possible intents (inlcuding the top intent)
-        List<string> intents = new();
+        List<KeyValuePair<string, float>> intents = new();
         foreach (JsonElement intent in prediction.GetProperty("intents").EnumerateArray()) {
             string intentName = intent.GetProperty("category")!.GetString()!;
             float confidence = intent.GetProperty("confidenceScore").GetSingle();
 
-            intents.Add($"{intentName} ({confidence:P1})");
+            intents.Add(new KeyValuePair<string, float> (intentName, confidence));
         }
-        yield return new AppMessage(topIntent, source) {
-            Items = intents.Take(3)
+
+        return new ChatResult { 
+            ConsideredIntents = intents, 
+            TopIntent = topIntent, 
+            TopIntentConfidence = intents.First().Value
         };
     }
 
