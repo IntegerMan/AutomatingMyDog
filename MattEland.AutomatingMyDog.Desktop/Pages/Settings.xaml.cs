@@ -26,7 +26,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             // Because of that we need to get the password out manually and set it manually
             string voice = ddlVoice.SelectedItem?.ToString() ?? "en-US-GuyNeural";
             Uri.TryCreate(txtLanguageEndpoint.Text, UriKind.Absolute, out Uri? languageEndpoint);
-            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password);
+            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password, null, null);
 
             if (vm.IsConfigured)
             {
