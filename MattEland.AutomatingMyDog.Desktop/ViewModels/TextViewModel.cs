@@ -14,6 +14,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         private AppViewModel appViewModel;
         private TextAnalyticsHelper? _text;
         private LanguageUnderstandingHelper? _luis;
+        private OpenAIHelper? _openAI;
         private CluHelper? _clu;
 
         public TextViewModel(AppViewModel appViewModel)
@@ -38,6 +39,10 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                     _clu = null;
                     appViewModel.HandleError(ex, "Could not configure Cognitive Services", showErrorBox: false);
                 }
+            }
+
+            if (appViewModel.IsOpenAIConfigured) {
+                _openAI = new OpenAIHelper(appViewModel.OpenAIKey, appViewModel.OpenAIEndpoint!);
             }
         }
 

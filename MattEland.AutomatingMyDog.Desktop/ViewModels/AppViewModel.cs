@@ -22,6 +22,8 @@ public class AppViewModel : ViewModelBase
         _voice = Properties.Settings.Default.Voice ?? "en-US-GuyNeural";
         _languageEndpoint = string.IsNullOrWhiteSpace(Properties.Settings.Default.LanguageEndpoint) ? null : new Uri(Properties.Settings.Default.LanguageEndpoint);
         _languageKey = Properties.Settings.Default.LanguageKey ?? "";
+        _openAIEndpoint = string.IsNullOrWhiteSpace(Properties.Settings.Default.OpenAIEndpoint) ? null : new Uri(Properties.Settings.Default.OpenAIEndpoint);
+        _openAIKey = Properties.Settings.Default.OpenAIKey ?? "";
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
@@ -47,13 +49,17 @@ public class AppViewModel : ViewModelBase
     public string Title => $"{AppName} by {Author}";
     public string Version => "KCDC 2023 Edition";
 
-    internal void SaveSettings(string endpoint, string key, string region, string? voice, Uri? languageEndpoint, string? languageKey)
+    internal void SaveSettings(string endpoint, string key, string region, string? voice, Uri? languageEndpoint, string? languageKey, Uri? openAIEndpoint, string? openAIKey)
     {
         // Change our global settings
         Endpoint = endpoint;
         Key = key;
         Region = region;
         Voice = voice ?? "en-US-GuyNeural";
+        LanguageKey = languageKey;
+        LanguageEndpoint = languageEndpoint;
+        OpenAIKey = openAIKey;
+        OpenAIEndpoint = openAIEndpoint;
 
         // Update the settings file
         Properties.Settings.Default.CogServicesEndpoint = endpoint;
@@ -62,6 +68,8 @@ public class AppViewModel : ViewModelBase
         Properties.Settings.Default.Voice = voice;
         Properties.Settings.Default.LanguageKey = languageKey;
         Properties.Settings.Default.LanguageEndpoint = languageEndpoint?.AbsoluteUri;
+        Properties.Settings.Default.OpenAIKey = OpenAIKey;
+        Properties.Settings.Default.OpenAIEndpoint = OpenAIEndpoint?.AbsoluteUri;
         Properties.Settings.Default.Save();
 
         // Notify VMs that our settings have changed
@@ -123,9 +131,11 @@ public class AppViewModel : ViewModelBase
     internal void HandleError(Exception ex, string header, bool showErrorBox = true) => HandleError(ex.Message, header, showErrorBox);
 
     private string _endpoint;
+    private Uri? _openAIEndpoint;
     private Uri? _languageEndpoint;
     private string _key;
-    private string _languageKey;
+    private string? _languageKey;
+    private string? _openAIKey;
     private string _region;
     private string _voice;
     private string _chatText = "";
@@ -160,7 +170,17 @@ public class AppViewModel : ViewModelBase
         }
     }
 
-    public string LanguageKey {
+    public string? OpenAIKey {
+        get => _openAIKey;
+        set {
+            _openAIKey = value;
+            OnPropertyChanged(nameof(OpenAIKey));
+            OnPropertyChanged(nameof(IsOpenAIConfigured));
+            OnPropertyChanged(nameof(IsConfigured));
+        }
+    }
+
+    public string? LanguageKey {
         get => _languageKey;
         set {
             _languageKey = value;
@@ -174,6 +194,16 @@ public class AppViewModel : ViewModelBase
         set {
             _languageEndpoint = value;
             OnPropertyChanged(nameof(LanguageEndpoint));
+            OnPropertyChanged(nameof(IsConfigured));
+        }
+    }
+
+    public Uri? OpenAIEndpoint {
+        get => _openAIEndpoint;
+        set {
+            _openAIEndpoint = value;
+            OnPropertyChanged(nameof(OpenAIEndpoint));
+            OnPropertyChanged(nameof(IsOpenAIConfigured));
             OnPropertyChanged(nameof(IsConfigured));
         }
     }
@@ -211,7 +241,13 @@ public class AppViewModel : ViewModelBase
         }
     }
 
-    public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Region) && !string.IsNullOrEmpty(LanguageKey) && LanguageEndpoint != null;
+    public bool IsConfigured => !string.IsNullOrEmpty(Key) && 
+        !string.IsNullOrEmpty(Endpoint) && 
+        !string.IsNullOrEmpty(Region) &&        
+        !string.IsNullOrEmpty(LanguageKey) && 
+        LanguageEndpoint != null;
+
+    public bool IsOpenAIConfigured => !string.IsNullOrEmpty(OpenAIKey) && OpenAIEndpoint != null;
 
     public Dispatcher UIThread { get; }
 }

@@ -14,6 +14,7 @@
     <Compile Remove="ExampleCode\ComputerVision.cs" />
     <Compile Remove="ExampleCode\Cropping.cs" />
     <Compile Remove="ExampleCode\LUIS.cs" />
+    <Compile Remove="ExampleCode\OpenAI.cs" />
     <Compile Remove="ExampleCode\SpeechToText.cs" />
     <Compile Remove="ExampleCode\TextAnalysis.cs" />
     <Compile Remove="ExampleCode\TextToSpeech.cs" />
@@ -21,6 +22,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Azure.AI.Language.Conversations" Version="1.0.0" />
+		<PackageReference Include="Azure.AI.OpenAI" Version="1.0.0-beta.5" />
 		<PackageReference Include="Azure.AI.TextAnalytics" Version="5.2.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision" Version="7.0.1" />
@@ -44,6 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ExampleCode\OpenAI.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="ExampleCode\LUIS.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

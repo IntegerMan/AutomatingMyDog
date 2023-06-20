@@ -94,5 +94,29 @@ namespace MattEland.AutomatingMyDog.Desktop.Properties {
                 this["LanguageKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        public string OpenAIEndpoint {
+            get {
+                return ((string)(this["OpenAIEndpoint"]));
+            }
+            set {
+                this["OpenAIEndpoint"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OpenAIKey {
+            get {
+                return ((string)(this["OpenAIKey"]));
+            }
+            set {
+                this["OpenAIKey"] = value;
+            }
+        }
     }
 }
