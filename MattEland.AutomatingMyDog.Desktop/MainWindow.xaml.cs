@@ -33,8 +33,14 @@ namespace MattEland.AutomatingMyDog.Desktop
 
         private void RadTabbedWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            string welcome = "Welcome to DogOS";
             AppViewModel vm = (AppViewModel)DataContext;
-            vm.RegisterMessage(new AppMessage("Welcome to DogOS", MessageSource.DogOS) { SpeakText = "Welcome to doggos" });
+
+            if (vm.IsOpenAIConfigured) {
+                vm.Text!.SayCreative(welcome);
+            } else {
+                vm.RegisterMessage(new AppMessage(welcome, MessageSource.DogOS) { SpeakText = "Welcome to doggos" });
+            }
         }
     }
 }

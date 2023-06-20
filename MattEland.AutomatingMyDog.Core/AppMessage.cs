@@ -8,7 +8,7 @@ public record AppMessage
         Source = source;
     }
 
-    public string Message { get;  }
+    public string Message { get; set; }
     public MessageSource Source { get;  }
     public string? SpeakText { get; init; }
     public string? ImagePath { get; init; }

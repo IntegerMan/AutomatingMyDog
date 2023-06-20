@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.DataVisualization.Map.BingRest;
 using Telerik.Windows.Controls.Map.VEWPFImageryService;
 
 namespace MattEland.AutomatingMyDog.Desktop.ViewModels
@@ -89,21 +90,8 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 string response = RespondToTopIntent(responses.TopIntent);
 
                 // If we've got OpenAI support, have OpenAI add its flavor
-                if (_openAI != null && topIntent.ToUpperInvariant() != "ASK_AGE") {
-                    string prompt;
-                    if (topIntent == "None") {
-                        prompt = message;
-                    } else {
-                        _openAI.RegisterUserMessage(message);
-                        prompt = $"Generate a response like '{response}', to my last message but vary it up a little";
-                    }
-                    appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: " + prompt, MessageSource.OpenAI));
-
-                    try {
-                        response = await _openAI.RespondToPromptAsync(prompt);
-                    } catch (RequestFailedException ex) {
-                        appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
-                    }
+                if (_openAI != null) {// && topIntent.ToUpperInvariant() != "ASK_AGE") {
+                    response = await GetOpenAIResponseAsync(message, topIntent, response);
                 }
 
                 // Reply
@@ -112,12 +100,51 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
         }
 
+
+        public string GetCreativeText(string message) {
+            try {
+                string prompt = $"Say something like '{message}' but feel free to vary it";
+                appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
+                message = _openAI!.RespondToPrompt(prompt);
+            }
+            catch (RequestFailedException ex) {
+                appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+            }
+
+            return message;
+        }
+
+        public void SayCreative(string message) {
+            message = GetCreativeText(message);
+            appViewModel.RegisterMessage(new AppMessage(message, MessageSource.DogOS));
+        }
+
+        private async Task<string> GetOpenAIResponseAsync(string message, string topIntent, string response) {
+            string prompt;
+            if (topIntent == "None") {
+                prompt = message;
+            } else {
+                _openAI!.RegisterUserMessage(message);
+                prompt = $"Generate a response like '{response}', to my last message but vary it up a little";
+            }
+            appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
+
+            try {
+                response = await _openAI!.RespondToPromptAsync(prompt);
+            }
+            catch (RequestFailedException ex) {
+                appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+            }
+
+            return response;
+        }
+
         private string RespondToTopIntent(string topIntent) {
             switch (topIntent.ToUpperInvariant()) {
                 case "ASK_AGE":
                     DateTime origin = new DateTime(2022, 7, 24, 22, 17, 0);
                     double daysOld = (DateTime.Now - origin.Date).TotalDays;
-                   return $"It's been {daysOld} days since my GitHub repository was created.";
+                   return $"It's been {daysOld:F2} days since my GitHub repository was created.";
 
                 case "ASK_BREED":
                     return "I'm one of a kind, but I'm closest to a Cairn Terrier mixed with Cortana.";

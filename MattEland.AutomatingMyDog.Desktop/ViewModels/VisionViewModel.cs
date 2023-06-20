@@ -1,8 +1,10 @@
 ﻿using MattEland.AutomatingMyDog.Core;
 using MattEland.AutomatingMyDog.Desktop.Pages;
+using SharpDX.Direct3D10;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
@@ -37,21 +39,32 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
         public async Task RespondToAsync(string imagePath)
         {
             // Abort if the app is not configured
-            if (_vision == null)
-            {
+            if (_vision == null) {
                 AppMessage notConfigMessage = new("The application settings have not been configured. Please configure those first and try again.", MessageSource.DogOS);
                 await _vm.RegisterMessageAsync(notConfigMessage);
-            }
-            else
-            {
-                IEnumerable<AppMessage> results;
-
+            } else {
                 // Open the file in a stream for analysis
-                results = await _vision.AnalyzeImageAsync(imagePath);
+                List<AppMessage> results = (await _vision.AnalyzeImageAsync(imagePath)).ToList();
+
+                // Allow us to take creative liberties with the app
+                AppMessage? dogMessage = results.FirstOrDefault(m => m.Source == MessageSource.DogOS);
+                if (dogMessage != null && _vm.IsOpenAIConfigured) {
+
+                    string prompt = dogMessage.Message;
+                    AppMessage? captionMessage = results.FirstOrDefault(m => m.Message == "Captioning");
+
+                    if (captionMessage != null && captionMessage.Items != null && captionMessage.Items.Any()) {
+                        prompt += $". The description of the image is '{captionMessage.Items.First()}'";
+                    }
+
+                    dogMessage.Message = _vm.Text.GetCreativeText(prompt);
+                }
+
 
                 // Respond to results
                 foreach (AppMessage message in results)
                 {
+
                     await _vm.RegisterMessageAsync(message);
                 }
             }
