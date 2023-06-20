@@ -26,7 +26,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             // Because of that we need to get the password out manually and set it manually
             string voice = ddlVoice.SelectedItem?.ToString() ?? "en-US-GuyNeural";
             Uri.TryCreate(txtLanguageEndpoint.Text, UriKind.Absolute, out Uri? languageEndpoint);
-            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password, null, null);
+            Uri.TryCreate(txtOpenAIEndpoint.Text, UriKind.Absolute, out Uri? openAIEndpoint);
+            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password, openAIEndpoint, txtOpenAIKey.Password);
 
             if (vm.IsConfigured)
             {
@@ -67,6 +68,8 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             txtEndpoint.Text = vm.Endpoint;
             txtRegion.Text = vm.Region;
             ddlVoice.SelectedIndex = vm.Speech.Voices.ToList().IndexOf(vm.Voice);
+            txtOpenAIEndpoint.Text = vm.OpenAIEndpoint?.AbsoluteUri;
+            txtOpenAIKey.Password = vm.OpenAIKey;
         }
     }
 }
