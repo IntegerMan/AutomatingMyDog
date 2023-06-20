@@ -19,6 +19,7 @@ public partial class Chat : UserControl
     public static Author ComputerVisionAuthor = new("Computer Vision");
     public static Author LuisAuthor = new("Language Understanding (LUIS)");
     public static Author ErrorAuthor = new("App Error Handler");
+    public static Author OpenAIAuthor = new("OpenAI Prompt");
 
     public Chat()
     {
@@ -40,6 +41,7 @@ public partial class Chat : UserControl
             MessageSource.TextAnalytics => TextAnalysisAuthor,
             MessageSource.Error => ErrorAuthor,
             MessageSource.ComputerVision => ComputerVisionAuthor,
+            MessageSource.OpenAI => OpenAIAuthor,
             _ => throw new ArgumentOutOfRangeException(nameof(source), source, null),
         };
     }

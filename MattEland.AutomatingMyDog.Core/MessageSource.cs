@@ -15,5 +15,6 @@ namespace MattEland.AutomatingMyDog.Core
         TextAnalytics,
         Error,
         ComputerVision,
+        OpenAI,
     }
 }

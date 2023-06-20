@@ -1,4 +1,5 @@
-﻿using MattEland.AutomatingMyDog.Core;
+﻿using Azure;
+using MattEland.AutomatingMyDog.Core;
 using MattEland.AutomatingMyDog.Desktop.Pages;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,8 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
 
             if (appViewModel.IsOpenAIConfigured) {
-                _openAI = new OpenAIHelper(appViewModel.OpenAIKey, appViewModel.OpenAIEndpoint!);
+                _openAI = new OpenAIHelper(appViewModel.OpenAIKey!, appViewModel.OpenAIEndpoint!);
+                appViewModel.RegisterMessage(new AppMessage(_openAI.Prompt, MessageSource.OpenAI));
             }
         }
 
@@ -61,8 +63,8 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             }
             else {
                 // Start with text analysis
-                foreach (AppMessage response in _text.AnalyzeText(message)) {
-                    await appViewModel.RegisterMessageAsync(response);
+                foreach (AppMessage txtResponse in _text.AnalyzeText(message)) {
+                    await appViewModel.RegisterMessageAsync(txtResponse);
                 }
 
                 // Move on to LUIS / CLU
@@ -76,65 +78,81 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 string topIntent = responses.TopIntent;
 
                 // If the system isn't confident enough, we'll treat it as a None intent
-                const float CONFIDENCE_THRESHHOLD = 0.8f;
+                const float CONFIDENCE_THRESHHOLD = 0.9f;
                 float confidence = responses.TopIntentConfidence;
                 if (confidence < CONFIDENCE_THRESHHOLD) {
                     appViewModel.RegisterMessage(new AppMessage($"Confidence {confidence} was below the {CONFIDENCE_THRESHHOLD} threshhold so treating as a 'None' intent.", MessageSource.CLU));
                     topIntent = "None";
                 }
 
-                // Actually respond
-                RespondToTopIntent(responses.TopIntent);
+                // Get the candidate response
+                string response = RespondToTopIntent(responses.TopIntent);
+
+                // If we've got OpenAI support, have OpenAI add its flavor
+                if (_openAI != null && topIntent.ToUpperInvariant() != "ASK_AGE") {
+                    string prompt;
+                    if (topIntent == "None") {
+                        prompt = message;
+                    } else {
+                        _openAI.RegisterUserMessage(message);
+                        prompt = $"Generate a response like '{response}', to my last message but vary it up a little";
+                    }
+                    appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: " + prompt, MessageSource.OpenAI));
+
+                    try {
+                        response = await _openAI.RespondToPromptAsync(prompt);
+                    } catch (RequestFailedException ex) {
+                        appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+                    }
+                }
+
+                // Reply
+                string speakText = response.Replace("DogOS", "Doggos");
+                appViewModel.RegisterMessage(new AppMessage(response, MessageSource.DogOS) {  SpeakText = speakText });
             }
         }
 
-        private void RespondToTopIntent(string topIntent) {
-
-
+        private string RespondToTopIntent(string topIntent) {
             switch (topIntent.ToUpperInvariant()) {
                 case "ASK_AGE":
                     DateTime origin = new DateTime(2022, 7, 24, 22, 17, 0);
                     double daysOld = (DateTime.Now - origin.Date).TotalDays;
-                    appViewModel.RegisterMessage(new AppMessage($"It's been {daysOld} days since my GitHub repository was created.", MessageSource.DogOS));
-                    break;
+                   return $"It's been {daysOld} days since my GitHub repository was created.";
 
                 case "ASK_BREED":
-                    appViewModel.RegisterMessage(new AppMessage("I'm one of a kind, but I'm closest to a Cairn Terrier mixed with Cortana.", MessageSource.DogOS));
-                    break;
+                    return "I'm one of a kind, but I'm closest to a Cairn Terrier mixed with Cortana.";
 
                 case "ASK_CREATOR":
-                    appViewModel.RegisterMessage(new AppMessage("Matt Eland made me. I'm still trying to figure out why.", MessageSource.DogOS));
-                    break;
+                    return "Matt Eland made me. I'm still trying to figure out why.";
 
                 case "ASK_WHAT_ARE_YOU_MADE_IN":
-                    appViewModel.RegisterMessage(new AppMessage("I was written in C# talking to Azure Cognitive Services. My user interface uses Telerik UI for WPF.", MessageSource.DogOS));
-                    break;
-
+                    return "I was written in C# talking to Azure Cognitive Services. My user interface uses Telerik UI for WPF.";
+                
                 case "GOODBYE":
-                    appViewModel.RegisterMessage(new AppMessage("Goodbye! Have fun with the rest of the talk! Don't ask Matt anything too hard.", MessageSource.DogOS));
-                    break;
+                    return "Goodbye! Have fun with the rest of the talk! Don't ask Matt anything too hard.";
 
                 case "HELLO":
-                    appViewModel.RegisterMessage(new AppMessage("Hello! I am DogOS. I have just met you and I love you!", MessageSource.DogOS) {  SpeakText = "Hello! I am Doggos. I have just met you and I love you!" });
-                    break;
+                    return "Hello! I am DogOS. I have just met you and I love you!";
+
+                case "TREAT":
+                    return "I'm sorry, but I've been set to not accept cookies since they usually have chocolate in them.";
+
+                case "PET":
+                    return "If you can figure out a way to pet my data center, go for it.";
 
                 case "WHERE_ARE_YOU":
-                    appViewModel.RegisterMessage(new AppMessage("I'm running on this machine, but a lot of my brain is in a few Azure data centers in the Eastern and North Central United States", MessageSource.DogOS));
-                    break;
+                    return "I'm running on this machine, but a lot of my brain is in a few Azure data centers in the Eastern and North Central United States";
 
                 case "GOOD BOY":
                 case "PRAISE":
-                    appViewModel.RegisterMessage(new AppMessage("DogOS is a good doggo!", MessageSource.DogOS) { SpeakText = "Doggos is a good doggo." });
-                    break;
+                    return "DogOS is a good doggo!";
 
                 case "WALK":
-                    appViewModel.RegisterMessage(new AppMessage("Why yes, DogOS DOES want to go on a walk!", MessageSource.DogOS));
-                    break;
+                    return "Why yes, DogOS DOES want to go on a walk!";
 
                 case "NONE":
                 default:
-                    appViewModel.RegisterMessage(new AppMessage("DogOS does not understand.", MessageSource.DogOS) { SpeakText = "Doggos does not understand." });
-                    break;
+                    return "DogOS does not understand.";
             }
         }
     }    
