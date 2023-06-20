@@ -67,45 +67,16 @@ For best results, check out my [YouTube Playlist on Azure Cogntive Services](htt
 I want to get the following tasks done for demos:
 
 ### Onboarding Improvements
-- [x] Expand the `README.md` to include a description of the project and getting started configuration
-- [x] Expand the `README.md` to include links to helpful content I've made
 - [ ] Investigate Telerik use by non-license holders
 - [ ] Add downloadable files in GitHub Releases
 - [ ] Update Doggo link to have all resources
 
-### Error Handling
-- [x] Too Large File Handling
-- [x] Non-Image or locked file error handling on Dragon Drop
-- [x] Bad Key or Endpoint Handling
-- [x] No Internet Connection Handling
-
 ### Global Improvements
-- [x] Chat on the sidebar at all times
 - [ ] UI busy experience
-- [x] Viewboxing for high resolutions
 - [ ] Icons on Navigation and Buttons
-- [x] Include code examples in the app UI
-- [x] Light Theme if System Supports it
-- [x] Upgrade to latest Telerik
-
-### Hardware
-- [x] Mount a webcam on the stuffed dog
-- [x] Mount a speaker on the stuffed dog as a backup for HDMI audio-out issues
-- [x] Bring a stuffed animal to show DogOS (Squirrel)
-
-### Vision
-- [x] Better card responses
-- [x] Drop image onto chat from desktop to send the image
-- [x] Respond with voice depending on what was detected in the image
-- [x] Add an "upload picture" button to the chat region
-- [x] Select specific camera
-
-### Speech
-- [x] Allow changing the voice of the dog to a set of presets
+- [ ] Filter actions based on checkboxes
 
 ### Language Understanding & Content
-- [x] Add a greater amount of intents to the CLU model
-- [x] Move from LUIS to CLU
-- [x] Settings for LUIS / CLU
 - [ ] Respond to Batman in image
 - [ ] Include a few interesting images in the executing directory
+- [ ] OpenAI API Call
