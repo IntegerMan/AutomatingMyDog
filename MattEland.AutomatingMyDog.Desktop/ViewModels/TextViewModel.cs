@@ -79,10 +79,10 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 string topIntent = responses.TopIntent;
 
                 // If the system isn't confident enough, we'll treat it as a None intent
-                const float CONFIDENCE_THRESHHOLD = 0.9f;
+                const float CONFIDENCE_THRESHHOLD = 0.925f;
                 float confidence = responses.TopIntentConfidence;
                 if (confidence < CONFIDENCE_THRESHHOLD) {
-                    appViewModel.RegisterMessage(new AppMessage($"Confidence {confidence} was below the {CONFIDENCE_THRESHHOLD} threshhold so treating as a 'None' intent.", MessageSource.CLU));
+                    await appViewModel.RegisterMessageAsync(new AppMessage($"Confidence {confidence} was below the {CONFIDENCE_THRESHHOLD} threshhold so treating as a 'None' intent.", MessageSource.CLU));
                     topIntent = "None";
                 }
 
@@ -91,12 +91,20 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 
                 // If we've got OpenAI support, have OpenAI add its flavor
                 if (_openAI != null) {// && topIntent.ToUpperInvariant() != "ASK_AGE") {
-                    response = await GetOpenAIResponseAsync(message, topIntent, response);
+                    if (topIntent == "JOKE")
+                    {
+                        //_openAI.RegisterUserMessage(message);
+                        response = await _openAI.RespondToPromptAsync(message + ". Tell a joke that a programmer dog would think would be funny");
+                    }
+                    else
+                    {
+                        response = await GetOpenAIResponseAsync(message, topIntent, response);
+                    }
                 }
 
                 // Reply
                 string speakText = response.Replace("DogOS", "Doggos");
-                appViewModel.RegisterMessage(new AppMessage(response, MessageSource.DogOS) {  SpeakText = speakText });
+                await appViewModel.RegisterMessageAsync(new AppMessage(response, MessageSource.DogOS) {  SpeakText = speakText });
             }
         }
 

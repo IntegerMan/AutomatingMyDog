@@ -1,7 +1,4 @@
 ﻿using MattEland.AutomatingMyDog.Core;
-using MattEland.AutomatingMyDog.Desktop.Pages;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telerik.Windows.Controls;
@@ -10,7 +7,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 {
     public class SpeechViewModel : ViewModelBase
     {
-        private AppViewModel _vm;
+        private readonly AppViewModel _vm;
         private SpeechHelper? _speech;
 
         public IEnumerable<string> Voices { get; } = new string[]
@@ -55,11 +52,13 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 
         public async Task SayAsync(string message, string? speechText=null)
         {
+            speechText ??= message.Replace("DogOS", "Doggos");
+
             // If the user provided speech text to customize the pronunciation, use that. Otherwise, use the message.
             if (_speech != null) {
                 bool result = await _speech.SayMessageAsync(speechText ?? message);
                 if (!result) {
-                    _vm.RegisterMessage(new AppMessage("Could not generate speech. You may be offline or your Azure Cognitive Services settings are not correctly configured", MessageSource.Error));
+                    await _vm.RegisterMessageAsync(new AppMessage("Could not generate speech. You may be offline or your Azure Cognitive Services settings are not correctly configured", MessageSource.Error));
                 }
             }
         }
