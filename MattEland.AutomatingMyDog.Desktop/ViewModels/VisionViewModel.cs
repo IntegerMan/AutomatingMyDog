@@ -44,26 +44,23 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 await _vm.RegisterMessageAsync(notConfigMessage);
             } else {
                 // Open the file in a stream for analysis
-                List<AppMessage> results = (await _vision.AnalyzeImageAsync(imagePath)).ToList();
-
-                // Allow us to take creative liberties with the app
-                AppMessage? dogMessage = results.FirstOrDefault(m => m.Source == MessageSource.DogOS);
-                if (dogMessage != null && _vm.IsOpenAIConfigured) {
-
-                    string prompt = dogMessage.Message;
-                    AppMessage? captionMessage = results.FirstOrDefault(m => m.Message == "Captioning");
-
-                    if (captionMessage != null && captionMessage.Items != null && captionMessage.Items.Any()) {
-                        prompt = $"The user just showed you an an image. Computer Vision describes the image as '{captionMessage.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
-                    }
-
-                    dogMessage.Message = _vm.Text.GetReplyFromPrompt(prompt);
-                }
+                List<AppMessage> results = (await _vision.AnalyzeImageAsync(imagePath, _vm.UseImageCropping, _vm.UseObjectDetection)).ToList();
 
                 // Respond to results
                 foreach (AppMessage message in results)
                 {
+                    if (_vm.IsOpenAIConfigured && message.Source == MessageSource.DogOS) {
+                        continue;
+                    }
+
                     await _vm.RegisterMessageAsync(message);
+
+                    if (_vm.IsOpenAIConfigured && message.Message == "Captioning" && message.Items != null && message.Items.Any()) {
+                        string prompt = $"The user just showed you an an image. Computer Vision describes the image as '{message.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
+                        string openAiText = _vm.Text.GetReplyFromPrompt(prompt);
+                        await _vm.RegisterMessageAsync(new AppMessage(openAiText, MessageSource.DogOS));
+                    }
+
                 }
             }
 

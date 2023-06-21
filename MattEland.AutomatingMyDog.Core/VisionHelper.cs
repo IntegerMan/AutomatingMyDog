@@ -29,35 +29,38 @@ public class VisionHelper
         _computerVision.Endpoint = endpoint;
     }
 
-    public async Task<IEnumerable<AppMessage>> AnalyzeImageAsync(string filePath)
+    public async Task<IEnumerable<AppMessage>> AnalyzeImageAsync(string filePath, bool makeThumbnail, bool detectObjects)
     {
-        string outputFile = Path.GetTempFileName();
+        string? outputFile = Path.GetTempFileName();
         const int Width = 200;
         const int Height = 200;
 
         // Generate a smart thumbnail and save it to the thumbnail file
-        try 
-        {
-            using (FileStream inputStream = new(filePath, FileMode.Open, FileAccess.Read)) {
-                await using (Stream croppedStream = await _computerVision.GenerateThumbnailInStreamAsync(Width, Height, inputStream, smartCropping: true)) {
-                    using (FileStream outputStream = new(outputFile, FileMode.Create, FileAccess.Write)) {
-                        croppedStream.CopyTo(outputStream);
+        if (makeThumbnail) {
+            try {
+                using (FileStream inputStream = new(filePath, FileMode.Open, FileAccess.Read)) {
+                    await using (Stream croppedStream = await _computerVision.GenerateThumbnailInStreamAsync(Width, Height, inputStream, smartCropping: true)) {
+                        using (FileStream outputStream = new(outputFile, FileMode.Create, FileAccess.Write)) {
+                            croppedStream.CopyTo(outputStream);
+                        }
                     }
                 }
             }
-        }
-        catch (HttpRequestException ex) {
-            return HandleImageError(ex);
-        }
-        catch (HttpOperationException ex) {
-            return HandleImageError(ex, ex.Response.Content);
+            catch (HttpRequestException ex) {
+                return HandleImageError(ex);
+            }
+            catch (HttpOperationException ex) {
+                return HandleImageError(ex, ex.Response.Content);
+            }
+        } else {
+            outputFile = null;
         }
 
         List<AppMessage> results = new();
         List<string> detectedItems = new();
 
         const MessageSource source = MessageSource.ComputerVision;
-        ImageAnalysis result = await AnalyzeImage(filePath);
+        ImageAnalysis result = await AnalyzeImage(filePath, detectObjects);
 
         // Adult / Racy Message
         AdultInfo adult = result.Adult;
@@ -143,23 +146,23 @@ public class VisionHelper
         }
 
         // Objects
-        if (result.Objects.Any())
-        {
-            detectedItems.AddRange(result.Objects.Select(t => t.ObjectProperty));
+        if (detectObjects) {
+            if (result.Objects.Any()) {
+                detectedItems.AddRange(result.Objects.Select(t => t.ObjectProperty));
 
-            // Optionally add bounding boxes to an image
-            string? output_file = BuildBoundingBoxFile(filePath, result, accentColor);
+                // Optionally add bounding boxes to an image
+                string? output_file = BuildBoundingBoxFile(filePath, result, accentColor);
 
-            results.Add(new AppMessage("Objects", source)
-            {
-                ImagePath = output_file,
-                Items = result.Objects.Select(o => o.ObjectProperty),
-            });
+                results.Add(new AppMessage("Objects", source) {
+                    ImagePath = output_file,
+                    Items = result.Objects.Select(o => o.ObjectProperty),
+                });
+            }
         }
 
         // Describe Image with Caption
         results.Add(new AppMessage("Captioning", source) {
-            ImagePath = outputFile,
+            ImagePath = outputFile ?? filePath,
             UseLandscapeLayout = true,
             Items = result.Description.Captions.Select(c => $"{c.Text} ({c.Confidence:P})"),
         });
@@ -222,7 +225,7 @@ public class VisionHelper
         }
     }
 
-    private async Task<ImageAnalysis> AnalyzeImage(string filePath)
+    private async Task<ImageAnalysis> AnalyzeImage(string filePath, bool detectObjects)
     {
         // We need to tell it what types of results we care about
         List<VisualFeatureTypes?> features = new()
@@ -230,11 +233,14 @@ public class VisionHelper
             VisualFeatureTypes.Categories,
             VisualFeatureTypes.Description,
             VisualFeatureTypes.Tags,
-            VisualFeatureTypes.Objects,
             VisualFeatureTypes.Adult,
             VisualFeatureTypes.Brands,
             VisualFeatureTypes.Color,
         };
+
+        if (detectObjects) {
+            features.Add(VisualFeatureTypes.Objects);
+        }
 
         await using (Stream imageStream = File.OpenRead(filePath))
         return await _computerVision.AnalyzeImageInStreamAsync(imageStream, features);
