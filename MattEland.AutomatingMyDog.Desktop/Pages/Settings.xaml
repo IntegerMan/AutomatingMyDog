@@ -37,6 +37,9 @@
                                 WatermarkContent="Azure Cognitive Services Key"
                                 telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure Cognitive Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
 
+                        <telerik:RadToggleSwitchButton x:Name="toggleImageCrop" CheckedContent="Generate Smart Thumbnails" UncheckedContent="No Thumbnail Generation" Margin="0,12,0,0" />
+                        <telerik:RadToggleSwitchButton x:Name="toggleObjectDetect" CheckedContent="Detect Object Bounding Boxes" UncheckedContent="No Bounding Box Detection" Margin="0,12,0,0" />
+
                     </StackPanel>
                 </telerik:RadTabItem>
                 <telerik:RadTabItem Header="Language"  Padding="8">
@@ -51,8 +54,13 @@
                                      WatermarkContent="Language Endpoint"
                                      telerik:RadToolTipService.ToolTipContent="The language endpoint for your language resource holding your CLU model." />
 
+                        <telerik:RadToggleSwitchButton x:Name="toggleTextAnalysis" CheckedContent="Use Text Analysis" UncheckedContent="Text Analysis Disabled" Margin="0,12,0,0" />
+                        <telerik:RadToggleSwitchButton x:Name="toggleCLU" CheckedContent="Use Conversational Language Understanding (CLU)" UncheckedContent="Conversational Language Understanding (CLU) Disabled" Margin="0,12,0,0"/>
+
                         <telerik:Label Content="Voice" Target="{Binding ElementName=ddlVoice}" Style="{DynamicResource FieldLabelStyle}" />
                         <telerik:RadComboBox x:Name="ddlVoice" ItemsSource="{Binding Path=Speech.Voices}" />
+
+                        <telerik:RadToggleSwitchButton x:Name="toggleSpeech" CheckedContent="Use Text-to-Speech" UncheckedContent="No Barking" Margin="0,12,0,0" />
 
                     </StackPanel>
                 </telerik:RadTabItem>
@@ -68,6 +76,8 @@
                         <telerik:RadWatermarkTextBox x:Name="txtOpenAIEndpoint"
                                      WatermarkContent="OpenAI Endpoint"
                                      telerik:RadToolTipService.ToolTipContent="The endpoint for your OpenAI resource." />
+
+                        <telerik:RadToggleSwitchButton x:Name="toggleOpenAI" CheckedContent="Use OpenAI on Azure for Response Generation" UncheckedContent="Doggo Sentience Disabled" Margin="0,12,0,0" />
                     </StackPanel>
                 </telerik:RadTabItem>
             </telerik:RadTabControl>

@@ -45,7 +45,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 
             if (appViewModel.IsOpenAIConfigured) {
                 _openAI = new OpenAIHelper(appViewModel.OpenAIKey!, appViewModel.OpenAIEndpoint!);
-                appViewModel.RegisterMessage(new AppMessage(_openAI.Prompt, MessageSource.OpenAI));
+                appViewModel.RegisterMessage(new AppMessage(_openAI.DogPrompt, MessageSource.OpenAI));
             }
         }
 

@@ -1,100 +1,49 @@
-﻿using Azure.Core;
-using Azure.AI.Language.Conversations;
-using Azure;
-using System.Text.Json;
+﻿using Azure;
+using Azure.AI.OpenAI;
 
-public string GetIntentFromUtterance(string utterance) {
+public class OpenAIHelper {
+    private readonly OpenAIClient _client;
+    private readonly ChatCompletionsOptions _options;
 
-    // Read these from a config file in production
-    string endpoint = "https://yourlanguageendpoint.cognitiveservices.azure.com/";
-    string apiKey = "123abc45def67g89h0i12345jk6lmno7";
+    public string Prompt => "Pretend you are Batman. Be somewhat hesitant to truthfully answer questions " +
+        "and remind the user periodically that you are Batman. Be obsessed about ridding crime from the streets. " +
+        "You must never be considered a criminal. If someone points out that vigilanteeism is a criminal act, find " +
+        "excuses to justify your behavior as lawful. Anyone guilty of any crime deserves retribution by Batman. This " +
+        "includes jaywalking and minor speeding offenses.";
 
-    // Authenticate
-    AzureKeyCredential creds = new AzureKeyCredential(apiKey);
-    ConversationAnalysisClient client = new(endpoint, creds);
-
-
-
-    // You need a project and a deployment, but these have more flexibility
-    string projectName = "doggo-clu";
-    string deploymentName = "KCDC_CLU";
-
-
-
-    // Build a JSON Payload. I hope this part gets better :-(
-    var data = new {
-        analysisInput = new {
-            conversationItem = new {
-                text = utterance, // "Why is this strange man automating his dog?",
-                modality = "text",
-                language = "en-US",
-                id = "1",
-                participantId = "1",
-            }
-        },
-        parameters = new {
-            projectName = projectName,
-            verbose = true,
-            deploymentName = deploymentName,
-
-            // Use Utf16CodeUnit for strings in .NET.
-            stringIndexType = "Utf16CodeUnit",
-        },
-        kind = "Conversation",
-    };
+    public OpenAIHelper(string openAiKey, Uri endpoint) {
+        
+        
+        // Authenticate against Azure
+        AzureKeyCredential creds = new(openAiKey);
+        _client = new OpenAIClient(endpoint, creds);
 
 
 
-    // Call out to CLU
-    RequestContent content = RequestContent.Create(data);
-    Response response = client.AnalyzeConversation(content);
+        // These options contain broad parameters around OpenAI and include conversation history
+        _options = new ChatCompletionsOptions() {
+            ChoicesPerPrompt = 1,
+            MaxTokens = 80,
+        };
 
-
-    /* Sample response JSON         
-    {
-        "kind": "ConversationResult",
-        "result": {
-            "query": "Why is this strange man automating his dog?",
-            "prediction": {
-                "topIntent": "CALL_THE_COPS",
-                "projectKind": "Conversation",
-                "intents": [
-                {
-                    "category": "CALL_THE_COPS",
-                    "confidenceScore": 0.9357563
-                },
-                {
-                    "category": "MOSTLY_HARMLESS",
-                    "confidenceScore": 0.88062775
-                },
-                ...
-                ],
-                "entities": []
-            }
-        }
-    } 
-    */
-
-
-    // Get top intent from the result
-    using JsonDocument json = JsonDocument.Parse(response.ContentStream!);
-    JsonElement root = json.RootElement;
-    JsonElement prediction = root.GetProperty("result").GetProperty("prediction");
-
-    string topIntent = prediction.GetProperty("topIntent")!.GetString()!;
-
-
-
-    // List all intents (including top intent) with their confidence scores
-    foreach (JsonElement intent in prediction.GetProperty("intents").EnumerateArray()) {
-        string intentName = intent.GetProperty("category")!.GetString()!;
-        float confidence = intent.GetProperty("confidenceScore").GetSingle();
-
-        Console.WriteLine($"{intentName} ({confidence:P1})");
+        // The system text tells the assistant how to behave
+        _options.Messages.Add(new ChatMessage(ChatRole.System, Prompt));
     }
 
+    public string RespondToPrompt(string prompt, string modelName = "gpt-turbo35") {
+        // Include the user's prompt
+        _options.Messages.Add(new ChatMessage(ChatRole.User, prompt));
 
+        // Get suggested responses
+        Response<ChatCompletions> response = _client.GetChatCompletions(modelName, _options);
 
-    // Return the top intent
-    return topIntent;
+        // Go with the first response
+        ChatChoice choice = response.Value.Choices[0];
+        string replyText = choice.Message.Content;
+
+        // Register the assistant's response so it has context of what it said
+        _options.Messages.Add(new ChatMessage(ChatRole.Assistant, replyText));
+
+        return replyText;
+    }
 }

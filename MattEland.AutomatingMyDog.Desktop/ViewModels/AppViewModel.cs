@@ -24,6 +24,12 @@ public class AppViewModel : ViewModelBase
         _languageKey = Properties.Settings.Default.LanguageKey ?? "";
         _openAIEndpoint = string.IsNullOrWhiteSpace(Properties.Settings.Default.OpenAIEndpoint) ? null : new Uri(Properties.Settings.Default.OpenAIEndpoint);
         _openAIKey = Properties.Settings.Default.OpenAIKey ?? "";
+        _useTextAnalyis = Properties.Settings.Default.UseTextAnalysis;
+        _useObjectDetection = Properties.Settings.Default.UseObjectDetection;
+        _useCLU = Properties.Settings.Default.UseCLU;
+        _useImageCropping = Properties.Settings.Default.UseImageCrop;
+        _useOpenAI = Properties.Settings.Default.UseOpenAI;
+        _useSpeech = Properties.Settings.Default.UseSpeech;
 
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
@@ -44,12 +50,19 @@ public class AppViewModel : ViewModelBase
 
     public ObservableCollection<ChatMessageViewModel> Messages => _messages;
 
+    private bool _useSpeech;
+    private bool _useOpenAI;
+    private bool _useImageCropping;
+    private bool _useObjectDetection;
+    private bool _useCLU;
+    private bool _useTextAnalyis;
+
     public string AppName => "DogOS";
     public string Author => "Matt Eland";
     public string Title => $"{AppName} by {Author}";
     public string Version => "KCDC 2023 Edition";
 
-    internal void SaveSettings(string endpoint, string key, string region, string? voice, Uri? languageEndpoint, string? languageKey, Uri? openAIEndpoint, string? openAIKey)
+    internal void SaveSettings(string endpoint, string key, string region, string? voice, Uri? languageEndpoint, string? languageKey, Uri? openAIEndpoint, string? openAIKey, bool useSpeech, bool useOpenAI, bool useCropping, bool useObjectDetect, bool useCLU, bool useTextAnalysis)
     {
         // Change our global settings
         Endpoint = endpoint;
@@ -60,6 +73,12 @@ public class AppViewModel : ViewModelBase
         LanguageEndpoint = languageEndpoint;
         OpenAIKey = openAIKey;
         OpenAIEndpoint = openAIEndpoint;
+        UseSpeech = useSpeech;
+        UseOpenAI = useOpenAI;
+        UseCLU = useCLU;
+        UseTextAnalysis = useTextAnalysis;
+        UseImageCropping = useCropping;
+        UseObjectDetection = useObjectDetect;
 
         // Update the settings file
         Properties.Settings.Default.CogServicesEndpoint = endpoint;
@@ -70,6 +89,12 @@ public class AppViewModel : ViewModelBase
         Properties.Settings.Default.LanguageEndpoint = languageEndpoint?.AbsoluteUri;
         Properties.Settings.Default.OpenAIKey = OpenAIKey;
         Properties.Settings.Default.OpenAIEndpoint = OpenAIEndpoint?.AbsoluteUri;
+        Properties.Settings.Default.UseSpeech = useSpeech;
+        Properties.Settings.Default.UseCLU = useCLU;
+        Properties.Settings.Default.UseTextAnalysis = useTextAnalysis;
+        Properties.Settings.Default.UseImageCrop = useCropping;
+        Properties.Settings.Default.UseObjectDetection = useObjectDetect;
+        Properties.Settings.Default.UseOpenAI = useOpenAI;
         Properties.Settings.Default.Save();
 
         // Notify VMs that our settings have changed
@@ -205,6 +230,55 @@ public class AppViewModel : ViewModelBase
             OnPropertyChanged(nameof(OpenAIEndpoint));
             OnPropertyChanged(nameof(IsOpenAIConfigured));
             OnPropertyChanged(nameof(IsConfigured));
+        }
+    }
+
+    public bool UseSpeech {
+        get => _useSpeech;
+        set {
+            _useSpeech = value;
+            OnPropertyChanged(nameof(UseSpeech));
+        }
+    }
+
+    public bool UseOpenAI {
+        get => _useOpenAI;
+        set {
+            _useOpenAI = value;
+            OnPropertyChanged(nameof(UseOpenAI));
+        }
+    }
+
+    public bool UseImageCropping {
+        get => _useImageCropping;
+        set {
+            _useImageCropping = value;
+            OnPropertyChanged(nameof(UseImageCropping));
+        }
+    }
+
+    public bool UseObjectDetection {
+        get => _useObjectDetection;
+        set {
+            _useObjectDetection = value;
+            OnPropertyChanged(nameof(UseObjectDetection));
+        }
+    }
+
+
+    public bool UseCLU {
+        get => _useCLU;
+        set {
+            _useCLU = value;
+            OnPropertyChanged(nameof(UseCLU));
+        }
+    }
+
+    public bool UseTextAnalysis {
+        get => _useTextAnalyis;
+        set {
+            _useTextAnalyis = value;
+            OnPropertyChanged(nameof(UseTextAnalysis));
         }
     }
 

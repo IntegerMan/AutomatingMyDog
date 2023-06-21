@@ -27,7 +27,7 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             string voice = ddlVoice.SelectedItem?.ToString() ?? "en-US-GuyNeural";
             Uri.TryCreate(txtLanguageEndpoint.Text, UriKind.Absolute, out Uri? languageEndpoint);
             Uri.TryCreate(txtOpenAIEndpoint.Text, UriKind.Absolute, out Uri? openAIEndpoint);
-            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password, openAIEndpoint, txtOpenAIKey.Password);
+            vm.SaveSettings(txtEndpoint.Text, txtKey.Password, txtRegion.Text, voice, languageEndpoint, txtLanguageKey.Password, openAIEndpoint, txtOpenAIKey.Password, toggleSpeech.IsChecked == true, toggleOpenAI.IsChecked == true, toggleImageCrop.IsChecked == true, toggleObjectDetect.IsChecked == true, toggleCLU.IsChecked == true, toggleTextAnalysis.IsChecked == true);
 
             if (vm.IsConfigured)
             {
@@ -70,6 +70,12 @@ namespace MattEland.AutomatingMyDog.Desktop.Pages
             ddlVoice.SelectedIndex = vm.Speech.Voices.ToList().IndexOf(vm.Voice);
             txtOpenAIEndpoint.Text = vm.OpenAIEndpoint?.AbsoluteUri;
             txtOpenAIKey.Password = vm.OpenAIKey;
+            toggleCLU.IsChecked = vm.UseCLU;
+            toggleImageCrop.IsChecked = vm.UseImageCropping;
+            toggleObjectDetect.IsChecked = vm.UseObjectDetection;
+            toggleOpenAI.IsChecked = vm.UseOpenAI;
+            toggleSpeech.IsChecked = vm.UseSpeech;
+            toggleTextAnalysis.IsChecked = vm.UseTextAnalysis;
         }
     }
 }

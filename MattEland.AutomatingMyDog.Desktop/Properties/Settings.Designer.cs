@@ -118,5 +118,77 @@ namespace MattEland.AutomatingMyDog.Desktop.Properties {
                 this["OpenAIKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseOpenAI {
+            get {
+                return ((bool)(this["UseOpenAI"]));
+            }
+            set {
+                this["UseOpenAI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseImageCrop {
+            get {
+                return ((bool)(this["UseImageCrop"]));
+            }
+            set {
+                this["UseImageCrop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseObjectDetection {
+            get {
+                return ((bool)(this["UseObjectDetection"]));
+            }
+            set {
+                this["UseObjectDetection"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseTextAnalysis {
+            get {
+                return ((bool)(this["UseTextAnalysis"]));
+            }
+            set {
+                this["UseTextAnalysis"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseCLU {
+            get {
+                return ((bool)(this["UseCLU"]));
+            }
+            set {
+                this["UseCLU"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseSpeech {
+            get {
+                return ((bool)(this["UseSpeech"]));
+            }
+            set {
+                this["UseSpeech"] = value;
+            }
+        }
     }
 }
