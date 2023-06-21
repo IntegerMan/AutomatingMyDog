@@ -20,8 +20,6 @@ public class CluHelper
 
     public ChatResult AnalyzeText(string text)
     {
-        const MessageSource source = MessageSource.CLU;
-
         // Build a request
         string projectName = "doggo-clu";
         string deploymentName = "KCDC_CLU";

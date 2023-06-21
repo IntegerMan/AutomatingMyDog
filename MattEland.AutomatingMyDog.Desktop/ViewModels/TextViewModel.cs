@@ -61,62 +61,68 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             {
                 AppMessage notConfigMessage = new("The application settings have not been configured. Please configure those first and try again.", MessageSource.DogOS);
                 await appViewModel.RegisterMessageAsync(notConfigMessage);
-            }
-            else {
+            } else {
                 // Start with text analysis
-                foreach (AppMessage txtResponse in _text.AnalyzeText(message)) {
-                    await appViewModel.RegisterMessageAsync(txtResponse);
+                if (appViewModel.UseTextAnalysis) {
+                    foreach (AppMessage txtResponse in _text.AnalyzeText(message)) {
+                        await appViewModel.RegisterMessageAsync(txtResponse);
+                    }
                 }
 
                 // Move on to LUIS / CLU
-                ChatResult responses = _clu.AnalyzeText(message);
+                if (appViewModel.UseCLU) {
+                    ChatResult responses = _clu.AnalyzeText(message);
 
-                // Display considered Intents
-                appViewModel.RegisterMessage(new AppMessage("Intent Matching", MessageSource.CLU) {
-                    Items = responses.ConsideredIntents.Take(3).Select(i => $"{i.Key} ({i.Value:P2})")
-                });
+                    // Display considered Intents
+                    appViewModel.RegisterMessage(new AppMessage("Intent Matching", MessageSource.CLU) {
+                        Items = responses.ConsideredIntents.Take(3).Select(i => $"{i.Key} ({i.Value:P2})")
+                    });
 
-                string topIntent = responses.TopIntent;
+                    string topIntent = responses.TopIntent;
 
-                // If the system isn't confident enough, we'll treat it as a None intent
-                const float CONFIDENCE_THRESHHOLD = 0.925f;
-                float confidence = responses.TopIntentConfidence;
-                if (confidence < CONFIDENCE_THRESHHOLD) {
-                    await appViewModel.RegisterMessageAsync(new AppMessage($"Confidence {confidence} was below the {CONFIDENCE_THRESHHOLD} threshhold so treating as a 'None' intent.", MessageSource.CLU));
-                    topIntent = "None";
-                }
-
-                // Get the candidate response
-                string response = RespondToTopIntent(responses.TopIntent);
-
-                // If we've got OpenAI support, have OpenAI add its flavor
-                if (_openAI != null) {// && topIntent.ToUpperInvariant() != "ASK_AGE") {
-                    if (topIntent == "JOKE")
-                    {
-                        //_openAI.RegisterUserMessage(message);
-                        response = await _openAI.RespondToPromptAsync(message + ". Tell a joke that a programmer dog would think would be funny");
+                    // If the system isn't confident enough, we'll treat it as a None intent
+                    const float CONFIDENCE_THRESHHOLD = 0.925f;
+                    float confidence = responses.TopIntentConfidence;
+                    if (confidence < CONFIDENCE_THRESHHOLD) {
+                        await appViewModel.RegisterMessageAsync(new AppMessage($"Confidence {confidence} was below the {CONFIDENCE_THRESHHOLD} threshhold so treating as a 'None' intent.", MessageSource.CLU));
+                        topIntent = "None";
                     }
-                    else
-                    {
-                        response = await GetOpenAIResponseAsync(message, topIntent, response);
-                    }
-                }
 
-                // Reply
-                string speakText = response.Replace("DogOS", "Doggos");
-                await appViewModel.RegisterMessageAsync(new AppMessage(response, MessageSource.DogOS) {  SpeakText = speakText });
+                    // Get the candidate response
+                    string response = RespondToTopIntent(responses.TopIntent);
+
+                    // If we've got OpenAI support, have OpenAI add its flavor
+                    if (_openAI != null && appViewModel.UseOpenAI) {
+                        if (topIntent == "JOKE") {
+                            //_openAI.RegisterUserMessage(message);
+                            response = await _openAI.RespondToPromptAsync(message + ". Tell a joke that a programmer dog would think would be funny");
+                        } else {
+                            response = await GetOpenAIResponseAsync(message, topIntent, response);
+                        }
+                    }
+
+                    // Reply
+                    await appViewModel.RegisterMessageAsync(new AppMessage(response, MessageSource.DogOS));
+                } else if (appViewModel.UseOpenAI && appViewModel.IsOpenAIConfigured) {
+                    string response = GetReplyFromPrompt(message);
+                    await appViewModel.RegisterMessageAsync(new AppMessage(response, MessageSource.DogOS));
+                } else {
+                    await appViewModel.RegisterMessageAsync(new AppMessage("I haven't a CLU. No seriously: CLU and OpenAI are both disabled.", MessageSource.DogOS));
+                }
             }
         }
 
 
         public string GetCreativeText(string message) {
-            try {
-                string prompt = $"Say something like '{message}' but feel free to vary it";
-                appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
-                message = _openAI!.RespondToPrompt(prompt);
-            }
-            catch (RequestFailedException ex) {
-                appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+            if (appViewModel.UseOpenAI) {
+                try {
+                    string prompt = $"Say something like '{message}' but feel free to vary it";
+                    appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
+                    message = _openAI!.RespondToPrompt(prompt);
+                }
+                catch (RequestFailedException ex) {
+                    appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+                }
             }
 
             return message;
@@ -124,14 +130,17 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
 
 
         public string GetReplyFromPrompt(string prompt) {
-            try {
-                appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
-                return _openAI!.RespondToPrompt(prompt);
+            if (appViewModel.UseOpenAI) {
+                try {
+                    appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
+                    return _openAI!.RespondToPrompt(prompt);
+                }
+                catch (RequestFailedException ex) {
+                    appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+                    return ex.Message;
+                }
             }
-            catch (RequestFailedException ex) {
-                appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
-                return ex.Message;
-            }
+            return prompt;
         }
 
         public void SayCreative(string message) {
