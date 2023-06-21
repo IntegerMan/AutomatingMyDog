@@ -33,6 +33,9 @@
             <telerik:RadTabItem Header="CLU">
                 <telerik:RadSyntaxEditor x:Name="syntaxCLU" IsReadOnly="True" Height="600" />
             </telerik:RadTabItem>
+            <telerik:RadTabItem Header="OpenAI on Azure">
+                <telerik:RadSyntaxEditor x:Name="syntaxOpenAI" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
         </telerik:RadTabControl>
     </DockPanel>
 </UserControl>
