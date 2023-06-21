@@ -55,7 +55,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             speechText ??= message.Replace("DogOS", "Doggos");
 
             // If the user provided speech text to customize the pronunciation, use that. Otherwise, use the message.
-            if (_speech != null) {
+            if (_speech != null && _vm.UseSpeech) {
                 bool result = await _speech.SayMessageAsync(speechText ?? message);
                 if (!result) {
                     await _vm.RegisterMessageAsync(new AppMessage("Could not generate speech. You may be offline or your Azure Cognitive Services settings are not correctly configured", MessageSource.Error));
