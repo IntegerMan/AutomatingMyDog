@@ -61,22 +61,3 @@ I've also created a growing number of Videos on Azure Cognitive Services.
 For best results, check out my [YouTube Playlist on Azure Cogntive Services](https://www.youtube.com/playlist?list=PL_4SjWezd5HyRTJ4xCvfVBGg0Qehbk27U) but I also recommend looking at my [Matt on Data Science channel](https://www.youtube.com/c/MattEland) for other related content.
 
 [![YouTube Playlist](YTPlaylist.png)](https://www.youtube.com/playlist?list=PL_4SjWezd5HyRTJ4xCvfVBGg0Qehbk27U)
-
-## Development Tasks
-
-I want to get the following tasks done for demos:
-
-### Onboarding Improvements
-- [ ] Investigate Telerik use by non-license holders
-- [ ] Add downloadable files in GitHub Releases
-- [ ] Update Doggo link to have all resources
-
-### Global Improvements
-- [ ] UI busy experience
-- [ ] Icons on Navigation and Buttons
-- [ ] Filter actions based on checkboxes
-
-### Language Understanding & Content
-- [ ] Respond to Batman in image
-- [ ] Include a few interesting images in the executing directory
-- [ ] OpenAI API Call
