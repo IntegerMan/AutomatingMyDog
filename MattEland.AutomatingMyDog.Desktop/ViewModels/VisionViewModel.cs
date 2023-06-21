@@ -49,14 +49,14 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 // Respond to results
                 foreach (AppMessage message in results)
                 {
-                    if (_vm.IsOpenAIConfigured && message.Source == MessageSource.DogOS) {
+                    if (_vm is {IsOpenAIConfigured: true, UseOpenAI: true} && message.Source == MessageSource.DogOS) {
                         continue;
                     }
 
                     await _vm.RegisterMessageAsync(message);
 
-                    if (_vm.IsOpenAIConfigured && message.Message == "Captioning" && message.Items != null && message.Items.Any()) {
-                        string prompt = $"The user just showed you an an image. Computer Vision describes the image as '{message.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
+                    if (_vm is {IsOpenAIConfigured: true, UseOpenAI: true} && message is {Message: "Captioning", Items: { }} && message.Items.Any()) {
+                        string prompt = $"The user just showed you an image. Computer Vision describes the image as '{message.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
                         string openAiText = _vm.Text.GetReplyFromPrompt(prompt);
                         await _vm.RegisterMessageAsync(new AppMessage(openAiText, MessageSource.DogOS));
                     }
