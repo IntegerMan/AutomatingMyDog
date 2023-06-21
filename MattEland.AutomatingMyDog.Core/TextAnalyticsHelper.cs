@@ -27,12 +27,18 @@ public class TextAnalyticsHelper {
             // Detect Language
             Response<DetectedLanguage> langResponse = _textClient.DetectLanguage(text);
             DetectedLanguage language = langResponse.Value;
-            messages.Add(new AppMessage($"Detected Language {language.Name} ({langResponse.Value.Iso6391Name}) with confidence of {langResponse.Value.ConfidenceScore:P0}", source));
+            messages.Add(new AppMessage(language.Name, source) { 
+                Items = new List<string> { 
+                    $"ISO Code {langResponse.Value.Iso6391Name}", 
+                    $"{langResponse.Value.ConfidenceScore:P0} Confidence" } 
+            });
 
             // Detect Key Phrases
             Response<KeyPhraseCollection> keyPhrasesResponse = _textClient.ExtractKeyPhrases(text);
             KeyPhraseCollection keyPhrases = keyPhrasesResponse.Value;
-            messages.Add(new AppMessage($"Key Phrases: {string.Join(", ", keyPhrases)}", source));
+            if (keyPhrases.Any()) {
+                messages.Add(new AppMessage("Key Phrases", source) { Items = keyPhrases.ToList() });
+            }
 
             // Detect Entities
             Response<CategorizedEntityCollection> recognizeResponse = _textClient.RecognizeEntities(text);
@@ -69,7 +75,12 @@ public class TextAnalyticsHelper {
             Response<DocumentSentiment> sentimentResponse = _textClient.AnalyzeSentiment(text);
             DocumentSentiment sentiment = sentimentResponse.Value;
             SentimentConfidenceScores confidence = sentiment.ConfidenceScores;
-            messages.Add(new AppMessage($"Detected Sentiment {sentiment.Sentiment} with positive / neutral / negative confidence scores of {sentiment.ConfidenceScores.Positive:P0} / {confidence.Neutral:P0} / {sentiment.ConfidenceScores.Negative:P0}", source));
+            messages.Add(new AppMessage($"Sentiment {sentiment.Sentiment}", source) {
+                Items = new List<string> {
+                $"Positive: {sentiment.ConfidenceScores.Positive:P0}",
+                $"Neutral: {sentiment.ConfidenceScores.Neutral:P0}",
+                $"Negative: {sentiment.ConfidenceScores.Negative:P0}" }
+            });
         }
         catch (AggregateException ex) {
             Exception? innerEx = ex.InnerException;

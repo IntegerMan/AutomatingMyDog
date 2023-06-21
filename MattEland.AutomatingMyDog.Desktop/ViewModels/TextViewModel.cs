@@ -72,7 +72,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                 ChatResult responses = _clu.AnalyzeText(message);
 
                 // Display considered Intents
-                appViewModel.RegisterMessage(new AppMessage(responses.TopIntent, MessageSource.CLU) {
+                appViewModel.RegisterMessage(new AppMessage("Intent Matching", MessageSource.CLU) {
                     Items = responses.ConsideredIntents.Take(3).Select(i => $"{i.Key} ({i.Value:P2})")
                 });
 

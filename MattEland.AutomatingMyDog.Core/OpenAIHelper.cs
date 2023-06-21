@@ -22,7 +22,11 @@ public class OpenAIHelper
         AzureKeyCredential creds = new(openAiKey);
         _client = new OpenAIClient(endpoint, creds);
 
-        _options = new ChatCompletionsOptions();
+        _options = new ChatCompletionsOptions() {
+            ChoicesPerPrompt = 1,
+            MaxTokens = 80,
+        };
+
         _options.Messages.Add(
             new ChatMessage(ChatRole.System, Prompt)
         );

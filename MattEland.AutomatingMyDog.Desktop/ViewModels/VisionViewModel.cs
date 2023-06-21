@@ -54,7 +54,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                     AppMessage? captionMessage = results.FirstOrDefault(m => m.Message == "Captioning");
 
                     if (captionMessage != null && captionMessage.Items != null && captionMessage.Items.Any()) {
-                        prompt = $"The user just uploaded an image. Computer Vision describes the image as '{captionMessage.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
+                        prompt = $"The user just showed you an an image. Computer Vision describes the image as '{captionMessage.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
                     }
 
                     dogMessage.Message = _vm.Text.GetReplyFromPrompt(prompt);

@@ -59,17 +59,17 @@ public class VisionHelper
         const MessageSource source = MessageSource.ComputerVision;
         ImageAnalysis result = await AnalyzeImage(filePath);
 
-        // Describe Image with Caption
-        results.Add(new AppMessage("Captioning", source)
-        {
-            ImagePath = outputFile,
-            UseLandscapeLayout = true,
-            Items = result.Description.Captions.Select(c => $"{c.Text} ({c.Confidence:P})"),
-        });
-
         // Adult / Racy Message
         AdultInfo adult = result.Adult;
-        results.Add(new AppMessage("Content Moderation", source)
+        string contentModerationHeader = @":-)";
+        if (adult.AdultScore > 0.5) {
+            contentModerationHeader = ":-(";
+        } else if (adult.GoreScore > 0.5) {
+            contentModerationHeader = ":-X";
+        } else if (adult.RacyScore > 0.5) {
+            contentModerationHeader = ":-O";
+        }
+        results.Add(new AppMessage("Content Moderation " + contentModerationHeader, source)
         {
             Items = new List<string>
             {
@@ -156,6 +156,13 @@ public class VisionHelper
                 Items = result.Objects.Select(o => o.ObjectProperty),
             });
         }
+
+        // Describe Image with Caption
+        results.Add(new AppMessage("Captioning", source) {
+            ImagePath = outputFile,
+            UseLandscapeLayout = true,
+            Items = result.Description.Captions.Select(c => $"{c.Text} ({c.Confidence:P})"),
+        });
 
         // Determine if we should "bark" at something
         string message = GenerateBarkMessage(detectedItems);

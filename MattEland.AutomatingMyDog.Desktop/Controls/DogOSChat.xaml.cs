@@ -1,7 +1,9 @@
 ﻿using MattEland.AutomatingMyDog.Core;
 using MattEland.AutomatingMyDog.Desktop.Pages;
 using MattEland.AutomatingMyDog.Desktop.ViewModels;
+using Microsoft.Win32;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -79,15 +81,15 @@ public partial class DogOSChat : UserControl
 
     private void btnSendPhoto_Click(object sender, RoutedEventArgs e)
     {
-        RadOpenFileDialog openFileDialog = new()
-        {
-            Owner = this,
-            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-            RestoreDirectory = true
+        OpenFileDialog openFileDialog = new() {
+            InitialDirectory = Path.Combine(Environment.CurrentDirectory, "Images"),
+            RestoreDirectory = true,
+            Filter = "Images|*.png;*.jpg"
         };
-        openFileDialog.ShowDialog();
 
-        if (openFileDialog.DialogResult == true)
+        bool? result = openFileDialog.ShowDialog();
+
+        if (result == true)
         {
             string fileName = openFileDialog.FileName;
 
