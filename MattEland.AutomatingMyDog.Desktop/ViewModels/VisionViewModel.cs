@@ -54,17 +54,15 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                     AppMessage? captionMessage = results.FirstOrDefault(m => m.Message == "Captioning");
 
                     if (captionMessage != null && captionMessage.Items != null && captionMessage.Items.Any()) {
-                        prompt += $". The description of the image is '{captionMessage.Items.First()}'";
+                        prompt = $"The user just uploaded an image. Computer Vision describes the image as '{captionMessage.Items.First()}'. Describe this image in your own words to the user. If it has something a dog would be excited about, react to that.";
                     }
 
-                    dogMessage.Message = _vm.Text.GetCreativeText(prompt);
+                    dogMessage.Message = _vm.Text.GetReplyFromPrompt(prompt);
                 }
-
 
                 // Respond to results
                 foreach (AppMessage message in results)
                 {
-
                     await _vm.RegisterMessageAsync(message);
                 }
             }

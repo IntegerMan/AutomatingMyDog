@@ -122,6 +122,18 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             return message;
         }
 
+
+        public string GetReplyFromPrompt(string prompt) {
+            try {
+                appViewModel.RegisterMessage(new AppMessage($"Prompting OpenAI: {prompt}", MessageSource.OpenAI));
+                return _openAI!.RespondToPrompt(prompt);
+            }
+            catch (RequestFailedException ex) {
+                appViewModel.RegisterMessage(new AppMessage(ex.Message, MessageSource.Error));
+                return ex.Message;
+            }
+        }
+
         public void SayCreative(string message) {
             message = GetCreativeText(message);
             appViewModel.RegisterMessage(new AppMessage(message, MessageSource.DogOS));
