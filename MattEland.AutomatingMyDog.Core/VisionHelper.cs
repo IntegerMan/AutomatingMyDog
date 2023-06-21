@@ -189,8 +189,8 @@ public class VisionHelper
         }
 
         // Handle cases where we got a non-success response
-        return new List<AppMessage>() {
-                new AppMessage(errorMessage, MessageSource.Error) {
+        return new List<AppMessage> {
+                new(errorMessage, MessageSource.Error) {
                     SpeakText = errorMessage,
                 }
             };

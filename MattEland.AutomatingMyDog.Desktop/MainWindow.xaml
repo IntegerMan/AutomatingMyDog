@@ -31,9 +31,9 @@
 
             <Viewbox Stretch="Uniform">
                 <pages:Home HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center" 
+                        HorizontalContentAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
-                        VerticalContentAlignment="Center" 
+                        VerticalContentAlignment="Stretch" 
                         Margin="24"/>
             </Viewbox>
         </Grid>
@@ -46,9 +46,9 @@
 
             <Viewbox Stretch="Uniform">
                 <pages:Vision HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center" 
+                        HorizontalContentAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
-                        VerticalContentAlignment="Center" 
+                        VerticalContentAlignment="Stretch" 
                         Margin="24"/>
             </Viewbox>
         </Grid>
@@ -60,9 +60,9 @@
             </Grid.Background>
             <Viewbox Stretch="Uniform">
                 <pages:Chat HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center" 
+                        HorizontalContentAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
-                        VerticalContentAlignment="Center" 
+                        VerticalContentAlignment="Stretch" 
                         Margin="24"/>
             </Viewbox>
         </Grid>
@@ -74,9 +74,9 @@
             </Grid.Background>
             <Viewbox Stretch="Uniform">
                 <pages:Code HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center" 
+                        HorizontalContentAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
-                        VerticalContentAlignment="Center" 
+                        VerticalContentAlignment="Stretch" 
                         Margin="24"/>
             </Viewbox>
         </Grid>
@@ -88,9 +88,9 @@
             </Grid.Background>
             <Viewbox Stretch="Uniform">
                 <pages:Settings HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center" 
+                        HorizontalContentAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
-                        VerticalContentAlignment="Center" 
+                        VerticalContentAlignment="Stretch" 
                         Margin="24"/>
             </Viewbox>
         </Grid>

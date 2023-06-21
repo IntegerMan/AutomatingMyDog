@@ -8,18 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <telerik:RadTabControl DockPanel.Dock="Right" Width="960" Margin="12 0 0 0" Padding="8">
-            <telerik:RadTabItem Header="Chat">
-                <controls:DogOSChat Height="600" />
-            </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Text to Speech Code">
-                <telerik:RadSyntaxEditor x:Name="syntaxTextToSpeech" IsReadOnly="True" Height="600" />
-            </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Speech to Text Code">
-                <telerik:RadSyntaxEditor x:Name="syntaxSpeechToText" IsReadOnly="True" Height="600" />
-            </telerik:RadTabItem>
-        </telerik:RadTabControl>
-        <Border Style="{DynamicResource PanelStyle}">
+        <Border Style="{DynamicResource PanelStyle}" DockPanel.Dock="Left" Width="400">
             <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                 <TextBlock Style="{DynamicResource PageHeaderTextStyle}" Text="{Binding Path=AppName}" />
                 <TextBlock Style="{DynamicResource PageBodyTextStyle}">
@@ -48,6 +37,9 @@
                     - <Span FontWeight="Bold">Text Analysis</Span>
                 </TextBlock>
                 <TextBlock Style="{DynamicResource PageBodyTextStyle}">
+                    - <Span FontWeight="Bold">OpenAI on Azure</Span>
+                </TextBlock>
+                <TextBlock Style="{DynamicResource PageBodyTextStyle}">
                     This app is not intended to be a serious application, or a working replacement for my dog or any other animal.
                 </TextBlock>
                 <Border BorderBrush="Green" BorderThickness="0 1 0 0" Margin="0 12 0 0" Padding="0 12 0 0">
@@ -57,5 +49,16 @@
                 </Border>
             </StackPanel>
         </Border>
+        <telerik:RadTabControl Margin="12 0 0 0" Padding="8" Width="650">
+            <telerik:RadTabItem Header="Chat">
+                <controls:DogOSChat Height="600" />
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Text to Speech Code">
+                <telerik:RadSyntaxEditor x:Name="syntaxTextToSpeech" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Speech to Text Code">
+                <telerik:RadSyntaxEditor x:Name="syntaxSpeechToText" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
     </DockPanel>
 </UserControl>

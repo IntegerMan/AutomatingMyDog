@@ -8,18 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <telerik:RadTabControl DockPanel.Dock="Right" Width="960" Margin="12 0 0 0" Padding="8">
-            <telerik:RadTabItem Header="Chat">
-                <controls:DogOSChat Height="600" />
-            </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Smart Cropping Code">
-                <telerik:RadSyntaxEditor x:Name="syntaxCropping" IsReadOnly="True" Height="600" />
-            </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Computer Vision Code">
-                <telerik:RadSyntaxEditor x:Name="syntaxVision" IsReadOnly="True" Height="600" />
-            </telerik:RadTabItem>
-        </telerik:RadTabControl>
-        <Border Style="{DynamicResource PanelStyle}">
+        <Border Style="{DynamicResource PanelStyle}" DockPanel.Dock="Left" Width="400">
             <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                 <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
                     Computer Vision
@@ -49,5 +38,16 @@
                 <telerik:RadButton Content="Take Snapshot" Click="TakeSnapshot_Click" Margin="0 8 0 0" x:Name="btnSnapshot" Visibility="Collapsed" />
             </StackPanel>
         </Border>
+        <telerik:RadTabControl Margin="12 0 0 0" Padding="8" Width="700">
+            <telerik:RadTabItem Header="Chat">
+                <controls:DogOSChat Height="600" />
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Smart Cropping Code">
+                <telerik:RadSyntaxEditor x:Name="syntaxCropping" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Computer Vision Code">
+                <telerik:RadSyntaxEditor x:Name="syntaxVision" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
     </DockPanel>
 </UserControl>

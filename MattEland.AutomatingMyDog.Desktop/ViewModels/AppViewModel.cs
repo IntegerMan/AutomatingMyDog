@@ -28,9 +28,11 @@ public class AppViewModel : ViewModelBase
         _useObjectDetection = Properties.Settings.Default.UseObjectDetection;
         _useCLU = Properties.Settings.Default.UseCLU;
         _useImageCropping = Properties.Settings.Default.UseImageCrop;
-        _useOpenAI = Properties.Settings.Default.UseOpenAI;
         _useSpeech = Properties.Settings.Default.UseSpeech;
-
+        
+        // In case of fire, break glass and set this to false
+        _useOpenAI = Properties.Settings.Default.UseOpenAI;
+        
         // Set Helper View Models
         _speech = new SpeechViewModel(this);
         _text = new TextViewModel(this);
