@@ -8,11 +8,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <DockPanel Width="500" DockPanel.Dock="Left" Margin="12">
+        <DockPanel Width="350" DockPanel.Dock="Left" Margin="12">
             <Border Style="{DynamicResource PanelStyle}" >
                 <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                     <TextBlock Style="{DynamicResource PageHeaderTextStyle}">
-                    Text Analysis &amp; Conversational Language Understanding (CLU)
+                    Text Analysis &amp; CLU
                     </TextBlock>
                     <TextBlock Style="{DynamicResource PageBodyTextStyle}">
                     Use your voice and text to chat with DogOS. Your words will be understood by Azures Cognitive Services' speech to text API to build a string based on what you said.
@@ -39,7 +39,7 @@
                 </StackPanel>
             </Border>
         </DockPanel>
-        <telerik:RadTabControl DockPanel.Dock="Right" Width="700" Margin="0 12 12 12" Padding="8">
+        <telerik:RadTabControl DockPanel.Dock="Right" Width="900" Margin="0 12 12 12" Padding="8">
             <telerik:RadTabItem Header="Chat">
                 <controls:DogOSChat Height="600" />
             </telerik:RadTabItem>
@@ -51,6 +51,9 @@
             </telerik:RadTabItem>
             <telerik:RadTabItem Header="CLU Code">
                 <telerik:RadSyntaxEditor x:Name="syntaxCLU" IsReadOnly="True" Height="600" />
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="OpenAI Code">
+                <telerik:RadSyntaxEditor x:Name="syntaxOpenAI" IsReadOnly="True" Height="600" />
             </telerik:RadTabItem>
         </telerik:RadTabControl>
 

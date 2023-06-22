@@ -8,12 +8,12 @@ using Azure;
 public async Task<IEnumerable<string>> AnalyzeTextAsync(string text) {
 
     // Configuration settings - store these in a config file
-    string subscriptionKey = "123abc45def67g89h0i12345jk6lmno7";
+    string key = "123abc45def67g89h0i12345jk6lmno7";
     string endpoint = "https://yourendpoint.cognitiveservices.azure.com/";
     Uri endpointUri = new(endpoint);
 
     // Set up our TextAnalyticsClient
-    AzureKeyCredential azureCreds = new(subscriptionKey);
+    AzureKeyCredential azureCreds = new(key);
     TextAnalyticsClient client = new(endpointUri, azureCreds);
 
 

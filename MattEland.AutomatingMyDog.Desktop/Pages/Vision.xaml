@@ -38,7 +38,7 @@
                 <telerik:RadButton Content="Take Snapshot" Click="TakeSnapshot_Click" Margin="0 8 0 0" x:Name="btnSnapshot" Visibility="Collapsed" />
             </StackPanel>
         </Border>
-        <telerik:RadTabControl Margin="12 0 0 0" Padding="8" Width="700">
+        <telerik:RadTabControl Margin="12 0 0 0" Padding="8" Width="900">
             <telerik:RadTabItem Header="Chat">
                 <controls:DogOSChat Height="600" />
             </telerik:RadTabItem>

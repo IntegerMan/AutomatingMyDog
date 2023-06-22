@@ -98,3 +98,20 @@ public string GetIntentFromUtterance(string utterance) {
     // Return the top intent
     return topIntent;
 }
+
+
+public string GetMessageFromMatchedIntent(string intent)
+{
+    switch (intent.ToUpperInvariant())
+    {
+        case "GOOD BOY":
+            return "Jester is a good doggo!";
+
+        case "WALK":
+            return "Why yes, Jester DOES want to go on a walk!";
+
+        default:
+            return "Jester does not understand.";
+    }
+}
+

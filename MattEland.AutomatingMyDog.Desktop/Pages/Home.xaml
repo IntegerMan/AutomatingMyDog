@@ -49,7 +49,7 @@
                 </Border>
             </StackPanel>
         </Border>
-        <telerik:RadTabControl Margin="12 0 0 0" Padding="8" Width="650">
+        <telerik:RadTabControl Margin="12 0 0 0" Padding="8" Width="850">
             <telerik:RadTabItem Header="Chat">
                 <controls:DogOSChat Height="600" />
             </telerik:RadTabItem>

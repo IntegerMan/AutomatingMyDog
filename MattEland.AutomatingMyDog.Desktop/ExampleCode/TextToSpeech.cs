@@ -5,10 +5,10 @@ public async Task<bool> SayHelloAsync() {
 
     // Read these from a config file in production
     string region = "northcentralus";
-    string subscriptionKey = "123abc45def67g89h0i12345jk6lmno7";
+    string key = "123abc45def67g89h0i12345jk6lmno7";
 
     // Configure your subscription and region
-    SpeechConfig config = SpeechConfig.FromSubscription(subscriptionKey, region);
+    SpeechConfig config = SpeechConfig.FromSubscription(key, region);
 
     // Set up the Synthesizer to use the voice we want
     config.SpeechSynthesisVoiceName = "en-US-GuyNeural";

@@ -6,8 +6,8 @@ public async Task<string> ListenToSpokenWords() {
     // Configure your subscription and region
     // Read these from a config file in production
     string region = "northcentralus";
-    string subscriptionKey = "123abc45def67g89h0i12345jk6lmno7";
-    SpeechConfig config = SpeechConfig.FromSubscription(subscriptionKey, region);
+    string key = "123abc45def67g89h0i12345jk6lmno7";
+    SpeechConfig config = SpeechConfig.FromSubscription(key, region);
 
     // Listen to speech
     SpeechRecognitionResult result;

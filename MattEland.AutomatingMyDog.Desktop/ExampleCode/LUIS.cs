@@ -6,12 +6,12 @@ using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 public async Task<string> MatchUtteranceToIntentAsync(string utterance) {
 
     // LUIS Settings - again, store in a config file
-    string subscriptionKey = "123abc45def67g89h0i12345jk6lmno7";
+    string key = "123abc45def67g89h0i12345jk6lmno7";
     string slotId = "Production"; // or "Staging"
     Guid appId = new Guid("3d8c9e1b-7c5f-4e1a-9f3d-6f5a7b2a6d5e"); // Found in Azure
 
     // Authenticate with Azure
-    ApiKeyServiceClientCredentials creds = new(subscriptionKey);
+    ApiKeyServiceClientCredentials creds = new(key);
     LUISRuntimeClient client = new(creds);
 
 
