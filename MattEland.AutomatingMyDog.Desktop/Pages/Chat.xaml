@@ -15,10 +15,10 @@
                     Text Analysis &amp; CLU
                     </TextBlock>
                     <TextBlock Style="{DynamicResource PageBodyTextStyle}">
-                    Use your voice and text to chat with DogOS. Your words will be understood by Azures Cognitive Services' speech to text API to build a string based on what you said.
+                    Use your voice and text to chat with DogOS. Your words will be understood by Azures AI Services' speech to text API to build a string based on what you said.
                     </TextBlock>
                     <TextBlock Style="{DynamicResource PageBodyTextStyle}">
-                    Once your words are understood, they will be sent to Conversational Language Understanding (CLU) on Azure Cognitive Services to be matched against a list of supported intents or commands the application can process.
+                    Once your words are understood, they will be sent to Conversational Language Understanding (CLU) on Azure AI Services to be matched against a list of supported intents or commands the application can process.
                     </TextBlock>
                     <TextBlock Style="{DynamicResource PageBodyTextStyle}">
                     The results of this intent mapping will be displayed here for your education and amusement.

@@ -112,7 +112,7 @@ public class AutomatingMyDogMenu
         Console.WriteLine($"You said: \"{command}\"");
         Console.WriteLine();
 
-        // Call out to Azure Cognitive Services text analytics and try to understand the parts of speech
+        // Call out to Azure AI Services text analytics and try to understand the parts of speech
         _textDemos.AnalyzeText(command);
 
         // Use Language Understanding Parse the text into an intent

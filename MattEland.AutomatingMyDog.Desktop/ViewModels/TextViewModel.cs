@@ -39,7 +39,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                     _text = null;
                     _luis = null;
                     _clu = null;
-                    appViewModel.HandleError(ex, "Could not configure Cognitive Services", showErrorBox: false);
+                    appViewModel.HandleError(ex, "Could not configure AI Services", showErrorBox: false);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
                     return "Matt Eland made me. I'm still trying to figure out why.";
 
                 case "ASK_WHAT_ARE_YOU_MADE_IN":
-                    return "I was written in C# talking to Azure Cognitive Services. My user interface uses Telerik UI for WPF.";
+                    return "I was written in C# talking to Azure AI Services. My user interface uses Telerik UI for WPF.";
                 
                 case "GOODBYE":
                     return "Goodbye! Have fun with the rest of the talk! Don't ask Matt anything too hard.";

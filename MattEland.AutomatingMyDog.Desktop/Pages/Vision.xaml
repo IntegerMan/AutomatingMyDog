@@ -14,7 +14,7 @@
                     Computer Vision
                 </TextBlock>
                 <TextBlock Style="{DynamicResource PageBodyTextStyle}">
-                    The Computer Vision API can extract information from any image using pre-trained models on Azure as part of Azure Cognitive Services.
+                    The Computer Vision API can extract information from any image using pre-trained models on Azure as part of Azure AI Services.
                 </TextBlock>
                 <telerik:RadWebCam AutoStart="False" 
                                    x:Name="webCam" 

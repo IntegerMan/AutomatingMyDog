@@ -1,5 +1,5 @@
 # AutomatingMyDog
-Ridiculous reference materials demonstrating using Azure Cognitive Services to build intelligent applications using C# code
+Ridiculous reference materials demonstrating using Azure AAI Services to build intelligent applications using C# code
 
 ![App Screenshot](App.png)
 
@@ -11,9 +11,9 @@ I've also written up details on this project in the past, though this was before
 
 ## About this Project
 
-This application is a tool developed by [Matt Eland](https://MattEland.dev) to teach people what's possible using Azure Cognitive Services.
+This application is a tool developed by [Matt Eland](https://MattEland.dev) to teach people what's possible using Azure AI Services.
 
-Since Azure Cognitive Services can handle speech, listening, vision, and even aspects of reasoning, I figured that I could use it to mimic some of the things my dog does around the house so that he could live a happier and more productive life, knowing that the automated dog was ready to watch for rabbits so he didn't have to.
+Since Azure AI Services can handle speech, listening, vision, and even aspects of reasoning, I figured that I could use it to mimic some of the things my dog does around the house so that he could live a happier and more productive life, knowing that the automated dog was ready to watch for rabbits so he didn't have to.
 
 ![Jester Stalking Rabbits](Jester.jpg)
 
@@ -21,7 +21,7 @@ Since Azure Cognitive Services can handle speech, listening, vision, and even as
 
 In order to properly configure the application you will need:
 
-- An Azure Cognitive Services resource running in Azure
+- An Azure AI Services resource running in Azure
 - The endpoint, region, and one of the keys of this resource
 
 Configure these settings on the **Settings** tab.
@@ -32,7 +32,7 @@ Configure these settings on the **Settings** tab.
 
 Running this application will small incur charges against your Azure account for image recognition, text to speech, speech to text, text analysis, and language understanding based on your usage level.
 
-This application currently only supports Windows operating system due to some libraries used in annotating images for object detection. Azure Cognitive Services does not depend on Windows.
+This application currently only supports Windows operating system due to some libraries used in annotating images for object detection. Azure AI Services does not depend on Windows.
 
 In order to build this project, you will need to have a valid [Telerik UI for WPF](https://www.telerik.com/products/wpf/overview.aspx) license.
 
@@ -40,7 +40,7 @@ In order to build this project, you will need to have a valid [Telerik UI for WP
 
 ## Learning Resources
 
-Here are some articles I've written around Azure Cognitive Services:
+Here are some articles I've written around Azure AI Services:
 
 - [Understanding Azure Cognitive Services](https://accessibleai.dev/post/cognitiveservices/)
 - [How to Get Started with Azure Cognitive Services](https://accessibleai.dev/post/azure_cognitive_services/)

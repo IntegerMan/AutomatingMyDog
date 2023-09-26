@@ -10,7 +10,7 @@ public async Task AnalyzeImage(string filePath) {
     string key = "123abc45def67g89h0i12345jk6lmno7";
     string endpoint = "https://yourendpoint.cognitiveservices.azure.com/";
 
-    // Authenticate with a Azure Cognitive Services or a Computer Vision resource
+    // Authenticate with a Azure AI Services or a Computer Vision resource
     ComputerVisionClient client = new(key);
     computerVision.Endpoint = endpoint;
 

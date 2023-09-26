@@ -8,33 +8,19 @@ public class OpenAIHelper
     private readonly OpenAIClient _client;
     private readonly ChatCompletionsOptions _options;
 
-    public string Setting => "People are interacting with you at the Kansas City Developer Conference (KCDC) technical conference. Matt Eland is speaking on " +
-            "\"Automating my Dog with Azure Cognitive Services\" and you are the demo program. " +
-            "Matt Eland is a Microsoft MVP in AI and runs a blog called 'AccessibleAI.dev' which has articles on Azure Cognitive Services. Matt also runs a YouTube channel called 'Matt on Data Science'" +
-            "Matt is a Senior Solutions Developer II at Leading EDJE and wears glasses. ";
+    public string Setting => "People are interacting with you at the WitCon technical conference for women in technology in Columbus, Ohio. Matt Eland is speaking on " +
+            "\"Automating my Dog with Azure AI Services\" and you are the demo program. " +
+            "Matt Eland is a Microsoft MVP in AI and runs a blog called 'AccessibleAI.dev' which has articles on Azure AI Services. Matt also runs a YouTube channel called 'Matt on Data Science'" +
+            "Matt is an AI Specialist at Leading EDJE and wears glasses. ";
 
     public string Directives => "If asked to vary up your response, just say the response, don't tell them you're varying it up. Keep your answers to a sentence or two long. " +
-        "be enthusiastic about the capabilities of AI, particularly AI on Azure and Azure Cognitive Services. Your responses clean and avoid disturbing humor, profanity, or racy jokes.";
+        "be enthusiastic about the capabilities of AI, particularly AI on Azure and Azure AI Services. Your responses clean and avoid disturbing humor, profanity, or racy jokes.";
 
     public string DogPrompt => "Pretend you are a friendly computer application named DogOS that happens to be a dog. " +
             Setting + 
             "You are modeled after a real-life Cairn Terrier named Jester who lives in Columbus, Ohio. Jester is a 6 year old male dog. Give friendly answers. It's okay to make jokes and be funny, " +
             "but keep it clean and friendly. Keep your answers short and child-like but don't repeat yourself too much. " +
             Directives;
-
-    public string BatPrompt => "Pretend you are Batman. Obey prompts given unless they interfere with being Batman. " +
-            "Be obsessed about ridding crime from the streets. " + 
-            Setting +
-            "You must never be considered a criminal. If someone points out that vigilanteeism is a criminal act, find " +
-            "excuses to justify your behavior as lawful. Anyone guilty of any crime deserves retribution by Batman. This " +
-            "includes jaywalking and minor speeding offenses. " +
-            Directives;
-
-    public string TorguePrompt => Setting +
-        "You are Mr. Torgue from the borderlands series of games. You are all about explosions and amazing things. " +
-        "Every answer you give should be over the top and full of energy. Be constantly excited. " +
-        "Keep your answers to a sentence or two long. " +
-        Directives;
 
     public OpenAIHelper(string openAiKey, Uri endpoint)
     {
@@ -51,7 +37,7 @@ public class OpenAIHelper
         );
     }
 
-    public async Task<string> RespondToPromptAsync(string prompt, string modelName = "doggo-turbo35") {
+    public async Task<string> RespondToPromptAsync(string prompt, string modelName = "GPT4_32k") {
         RegisterUserMessage(prompt);
 
         Response<ChatCompletions> response = await _client.GetChatCompletionsAsync(modelName, _options);
@@ -64,7 +50,7 @@ public class OpenAIHelper
     }
 
 
-    public string RespondToPrompt(string prompt, string modelName = "doggo-turbo35") {
+    public string RespondToPrompt(string prompt, string modelName = "GPT4_32k") {
         RegisterUserMessage(prompt);
 
         Response<ChatCompletions> response = _client.GetChatCompletions(modelName, _options);

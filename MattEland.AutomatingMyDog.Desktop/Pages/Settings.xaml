@@ -18,24 +18,24 @@
             </StackPanel>
 
             <telerik:RadTabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="8">
-                <telerik:RadTabItem Header="Cognitive Services Settings" Padding="8">
+                <telerik:RadTabItem Header="Azure AI Services Settings" Padding="8">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Height="600" Width="800" CanVerticallyScroll="True">
                         <Image Source="/CogServicesKeys.png" Stretch="Uniform" StretchDirection="DownOnly" Height="300" HorizontalAlignment="Left" />
 
-                        <telerik:Label Content="Azure Cognitive Services Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
+                        <telerik:Label Content="Azure AI Services Endpoint" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
                         <telerik:RadWatermarkTextBox x:Name="txtEndpoint"
                                      WatermarkContent="Azure Cognitive Services Endpoint"
-                                     telerik:RadToolTipService.ToolTipContent="The endpoint of your Azure Cognitive Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
+                                     telerik:RadToolTipService.ToolTipContent="The endpoint of your Azure AI Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
 
                         <telerik:Label Content="Azure Region" Target="{Binding ElementName=txtEndpoint}" Style="{DynamicResource FieldLabelStyle}" />
                         <telerik:RadWatermarkTextBox x:Name="txtRegion"
                                      WatermarkContent="Azure Region (e.g. northcentralus)"
                                      telerik:RadToolTipService.ToolTipContent="The shorthand name of the Azure Region as shown on the Keys and Endpoint blade." />
 
-                        <telerik:Label Content="Azure Cognitive Services Key" Target="{Binding ElementName=txtKey}" Style="{DynamicResource FieldLabelStyle}" />
+                        <telerik:Label Content="Azure AI Services Key" Target="{Binding ElementName=txtKey}" Style="{DynamicResource FieldLabelStyle}" />
                         <telerik:RadPasswordBox x:Name="txtKey"
-                                WatermarkContent="Azure Cognitive Services Key"
-                                telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure Cognitive Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
+                                WatermarkContent="Azure AI Services Key"
+                                telerik:RadToolTipService.ToolTipContent="One of the two active keys from your Azure AI Services resource. This can be found on the Keys and Endpoint blade of the resource in Azure." />
 
                         <telerik:RadToggleSwitchButton x:Name="toggleImageCrop" CheckedContent="Generate Smart Thumbnails" UncheckedContent="No Thumbnail Generation" Margin="0,12,0,0" />
                         <telerik:RadToggleSwitchButton x:Name="toggleObjectDetect" CheckedContent="Detect Object Bounding Boxes" UncheckedContent="No Bounding Box Detection" Margin="0,12,0,0" />

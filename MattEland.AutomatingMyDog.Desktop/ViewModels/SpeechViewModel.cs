@@ -58,7 +58,7 @@ namespace MattEland.AutomatingMyDog.Desktop.ViewModels
             if (_speech != null && _vm.UseSpeech) {
                 bool result = await _speech.SayMessageAsync(speechText ?? message);
                 if (!result) {
-                    await _vm.RegisterMessageAsync(new AppMessage("Could not generate speech. You may be offline or your Azure Cognitive Services settings are not correctly configured", MessageSource.Error));
+                    await _vm.RegisterMessageAsync(new AppMessage("Could not generate speech. You may be offline or your Azure AI Services settings are not correctly configured", MessageSource.Error));
                 }
             }
         }

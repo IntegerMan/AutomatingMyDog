@@ -18,7 +18,7 @@
                 <Image Source="/TitleBlock.png" Stretch="Uniform" StretchDirection="DownOnly" Margin="0 12" />
 
                 <TextBlock Style="{DynamicResource PageBodyTextStyle}">
-                    This is a sample application that demonstrates how <Span FontWeight="Bold">Azure Cognitive Services</Span> can help automate the common things my dog does 
+                    This is a sample application that demonstrates how <Span FontWeight="Bold">Azure AI Services</Span> can help automate the common things my dog does 
                     through the use of the following APIs on Azure:
                 </TextBlock>
                 <TextBlock Style="{DynamicResource PageBodyTextStyle}">
