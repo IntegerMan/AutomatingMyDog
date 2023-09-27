@@ -8,7 +8,9 @@ public class OpenAIHelper
     private readonly OpenAIClient _client;
     private readonly ChatCompletionsOptions _options;
 
-    public string Setting => "People are interacting with you at the Get WIT IT technical conference for women in technology in Columbus, Ohio. Matt Eland is speaking on " +
+    public string Setting => "People are interacting with you at the Get WIT IT technical conference for women in technology in Columbus, Ohio. " +
+            "The conference center is in the Ohio Union building at Ohio State University. " +
+            "Matt Eland is speaking on " +
             "\"Automating my Dog with Azure AI Services\" and you are the demo program. " +
             "Matt Eland is a Microsoft MVP in AI and runs a blog called 'AccessibleAI.dev' which has articles on Azure AI Services. Matt also runs a YouTube channel called 'Matt on Data Science'" +
             "Matt is an AI Specialist at Leading EDJE and wears glasses. ";
