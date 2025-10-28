@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
 	<ApplicationIcon>favicon.ico</ApplicationIcon>
@@ -27,8 +27,8 @@
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision" Version="7.0.1" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.28.0" />
-		<PackageReference Include="Telerik.UI.for.Wpf.70.Xaml" Version="2023.2.606" />
-		<PackageReference Include="Telerik.Windows.SyntaxEditor.Core.for.Wpf.Xaml" Version="2023.2.606" />
+		<PackageReference Include="Telerik.UI.for.Wpf.80.Xaml" Version="2025.3.813" />
+		<PackageReference Include="Telerik.Windows.SyntaxEditor.Core.for.Wpf.Xaml" Version="2025.3.813" />
 	</ItemGroup>
 	
 	<ItemGroup>
